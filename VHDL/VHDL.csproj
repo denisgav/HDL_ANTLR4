@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BC4213CF-B989-47AA-A3F9-39269FB2CE01}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VHDL</RootNamespace>
+    <AssemblyName>VHDL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Annotations.cs" />
+    <Compile Include="annotation\AbstractCommentAnnotation.cs" />
+    <Compile Include="annotation\CommentAnnotationAfter.cs" />
+    <Compile Include="annotation\CommentAnnotationBefore.cs" />
+    <Compile Include="annotation\ComponentInstantiationFormat.cs" />
+    <Compile Include="annotation\InterfaceDeclarationFormat.cs" />
+    <Compile Include="annotation\OptionalIsFormat.cs" />
+    <Compile Include="annotation\PositionInformation.cs" />
+    <Compile Include="annotation\SourcePosition.cs" />
+    <Compile Include="AssociationElement.cs" />
+    <Compile Include="builtin\Libraries.cs" />
+    <Compile Include="builtin\NumericStd.cs" />
+    <Compile Include="builtin\SignalAttributes.cs" />
+    <Compile Include="builtin\Standard.cs" />
+    <Compile Include="builtin\StdLogic1164.cs" />
+    <Compile Include="builtin\StdLogicArith.cs" />
+    <Compile Include="builtin\StdLogicSigned.cs" />
+    <Compile Include="builtin\StdLogicUnsigned.cs" />
+    <Compile Include="builtin\TextIO.cs" />
+    <Compile Include="Choice.cs" />
+    <Compile Include="Choices.cs" />
+    <Compile Include="ComponentSpecification.cs" />
+    <Compile Include="concurrent\AbstractComponentInstantiation.cs" />
+    <Compile Include="concurrent\AbstractGenerateStatement.cs" />
+    <Compile Include="concurrent\AbstractPostponableConcurrentStatement.cs" />
+    <Compile Include="concurrent\AbstractProcessStatement.cs" />
+    <Compile Include="concurrent\ArchitectureInstantiation.cs" />
+    <Compile Include="concurrent\BlockStatement.cs" />
+    <Compile Include="concurrent\ComponentInstantiation.cs" />
+    <Compile Include="concurrent\ConcurrentAssertionStatement.cs" />
+    <Compile Include="concurrent\ConcurrentProcedureCall.cs" />
+    <Compile Include="concurrent\ConcurrentStatement.cs" />
+    <Compile Include="concurrent\ConcurrentStatementVisitor.cs" />
+    <Compile Include="concurrent\ConditionalSignalAssignment.cs" />
+    <Compile Include="concurrent\ConfigurationInstantiation.cs" />
+    <Compile Include="concurrent\EntityInstantiation.cs" />
+    <Compile Include="concurrent\EntityStatement.cs" />
+    <Compile Include="concurrent\ForGenerateStatement.cs" />
+    <Compile Include="concurrent\IfGenerateStatement.cs" />
+    <Compile Include="concurrent\ProcessStatement.cs" />
+    <Compile Include="concurrent\SelectedSignalAssignment.cs" />
+    <Compile Include="configuration\AbstractBlockConfiguration.cs" />
+    <Compile Include="configuration\ArchitectureConfiguration.cs" />
+    <Compile Include="configuration\BlockStatementConfiguration.cs" />
+    <Compile Include="configuration\ComponentConfiguration.cs" />
+    <Compile Include="configuration\IConfigurationItem.cs" />
+    <Compile Include="configuration\ConfigurationVisitor.cs" />
+    <Compile Include="configuration\GenerateStatementConfiguration.cs" />
+    <Compile Include="declaration\Alias.cs" />
+    <Compile Include="declaration\Attribute.cs" />
+    <Compile Include="declaration\AttributeSpecification.cs" />
+    <Compile Include="declaration\IBlockDeclarativeItem.cs" />
+    <Compile Include="declaration\Component.cs" />
+    <Compile Include="declaration\IConfigurationDeclarativeItem.cs" />
+    <Compile Include="declaration\ConfigurationSpecification.cs" />
+    <Compile Include="declaration\ConstantDeclaration.cs" />
+    <Compile Include="declaration\DeclarationVisitor.cs" />
+    <Compile Include="declaration\DeclarativeItem.cs" />
+    <Compile Include="declaration\IDeclarativeItemMarker.cs" />
+    <Compile Include="declaration\DisconnectionSpecification.cs" />
+    <Compile Include="declaration\EntityClass.cs" />
+    <Compile Include="declaration\IEntityDeclarativeItem.cs" />
+    <Compile Include="declaration\FileDeclaration.cs" />
+    <Compile Include="declaration\IFunction.cs" />
+    <Compile Include="declaration\FunctionBody.cs" />
+    <Compile Include="declaration\FunctionDeclaration.cs" />
+    <Compile Include="declaration\Group.cs" />
+    <Compile Include="declaration\GroupTemplate.cs" />
+    <Compile Include="declaration\ObjectDeclaration.cs" />
+    <Compile Include="declaration\IPackageBodyDeclarativeItem.cs" />
+    <Compile Include="declaration\IPackageDeclarativeItem.cs" />
+    <Compile Include="declaration\ProcedureBody.cs" />
+    <Compile Include="declaration\ProcedureDeclaration.cs" />
+    <Compile Include="declaration\IProcessDeclarativeItem.cs" />
+    <Compile Include="declaration\SignalDeclaration.cs" />
+    <Compile Include="declaration\ISubprogram.cs" />
+    <Compile Include="declaration\SubprogramBody.cs" />
+    <Compile Include="declaration\SubprogramDeclaration.cs" />
+    <Compile Include="declaration\ISubprogramDeclarativeItem.cs" />
+    <Compile Include="declaration\Subtype.cs" />
+    <Compile Include="declaration\VariableDeclaration.cs" />
+    <Compile Include="DeclarativeRegion.cs" />
+    <Compile Include="DelayMechanism.cs" />
+    <Compile Include="literal\ILiteralVisitor.cs" />
+    <Compile Include="range\DiscreteRange.cs" />
+    <Compile Include="EntityAspect.cs" />
+    <Compile Include="expression\UnaryExpression\Abs.cs" />
+    <Compile Include="expression\BinaryExpression\AddingExpression\Add.cs" />
+    <Compile Include="expression\BinaryExpression\AddingExpression\AddingExpression.cs" />
+    <Compile Include="expression\Aggregate.cs" />
+    <Compile Include="expression\BinaryExpression\LogicalExpression\And.cs" />
+    <Compile Include="expression\BinaryExpression\BinaryExpression.cs" />
+    <Compile Include="expression\BinaryExpression\AddingExpression\Concatenate.cs" />
+    <Compile Include="expression\BinaryExpression\MultiplyingExpression\Divide.cs" />
+    <Compile Include="expression\BinaryExpression\RelationalExpression\Equals.cs" />
+    <Compile Include="expression\Expression.cs" />
+    <Compile Include="expression\ExpressionKind.cs" />
+    <Compile Include="expression\ExpressionPrecedences.cs" />
+    <Compile Include="expression\Expressions.cs" />
+    <Compile Include="expression\ExpressionVisitor.cs" />
+    <Compile Include="expression\FunctionCall.cs" />
+    <Compile Include="expression\BinaryExpression\RelationalExpression\GreaterEquals.cs" />
+    <Compile Include="expression\BinaryExpression\RelationalExpression\GreaterThan.cs" />
+    <Compile Include="expression\BinaryExpression\RelationalExpression\LessEquals.cs" />
+    <Compile Include="expression\BinaryExpression\RelationalExpression\LessThan.cs" />
+    <Compile Include="expression\Literal.cs" />
+    <Compile Include="expression\BinaryExpression\LogicalExpression\LogicalExpression.cs" />
+    <Compile Include="expression\UnaryExpression\Minus.cs" />
+    <Compile Include="expression\BinaryExpression\MultiplyingExpression\Mod.cs" />
+    <Compile Include="expression\BinaryExpression\MultiplyingExpression\Multiply.cs" />
+    <Compile Include="expression\BinaryExpression\MultiplyingExpression\MultiplyingExpression.cs" />
+    <Compile Include="expression\Name.cs" />
+    <Compile Include="expression\BinaryExpression\LogicalExpression\Nand.cs" />
+    <Compile Include="expression\BinaryExpression\LogicalExpression\Nor.cs" />
+    <Compile Include="expression\UnaryExpression\Not.cs" />
+    <Compile Include="expression\BinaryExpression\RelationalExpression\NotEquals.cs" />
+    <Compile Include="expression\BinaryExpression\LogicalExpression\Or.cs" />
+    <Compile Include="expression\Parentheses.cs" />
+    <Compile Include="expression\parser\ExpressionParser.cs" />
+    <Compile Include="expression\parser\Lexer.cs" />
+    <Compile Include="expression\parser\Parser.cs" />
+    <Compile Include="expression\parser\Token.cs" />
+    <Compile Include="expression\UnaryExpression\Plus.cs" />
+    <Compile Include="expression\BinaryExpression\Pow.cs" />
+    <Compile Include="expression\Primary.cs" />
+    <Compile Include="expression\QualifiedExpression.cs" />
+    <Compile Include="expression\QualifiedExpressionAllocator.cs" />
+    <Compile Include="expression\BinaryExpression\RelationalExpression\RelationalExpression.cs" />
+    <Compile Include="expression\BinaryExpression\MultiplyingExpression\Rem.cs" />
+    <Compile Include="expression\BinaryExpression\ShiftExpression\Rol.cs" />
+    <Compile Include="expression\BinaryExpression\ShiftExpression\Ror.cs" />
+    <Compile Include="expression\BinaryExpression\ShiftExpression\ShiftExpression.cs" />
+    <Compile Include="expression\BinaryExpression\ShiftExpression\Sla.cs" />
+    <Compile Include="expression\BinaryExpression\ShiftExpression\Sll.cs" />
+    <Compile Include="expression\BinaryExpression\ShiftExpression\Sra.cs" />
+    <Compile Include="expression\BinaryExpression\ShiftExpression\Srl.cs" />
+    <Compile Include="expression\BinaryExpression\AddingExpression\Subtract.cs" />
+    <Compile Include="expression\SubtypeIndicationAllocator.cs" />
+    <Compile Include="expression\TypeConversion.cs" />
+    <Compile Include="expression\UnaryExpression\UnaryExpression.cs" />
+    <Compile Include="expression\BinaryExpression\LogicalExpression\Xnor.cs" />
+    <Compile Include="expression\BinaryExpression\LogicalExpression\Xor.cs" />
+    <Compile Include="highlevel\AbstractRegister.cs" />
+    <Compile Include="highlevel\ProxyList.cs" />
+    <Compile Include="highlevel\Register.cs" />
+    <Compile Include="highlevel\RegisterGroup.cs" />
+    <Compile Include="highlevel\StateMachine.cs" />
+    <Compile Include="LabeledElement.cs" />
+    <Compile Include="LibraryDeclarativeRegion.cs" />
+    <Compile Include="libraryunit\SecondaryUnit\Architecture.cs" />
+    <Compile Include="libraryunit\PrimaryUnits\Configuration.cs" />
+    <Compile Include="libraryunit\PrimaryUnits\Entity.cs" />
+    <Compile Include="libraryunit\LibraryClause.cs" />
+    <Compile Include="libraryunit\LibraryUnit.cs" />
+    <Compile Include="libraryunit\LibraryUnitVisitor.cs" />
+    <Compile Include="libraryunit\SecondaryUnit\PackageBody.cs" />
+    <Compile Include="libraryunit\PrimaryUnits\PackageDeclaration.cs" />
+    <Compile Include="libraryunit\PrimaryUnits\PrimaryUnit.cs" />
+    <Compile Include="libraryunit\SecondaryUnit\SecondaryUnit.cs" />
+    <Compile Include="libraryunit\UseClause.cs" />
+    <Compile Include="literal\AbstractLiteral.cs" />
+    <Compile Include="literal\BasedLiteral.cs" />
+    <Compile Include="literal\IntegerLiterals\BinaryBasedInteger.cs" />
+    <Compile Include="literal\IntegerLiterals\HexBasedInteger.cs" />
+    <Compile Include="literal\IntegerLiterals\IntegerLiteral.cs" />
+    <Compile Include="literal\IntegerLiterals\OctalBasedInteger.cs" />
+    <Compile Include="literal\StringLiterals\BinaryStringLiteral.cs" />
+    <Compile Include="literal\CharacterLiteral.cs" />
+    <Compile Include="literal\IntegerLiterals\DecBasedInteger.cs" />
+    <Compile Include="literal\EnumerationLiteral.cs" />
+    <Compile Include="literal\StringLiterals\HexStringLiteral.cs" />
+    <Compile Include="literal\Literals.cs" />
+    <Compile Include="literal\StringLiterals\OctalStringLiteral.cs" />
+    <Compile Include="literal\PhysicalLiteral.cs" />
+    <Compile Include="literal\RealLiteral.cs" />
+    <Compile Include="literal\StringLiterals\StringLiteral.cs" />
+    <Compile Include="INamedEntity.cs" />
+    <Compile Include="object\ArrayElement.cs" />
+    <Compile Include="object\AttributeExpression.cs" />
+    <Compile Include="object\Constant.cs" />
+    <Compile Include="object\ConstantGroup.cs" />
+    <Compile Include="object\DefaultVhdlObject.cs" />
+    <Compile Include="object\FileGroup.cs" />
+    <Compile Include="object\FileObject.cs" />
+    <Compile Include="object\RecordElement.cs" />
+    <Compile Include="object\Signal.cs" />
+    <Compile Include="object\ISignalAssignmentTarget.cs" />
+    <Compile Include="object\SignalGroup.cs" />
+    <Compile Include="object\Slice.cs" />
+    <Compile Include="object\Variable.cs" />
+    <Compile Include="object\IVariableAssignmentTarget.cs" />
+    <Compile Include="object\VariableGroup.cs" />
+    <Compile Include="object\VhdlObject.cs" />
+    <Compile Include="object\VhdlObjectGroup.cs" />
+    <Compile Include="object\IVhdlObjectProvider.cs" />
+    <Compile Include="range\Range.cs" />
+    <Compile Include="range\RangeAttributeName.cs" />
+    <Compile Include="range\RangeProvider.cs" />
+    <Compile Include="IResolvable.cs" />
+    <Compile Include="RootDeclarativeRegion.cs" />
+    <Compile Include="IScope.cs" />
+    <Compile Include="Scopes.cs" />
+    <Compile Include="Signature.cs" />
+    <Compile Include="statement\AssertionStatement.cs" />
+    <Compile Include="statement\CaseStatement.cs" />
+    <Compile Include="statement\ExitStatement.cs" />
+    <Compile Include="statement\ForStatement.cs" />
+    <Compile Include="statement\IfStatement.cs" />
+    <Compile Include="statement\LoopStatement.cs" />
+    <Compile Include="statement\NextStatement.cs" />
+    <Compile Include="statement\NullStatement.cs" />
+    <Compile Include="statement\ProcedureCall.cs" />
+    <Compile Include="statement\ReportStatement.cs" />
+    <Compile Include="statement\ReturnStatement.cs" />
+    <Compile Include="statement\SequentialStatement.cs" />
+    <Compile Include="statement\SequentialStatementVisitor.cs" />
+    <Compile Include="statement\SignalAssignment.cs" />
+    <Compile Include="statement\VariableAssignment.cs" />
+    <Compile Include="statement\WaitStatement.cs" />
+    <Compile Include="statement\WhileStatement.cs" />
+    <Compile Include="range\SubtypeDiscreteRange.cs" />
+    <Compile Include="type\AccessType.cs" />
+    <Compile Include="type\Composite\ArrayType.cs" />
+    <Compile Include="type\Composite\ConstrainedArray.cs" />
+    <Compile Include="type\ISubtypeIndicationVisitor.cs" />
+    <Compile Include="type\Scalar\EnumerationType.cs" />
+    <Compile Include="type\FileType.cs" />
+    <Compile Include="type\IncompleteType.cs" />
+    <Compile Include="type\SubtypeIndication\IndexSubtypeIndication.cs" />
+    <Compile Include="type\Scalar\IntegerType.cs" />
+    <Compile Include="type\Scalar\PhysicalType.cs" />
+    <Compile Include="type\SubtypeIndication\RangeSubtypeIndication.cs" />
+    <Compile Include="type\Scalar\RealType.cs" />
+    <Compile Include="type\Composite\RecordType.cs" />
+    <Compile Include="type\SubtypeIndication\ResolvedSubtypeIndication.cs" />
+    <Compile Include="type\ISubtypeIndication.cs" />
+    <Compile Include="type\Type.cs" />
+    <Compile Include="type\TypeVisitor.cs" />
+    <Compile Include="type\Composite\UnconstrainedArray.cs" />
+    <Compile Include="type\UnresolvedType.cs" />
+    <Compile Include="util\Comments.cs" />
+    <Compile Include="util\ParentSetList.cs" />
+    <Compile Include="util\IResolvableList.cs" />
+    <Compile Include="util\ResolveUtilities.cs" />
+    <Compile Include="util\Tags.cs" />
+    <Compile Include="util\VhdlCollections.cs" />
+    <Compile Include="VhdlElement.cs" />
+    <Compile Include="VhdlFile.cs" />
+    <Compile Include="WaveformElement.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

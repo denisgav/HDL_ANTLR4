@@ -6,11 +6,12 @@
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>VHDL_ANTLR4</RootNamespace>
     <AssemblyName>VHDL_ANTLR4</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+    <NoWin32Manifest>False</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -49,22 +50,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="ParseError.cs" />
+    <Compile Include="ParseErrors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="util\CaseInsensitiveFileStream.cs" />
+    <Compile Include="util\CaseInsensitiveInputStream.cs" />
+    <Compile Include="util\CaseInsensitiveStringStream.cs" />
+    <Compile Include="vhdlListener.cs" />
+    <Compile Include="VhdlParser.cs" />
+    <Compile Include="VhdlParserSettings.cs" />
+    <Compile Include="vhdlVisitor.cs" />
+    <Compile Include="VHDL_Library_Manager\ArchitectureInfo.cs" />
+    <Compile Include="VHDL_Library_Manager\LibraryFileInfo.cs" />
+    <Compile Include="VHDL_Library_Manager\LibraryInfo.cs" />
+    <Compile Include="VHDL_Library_Manager\PackageInfo.cs" />
+    <Compile Include="VHDL_Library_Manager\UseClauseInfo.cs" />
+    <Compile Include="VHDL_Library_Manager\VHDL_LibraryCompiler.cs" />
+    <Compile Include="VHDL_Library_Manager\VHDL_Library_Manager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="Properties\app.config" />
+    <None Include="Properties\packages.config" />
     <Antlr4 Include="vhdl.g4" />
-    <Antlr4 Include="Verilog2001.g4" />
-    <None Include="sample.vhdl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Antlr4.Runtime\Antlr4.Runtime.net40-client.csproj">
       <Project>{423978DF-85A4-409E-A16C-453683FE3969}</Project>
       <Name>Antlr4.Runtime.net40-client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VHDL\VHDL.csproj">
+      <Project>{BC4213CF-B989-47AA-A3F9-39269FB2CE01}</Project>
+      <Name>VHDL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

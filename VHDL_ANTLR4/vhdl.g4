@@ -3,7 +3,6 @@
 
 grammar vhdl;
 
-
 	ABS:'abs';
 	ACCESS : 'access';
 	ACROSS : 'across';
@@ -1530,7 +1529,8 @@ LETTER
   ;
 
 COMMENT
-  : '--' ( ~'\n' )* -> skip //{$setType(ANTLR_USE_NAMESPACE(antlr)Token::SKIP);} ?????????
+  : '--' ( ~'\n' )* 
+  -> skip
   ;
 
 TAB
@@ -1551,12 +1551,10 @@ CR
   
 CHARACTER_LITERAL
    : '\'' .* '\''
-   //{$setType(CHARACTER_LITERAL);} ????????
    ;
 
 STRING_LITERAL
   : '\"' .* '\"'
-  //{$setType(STRING_LITERAL)} ?????????
   ;
 
 OTHER_SPECIAL_CHARACTER
