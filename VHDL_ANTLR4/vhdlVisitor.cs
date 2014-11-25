@@ -34,6 +34,9 @@ namespace VHDL_ANTLR4
     using VHDL.parser;
     using Antlr4.Runtime;
     using Antlr4.Runtime.Tree;
+    using VHDL.Object;
+    using VHDL.annotation;
+
     /// <summary>
     /// Description of vhdlVisitor.
     /// </summary>
@@ -330,6 +333,16 @@ namespace VHDL_ANTLR4
             {
                 AddCommentAnnotation(element, context);
             }
+        }
+
+        public static Signal.ModeEnum ParseSignalMode(VHDL_ANTLR4.vhdlParser.Signal_modeContext context)
+        {
+            return ((context == null) ? Signal.ModeEnum.IN : (Signal.ModeEnum)Enum.Parse(typeof(Signal.ModeEnum), context.GetText().ToUpper()));
+        }
+
+        public VHDL.type.ISubtypeIndication FindSubtypeIndication(string name)
+        {
+            return currentScope.Scope.resolve< VHDL.type.ISubtypeIndication > (name);
         }
         
         /// <summary>
@@ -1606,11 +1619,44 @@ namespace VHDL_ANTLR4
         {
             IDeclarativeRegion oldScope = this.currentScope;            
             //--------------------------------------
-            var identifier = context.identifier();
+            VHDL_ANTLR4.vhdlParser.IdentifierContext[] identifiers = context.identifier();
 
-            Entity res = new Entity(identifier.ToString());
+            if (identifiers.Length != 2)
+            {
+                string begin_identifier = identifiers[0].ToString();
+                string end_identifier = identifiers[1].ToString();
+                if (begin_identifier.Equals(end_identifier, StringComparison.InvariantCultureIgnoreCase))
+                    throw new Exception(string.Format("Self check failure. Entity declaration identifier is {0}, End identifier is {1}.", begin_identifier, end_identifier));
+            }
+
+            VHDL_ANTLR4.vhdlParser.IdentifierContext identifier = identifiers[0];
             
+            Entity res = new Entity(identifier.GetText());
+            res.Parent = oldScope;
+            currentScope = res;
 
+            var entity_header = context.entity_header();
+            var entity_declarative_part = context.entity_declarative_part();
+            var entity_statement_part = context.entity_statement_part();
+
+            //1. Visit all declaration parts (generics and ports)
+            var port_clause = entity_header.port_clause();
+            if (port_clause != null)
+            {
+                foreach (var port in port_clause.port_list().interface_signal_list().interface_signal_declaration())
+                {
+                    res.Port.Add(Cast<VhdlElement, IVhdlObjectProvider>(VisitInterface_signal_declaration(port)));
+                }
+            }
+
+            var generic_clause = entity_header.generic_clause();
+            if (generic_clause != null)
+            {
+                foreach (var port in generic_clause.generic_list().interface_list().interface_element())
+                {
+                    res.Generic.Add(Cast<VhdlElement, IVhdlObjectProvider>(VisitInterface_element(port)));
+                }
+            }
 
             //--------------------------------------
             currentScope = oldScope;
@@ -1693,7 +1739,11 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitInterface_element([NotNull] vhdlParser.Interface_elementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitInterface_element([NotNull] vhdlParser.Interface_elementContext context) 
+        {
+            var interface_declaration = context.interface_declaration();
+            return VisitInterface_declaration(interface_declaration);
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.architecture_statement_part"/>.
@@ -2445,7 +2495,47 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitInterface_declaration([NotNull] vhdlParser.Interface_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitInterface_declaration([NotNull] vhdlParser.Interface_declarationContext context) 
+        {
+            var interface_constant_declaration = context.interface_constant_declaration();
+            var interface_variable_declaration = context.interface_variable_declaration();
+            var interface_signal_declaration = context.interface_signal_declaration();
+            var interface_terminal_declaration = context.interface_terminal_declaration();
+            var interface_quantity_declaration = context.interface_quantity_declaration();
+            var interface_file_declaration = context.interface_file_declaration();
+
+            if (interface_constant_declaration != null)
+            {
+                return VisitInterface_constant_declaration(interface_constant_declaration);
+            }
+
+            if (interface_variable_declaration != null)
+            {
+                return VisitInterface_variable_declaration(interface_variable_declaration);
+            }
+
+            if (interface_signal_declaration != null)
+            {
+                return VisitInterface_signal_declaration(interface_signal_declaration);
+            }
+
+            if (interface_terminal_declaration != null)
+            {
+                return VisitInterface_terminal_declaration(interface_terminal_declaration);
+            }
+
+            if (interface_quantity_declaration != null)
+            {
+                return VisitInterface_quantity_declaration(interface_quantity_declaration);
+            }
+
+            if (interface_file_declaration != null)
+            {
+                return VisitInterface_file_declaration(interface_file_declaration);
+            }
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.label_colon"/>.
@@ -2945,7 +3035,49 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitInterface_signal_declaration([NotNull] vhdlParser.Interface_signal_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitInterface_signal_declaration([NotNull] vhdlParser.Interface_signal_declarationContext context) 
+        {
+            bool hasObjectClass = false;
+            bool hasMode = false;
+            bool isBus = false;
+            //--------------------------------------------------
+            var identifier_list = context.identifier_list();
+            var signal_mode = context.signal_mode();
+            var subtype_indication = context.subtype_indication();
+            var expression = context.expression();
+
+            var BUS = context.BUS();
+
+            isBus = BUS != null;
+            hasMode = signal_mode != null;
+            hasObjectClass = context.SIGNAL() != null;
+
+            InterfaceDeclarationFormat format = new InterfaceDeclarationFormat(hasObjectClass, hasMode);
+            Signal.ModeEnum m = ParseSignalMode(signal_mode);
+
+            Expression def = (expression != null)?Cast<VhdlElement, Expression>(VisitExpression(expression)):null;
+            VHDL.type.ISubtypeIndication type = FindSubtypeIndication(subtype_indication.name(0).GetText());//(subtype_indication != null)?Cast<ISubtypeIndication, Expression>(VisitSubtype_indication(subtype_indication)):null;
+
+            SignalGroup res = new SignalGroup();
+
+            foreach (var identifier in identifier_list.identifier()) {
+                string signal_name = identifier.GetText();
+                Signal s = new Signal(signal_name, m, type, def);
+                if (isBus) 
+                {
+                    s.Kind = Signal.KindEnum.BUS;
+                }
+                Annotations.putAnnotation(s, format);
+
+                res.Elements.Add(s);
+            }
+
+            //--------------------------------------------------
+            AddAnnotations(res, context);
+            return res; 
+        }
+
+
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.access_type_definition"/>.

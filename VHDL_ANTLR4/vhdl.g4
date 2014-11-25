@@ -805,6 +805,10 @@ interface_file_declaration
   : FILE identifier_list COLON subtype_indication
   ;
 
+interface_signal_list 
+  : interface_signal_declaration ( SEMI interface_signal_declaration )*
+  ;
+
 interface_list
   : interface_element ( SEMI interface_element )*
   ;
@@ -1029,7 +1033,7 @@ port_clause
   ;
 
 port_list
-  : interface_list
+  : interface_signal_list
   ;
 
 port_map_aspect
