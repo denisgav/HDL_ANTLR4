@@ -258,14 +258,14 @@ namespace VHDL.util
                         //TODO: don't use strings for the physical literals
                         if (identifier.Equals(type.PrimaryUnit, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            return new PhysicalLiteral(type.PrimaryUnit);
+                            return new PhysicalLiteral(null, type.PrimaryUnit, declaration as PhysicalType);
                         }
 
                         foreach (PhysicalType.Unit unit in type.Units)
                         {
                             if (identifier.Equals(unit.Identifier, StringComparison.InvariantCultureIgnoreCase))
                             {
-                                return new PhysicalLiteral(unit.Identifier);
+                                return new PhysicalLiteral(null, unit.Identifier, declaration as PhysicalType);
                             }
                         }
                     }
@@ -394,7 +394,7 @@ namespace VHDL.util
                     {
                         PhysicalType type = declaration as PhysicalType;
                         res.Add(type);
-                        res.Add(new PhysicalLiteral(type.PrimaryUnit));
+                        res.Add(new PhysicalLiteral(null, type.PrimaryUnit, declaration as PhysicalType));
 
                         foreach (PhysicalType.Unit unit in type.Units)
                         {
@@ -496,7 +496,7 @@ namespace VHDL.util
                     {
                         PhysicalType type = declaration as PhysicalType;
                         res.Add(type);
-                        res.Add(new PhysicalLiteral(type.PrimaryUnit));
+                        res.Add(new PhysicalLiteral(null, type.PrimaryUnit, declaration as PhysicalType));
 
                         foreach (PhysicalType.Unit unit in type.Units)
                         {

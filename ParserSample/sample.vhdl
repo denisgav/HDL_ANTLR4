@@ -2,9 +2,7 @@
 --using IEEE.std_logic_1164.all;
 
 entity Mux8to1 is
-generic(
-	a : integer := 10;
-);
+generic ( DELAY : time := 2#10# ns; DELAY2 : time := 20 ns );
 port (
      Inputs : in bit;
      Select_s : in bit;

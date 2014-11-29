@@ -1490,13 +1490,40 @@ waveform_element
 
 //------------------------------------------Lexer-----------------------------------------
 BASE_LITERAL
-   :  ( '#' EXTENDED_DIGIT ( '.' EXTENDED_DIGIT )? '#' ( EXPONENT )? ) 
-//   {$setType(BASED_LITERAL);} //????????????
+   :  BINANRY_BASED_INTEGER
+   |  OCTAL_BASED_INTEGER
+   |  HEXA_BASED_INTEGER
+   ;
+
+BINANRY_BASED_INTEGER
+   : '2' '#' ('1' | '0' | '_')+ '#' (INTEGER)?
    ;
    
+OCTAL_BASED_INTEGER
+   : '8' '#' ('7' |'6' |'5' |'4' |'3' |'2' |'1' | '0' | '_')+ '#' (INTEGER)?
+   ;
+
+HEXA_BASED_INTEGER
+   : '16' '#' ( 'f' |'e' |'d' |'c' |'b' |'a' | 'F' |'E' |'D' |'C' |'B' |'A' | '9' | '8' | '7' |'6' |'5' |'4' |'3' |'2' |'1' | '0' | '_')+ '#' (INTEGER)?
+   ;
+
 BIT_STRING_LITERAL
-  : ( 'b' | 'o' | 'x' ) '\"' EXTENDED_DIGIT '\"'
+  : BIT_STRING_LITERAL_BINARY
+  | BIT_STRING_LITERAL_OCTAL
+  | BIT_STRING_LITERAL_HEX
   ;
+
+BIT_STRING_LITERAL_BINARY
+    :   ('b'|'B') '\"' ('1' | '0' | '_')+ '\"'
+    ;
+
+BIT_STRING_LITERAL_OCTAL
+    :   ('o'|'O') '\"' ('7' |'6' |'5' |'4' |'3' |'2' |'1' | '0' | '_')+ '\"'
+    ;
+
+BIT_STRING_LITERAL_HEX
+    :   ('x'|'X') '\"' ( 'f' |'e' |'d' |'c' |'b' |'a' | 'F' |'E' |'D' |'C' |'B' |'A' | '9' | '8' | '7' |'6' |'5' |'4' |'3' |'2' |'1' | '0' | '_')+ '\"'
+    ;
 
 DECIMAL_LITERAL
    :	INTEGER ( ( '.' INTEGER )? ( EXPONENT )? )
@@ -1517,17 +1544,6 @@ EXTENDED_IDENTIFIER
     | '#' | '[' | ']' | '_' )+ '\\'
   ;
 
-fragment
-BASE
-  : INTEGER
-  ;
-
-fragment
-BASE_SPECIFIER
-  :  'B' | 'O' | 'X'
-  ;
-
-fragment
 LETTER	
   :  'a'..'z' | 'A'..'Z'
   ;
@@ -1611,17 +1627,17 @@ EXPONENT
   :  'e' ( '+' | '-' )? INTEGER
   ;
 
-fragment
+
 HEXDIGIT
     :	('A'..'F'|'a'..'f')
     ;
       
-fragment
+
 INTEGER
   :  DIGIT ( '_' | DIGIT )*
   ;
 
-fragment  
+  
  DIGIT
   :  '0'..'9'
   ;

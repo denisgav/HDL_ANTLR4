@@ -40,38 +40,21 @@ namespace VHDL.literal
             return parent;
         }
 
-        /// <summary>
-        /// Creates a physical literal containing only a unit.
-        /// </summary>
-        /// <param name="unit">the unit</param>
-        public PhysicalLiteral(string unit)
+        public void SetPhysicalType(PhysicalType type)
         {
-            this.unit = unit;
-            foreach (var u in VHDL.builtin.Standard.TIME.Units)
-            {
-                if (u.Identifier.Equals(unit))
-                {
-                    parent = VHDL.builtin.Standard.TIME;
-                }
-            }
+            parent = type;
         }
-
+        
         /// <summary>
         /// Creates a physical literal.
         /// </summary>
         /// <param name="value">the value</param>
         /// <param name="unit">the unit</param>
-        public PhysicalLiteral(AbstractLiteral @value, string unit)
+        public PhysicalLiteral(AbstractLiteral @value, string unit, PhysicalType type)
         {
             this.value = @value;
             this.unit = unit;
-            foreach (var u in VHDL.builtin.Standard.TIME.Units)
-            {
-                if (u.Identifier.Equals(unit))
-                {
-                    parent = VHDL.builtin.Standard.TIME;
-                }
-            }
+            this.parent = type;
         }
 
         /// <summary>
@@ -105,7 +88,7 @@ namespace VHDL.literal
 
         public override Choice copy()
         {
-            return new PhysicalLiteral(@value, unit);
+            return new PhysicalLiteral(@value, unit, parent);
         }
 
         public override string ToString()

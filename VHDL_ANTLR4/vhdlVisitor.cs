@@ -36,6 +36,8 @@ namespace VHDL_ANTLR4
     using Antlr4.Runtime.Tree;
     using VHDL.Object;
     using VHDL.annotation;
+    using VHDL.declaration;
+    using VHDL.literal;
 
     /// <summary>
     /// Description of vhdlVisitor.
@@ -1070,7 +1072,48 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitAbstract_literal([NotNull] vhdlParser.Abstract_literalContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitAbstract_literal([NotNull] vhdlParser.Abstract_literalContext context) 
+        {
+            var decimal_literal = context.DECIMAL_LITERAL();
+            var based_literal = context.BASE_LITERAL();
+
+            if (decimal_literal != null)
+            {
+                DecBasedInteger res = new DecBasedInteger(decimal_literal.GetText());
+                return res;
+            }
+
+            if (based_literal != null)
+            {
+                string text = based_literal.GetText();
+                switch(text.Split('#')[0])
+                {
+                    case "2":
+                        {
+                            BinaryBasedInteger res = new BinaryBasedInteger(text);
+                            return res;
+                        }
+                        break;
+                    case "8":
+                        {
+                            OctalBasedInteger res = new OctalBasedInteger(text);
+                            return res;
+                        }
+                        break;
+                    case "16":
+                        {
+                            HexBasedInteger res = new HexBasedInteger(text);
+                            return res;
+                        }
+                        break;
+                    default:
+                        throw new NotSupportedException(String.Format("Could not analyse item {0}", based_literal.ToStringTree()));
+                        break;
+                }
+            }
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.interface_variable_declaration"/>.
@@ -1081,7 +1124,36 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitInterface_variable_declaration([NotNull] vhdlParser.Interface_variable_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitInterface_variable_declaration([NotNull] vhdlParser.Interface_variable_declarationContext context) 
+        {
+            bool hasObjectClass = context.VARIABLE() != null;
+            bool hasMode = context.signal_mode() != null;
+
+            var subtype_indication_in = context.subtype_indication();
+            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            var def_value_in = context.expression();
+            Expression def_value = Cast<VhdlElement, Expression>(VisitExpression(def_value_in));
+
+            var identifiers_in = context.identifier_list();
+            InterfaceDeclarationFormat format = new InterfaceDeclarationFormat(hasObjectClass, hasMode);
+            VariableGroup res = new VariableGroup();
+
+            VhdlObject.ModeEnum mode = (hasMode)? (VhdlObject.ModeEnum)(Enum.Parse(typeof(VhdlObject.ModeEnum), context.signal_mode().GetText().ToUpper())) : VhdlObject.ModeEnum.IN;
+
+            foreach (var identifier in identifiers_in.identifier())
+            {
+                Variable v = new Variable(identifier.GetText(), si, def_value);
+                if (hasMode)
+                {
+                    v.Mode = mode;
+                }
+                Annotations.putAnnotation(v, format);
+
+                res.Elements.Add(v);
+            }
+
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.next_statement"/>.
@@ -1136,7 +1208,20 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitInterface_file_declaration([NotNull] vhdlParser.Interface_file_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitInterface_file_declaration([NotNull] vhdlParser.Interface_file_declarationContext context) 
+        {
+            FileGroup res = new FileGroup();
+            var subtype_indication_in = context.subtype_indication();
+            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            var identifier_list_in = context.identifier_list();
+            foreach (var identifier in identifier_list_in.identifier())
+            {
+                FileObject obj = new FileObject(identifier.GetText(), si);
+                res.Elements.Add(obj);
+            }
+
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.concurrent_break_statement"/>.
@@ -1422,7 +1507,15 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitPhysical_literal([NotNull] vhdlParser.Physical_literalContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitPhysical_literal([NotNull] vhdlParser.Physical_literalContext context) 
+        {
+            var abstract_literal = context.abstract_literal();
+            var name = context.name();
+            AbstractLiteral al = Cast<VhdlElement, AbstractLiteral>(VisitAbstract_literal(abstract_literal));
+            PhysicalLiteral  physLiteral = resolve<PhysicalLiteral>(name.GetText());
+            PhysicalLiteral res = new PhysicalLiteral(al, name.GetText(), physLiteral.GetPhysicalType());
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.enumeration_literal"/>.
@@ -1693,7 +1786,7 @@ namespace VHDL_ANTLR4
             //--------------------------------------
             VHDL_ANTLR4.vhdlParser.IdentifierContext[] identifiers = context.identifier();
 
-            if (identifiers.Length != 2)
+            if (identifiers.Length == 2)
             {
                 string begin_identifier = identifiers[0].ToString();
                 string end_identifier = identifiers[1].ToString();
@@ -2245,7 +2338,34 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitSignal_declaration([NotNull] vhdlParser.Signal_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitSignal_declaration([NotNull] vhdlParser.Signal_declarationContext context) 
+        {
+            var identifier_list = context.identifier_list();
+            var subtype_indication = context.subtype_indication();
+            var expression = context.expression();
+            var kind_in = context.signal_kind();
+            Signal.KindEnum kind = (kind_in != null)?(Signal.KindEnum)Enum.Parse(typeof(Signal.KindEnum), kind_in.GetText().ToUpper()) : Signal.KindEnum.DEFAULT;
+
+            Expression def = (expression != null) ? Cast<VhdlElement, Expression>(VisitExpression(expression)) : null;
+            VHDL.type.ISubtypeIndication type = (subtype_indication != null) ? Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication)) : null;
+
+            SignalDeclaration res = new SignalDeclaration();
+
+            foreach (var identifier in identifier_list.identifier())
+            {
+                string signal_name = identifier.GetText();
+                Signal s = new Signal(signal_name, type, def);
+                
+                s.Kind = kind;                
+
+                res.Objects.Add(s);
+            }
+
+            //--------------------------------------------------
+            AddAnnotations(res, context);
+            res.Parent = currentScope;
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.simple_expression"/>.
@@ -2256,7 +2376,11 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitSimple_expression([NotNull] vhdlParser.Simple_expressionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitSimple_expression([NotNull] vhdlParser.Simple_expressionContext context) 
+        {
+
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.actual_parameter_part"/>.
@@ -2311,7 +2435,10 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitInterface_terminal_declaration([NotNull] vhdlParser.Interface_terminal_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitInterface_terminal_declaration([NotNull] vhdlParser.Interface_terminal_declarationContext context) 
+        {
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.adding_operator"/>.
@@ -2432,7 +2559,23 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitNumeric_literal([NotNull] vhdlParser.Numeric_literalContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitNumeric_literal([NotNull] vhdlParser.Numeric_literalContext context) 
+        {
+            var al = context.abstract_literal();
+            var pl = context.physical_literal();
+
+            if (al != null)
+            {
+                return VisitAbstract_literal(al);
+            }
+
+            if (pl != null)
+            {
+                return VisitPhysical_literal(pl);
+            }
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.index_constraint"/>.

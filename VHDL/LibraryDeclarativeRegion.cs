@@ -129,14 +129,14 @@ namespace VHDL
                                     //TODO: don't use strings for the physical literals
                                     if (identifier.Equals(type.PrimaryUnit, StringComparison.InvariantCultureIgnoreCase))
                                     {
-                                        return new PhysicalLiteral(type.PrimaryUnit);
+                                        return new PhysicalLiteral(null, type.PrimaryUnit, o as PhysicalType);
                                     }
 
                                     foreach (PhysicalType.Unit unit in type.Units)
                                     {
                                         if (identifier.Equals(unit.Identifier, StringComparison.InvariantCultureIgnoreCase))
                                         {
-                                            return new PhysicalLiteral(unit.Identifier);
+                                            return new PhysicalLiteral(null, unit.Identifier, o as PhysicalType);
                                         }
                                     }
                                 }
