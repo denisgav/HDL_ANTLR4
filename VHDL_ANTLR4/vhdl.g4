@@ -712,7 +712,7 @@ generic_clause
   ;
 
 generic_list
-  : interface_list
+  : interface_constant_declaration (SEMI interface_constant_declaration)*
   ;
 
 generic_map_aspect

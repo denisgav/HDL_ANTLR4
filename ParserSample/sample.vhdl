@@ -2,6 +2,9 @@
 --using IEEE.std_logic_1164.all;
 
 entity Mux8to1 is
+generic(
+	a : integer := 10;
+);
 port (
      Inputs : in bit;
      Select_s : in bit;
