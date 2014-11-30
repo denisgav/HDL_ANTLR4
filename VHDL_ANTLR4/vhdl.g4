@@ -116,7 +116,8 @@ grammar vhdl;
 
 //------------------------------------------Parser----------------------------------------
 abstract_literal
-   :  DECIMAL_LITERAL
+   :  INTEGER
+   |  REAL_LITERAL
    |  BASE_LITERAL
    ;
 
@@ -691,7 +692,7 @@ free_quantity_declaration
   ;
 
 function_call
-  : name ( LPAREN actual_parameter_part RPAREN )?
+  : name ( LPAREN actual_parameter_part? RPAREN )
   ;
 
 generate_statement
@@ -1041,10 +1042,10 @@ port_map_aspect
   ;
 
 primary
-  : function_call
+  : literal
   | qualified_expression
   | LPAREN expression RPAREN
-  | literal
+  | function_call
   | allocator
   | aggregate
   ;
@@ -1120,7 +1121,7 @@ process_statement_part
   ;
 
 qualified_expression
-  : name CHARACTER_LITERAL ( aggregate | LPAREN expression RPAREN )
+  : subtype_indication APOSTROPHE  ( aggregate | LPAREN expression RPAREN )
   ;
 
 quantity_declaration
@@ -1525,9 +1526,8 @@ BIT_STRING_LITERAL_HEX
     :   ('x'|'X') '\"' ( 'f' |'e' |'d' |'c' |'b' |'a' | 'F' |'E' |'D' |'C' |'B' |'A' | '9' | '8' | '7' |'6' |'5' |'4' |'3' |'2' |'1' | '0' | '_')+ '\"'
     ;
 
-DECIMAL_LITERAL
-   :	INTEGER ( ( '.' INTEGER )? ( EXPONENT )? )
-   ;
+REAL_LITERAL
+   :    INTEGER  ( '.' INTEGER ) ( EXPONENT )?;
 
 EXTENDED_DIGIT
    : INTEGER | LETTER
@@ -1640,4 +1640,8 @@ INTEGER
   
  DIGIT
   :  '0'..'9'
+  ;
+
+APOSTROPHE
+  : '\''
   ;

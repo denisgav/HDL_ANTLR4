@@ -16,6 +16,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 
 namespace VHDL
@@ -24,7 +25,7 @@ namespace VHDL
     /// Choice constants.
     /// </summary>
     [Serializable]
-    public class Choices
+    public class Choices : VhdlElement
     {
         [Serializable]
         public class OTHERSChoice : Choice
@@ -40,12 +41,22 @@ namespace VHDL
         /// OTHERS choice.
         /// </summary>
         public static Choice OTHERS = new OTHERSChoice();
-        
-        /// <summary>
-        /// Prevent instantiation.
-        /// </summary>
-        private Choices()
+
+        private List<Choice> choices;
+
+        public List<Choice> InnerChoices
         {
+            get { return choices; }
+        }
+        
+        public Choices()
+        {
+            choices = new List<Choice>();
+        }
+
+        public Choices(List<Choice> choices)
+        {
+            this.choices = choices;
         }
     }
 
