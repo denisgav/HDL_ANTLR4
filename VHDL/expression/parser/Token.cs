@@ -20,7 +20,7 @@ namespace VHDL.expression.parser
 
     using Abs = VHDL.expression.Abs;
     using Add = VHDL.expression.Add;
-    using And = VHDL.expression.Qua;
+    using And = VHDL.expression.And;
     using Concatenate = VHDL.expression.Concatenate;
     using Divide = VHDL.expression.Divide;
     using Equals = VHDL.expression.Equals;

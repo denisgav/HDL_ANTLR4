@@ -642,7 +642,17 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitFunction_call([NotNull] vhdlParser.Function_callContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitFunction_call([NotNull] vhdlParser.Function_callContext context) 
+        {
+            var name = context.name();
+            var actual_parameter_part = context.actual_parameter_part();
+
+            IFunction func = resolve<IFunction>(name.GetText());
+
+            FunctionCall call = new FunctionCall(func);
+
+            return call; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.timeout_clause"/>.
@@ -964,7 +974,30 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitFactor([NotNull] vhdlParser.FactorContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitFactor([NotNull] vhdlParser.FactorContext context) 
+        {
+            var primary1_in = context.primary()[0];
+            Expression primary1 = Cast<VhdlElement, Expression>( VisitPrimary(primary1_in));
+            if (context.DOUBLESTAR() != null)
+            {
+                var primary2_in = context.primary()[1];
+                Expression primary2 = Cast<VhdlElement, Expression>(VisitPrimary(primary2_in));
+
+                return new Pow(primary1, primary2);
+            }
+
+            if (context.ABS() != null)
+            {
+                return new Abs(primary1);
+            }
+
+            if (context.NOT() != null)
+            {
+                return new Not(primary1);
+            }
+
+            return primary1; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.relational_operator"/>.
@@ -1098,7 +1131,76 @@ namespace VHDL_ANTLR4
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitExpression([NotNull] vhdlParser.ExpressionContext context) 
         {
-            return VisitChildren(context); 
+            var relations_in = context.relation();
+            var logical_operators_in = context.logical_operator();
+
+            List<Expression> parsed_relations = new List<Expression>();
+
+            foreach (vhdlParser.RelationContext r in relations_in)
+            {
+                Expression parsed_relation = Cast<VhdlElement, Expression>(VisitRelation(r));
+                parsed_relations.Add(parsed_relation);
+            }
+
+            if (parsed_relations.Count == 0)
+            {
+                throw new NotSupportedException(String.Format("Could not analyse item {0}. Amount of relations is 0", context.ToStringTree()));
+            }
+            
+            Expression res = parsed_relations[0];;
+
+            for (int i = 0; i < logical_operators_in.Length; i++)
+            {
+                Expression next_expression = parsed_relations[i+1];
+                vhdlParser.Logical_operatorContext op = logical_operators_in[i];
+
+                if (op.AND() != null)
+                {
+                    Expression new_res = new VHDL.expression.And(res, next_expression);
+                    res = new_res;
+                    continue;
+                }
+
+                if (op.NAND() != null)
+                {
+                    Expression new_res = new VHDL.expression.Nand(res, next_expression);
+                    res = new_res;
+                    continue;
+                }
+
+                if (op.NOR() != null)
+                {
+                    Expression new_res = new VHDL.expression.Nor(res, next_expression);
+                    res = new_res;
+                    continue;
+                }
+
+                if (op.OR() != null)
+                {
+                    Expression new_res = new VHDL.expression.Or(res, next_expression);
+                    res = new_res;
+                    continue;
+                }
+
+                if (op.XNOR() != null)
+                {
+                    Expression new_res = new VHDL.expression.Xnor(res, next_expression);
+                    res = new_res;
+                    continue;
+                }
+
+                if (op.XOR() != null)
+                {
+                    Expression new_res = new VHDL.expression.Xor(res, next_expression);
+                    res = new_res;
+                    continue;
+                }
+
+                throw new NotSupportedException(String.Format("Could not analyse item {0}.", op.ToStringTree()));
+            }
+
+            return res;
+            //throw new NotSupportedException(String.Format("Could not analyse item {0}.", context.ToStringTree()));
         }
 
         /// <summary>
@@ -1354,7 +1456,56 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitRelation([NotNull] vhdlParser.RelationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitRelation([NotNull] vhdlParser.RelationContext context) 
+        {
+            var shift_expressions_in = context.shift_expression();
+            var relational_operator_in = context.relational_operator();
+
+            Expression parsed_shift_expression_1 = Cast<VhdlElement, Expression>(VisitShift_expression(shift_expressions_in[0]));
+
+            if (relational_operator_in == null)
+            {
+                return parsed_shift_expression_1;
+            }
+            else
+            {
+                Expression parsed_shift_expression_2 = Cast<VhdlElement, Expression>(VisitShift_expression(shift_expressions_in[1]));
+
+                if (relational_operator_in.EQ() != null)
+                {
+                    return new VHDL.expression.Equals(parsed_shift_expression_1, parsed_shift_expression_2);
+                }
+
+                if (relational_operator_in.GE() != null)
+                {
+                    return new VHDL.expression.GreaterEquals(parsed_shift_expression_1, parsed_shift_expression_2);
+                }
+
+                if (relational_operator_in.GREATERTHAN() != null)
+                {
+                    return new VHDL.expression.GreaterThan(parsed_shift_expression_1, parsed_shift_expression_2);
+                }
+
+                if (relational_operator_in.LE() != null)
+                {
+                    return new VHDL.expression.LessEquals(parsed_shift_expression_1, parsed_shift_expression_2);
+                }
+
+                if (relational_operator_in.LOWERTHAN() != null)
+                {
+                    return new VHDL.expression.LessThan(parsed_shift_expression_1, parsed_shift_expression_2);
+                }
+
+                if (relational_operator_in.NEQ() != null)
+                {
+                    return new VHDL.expression.NotEquals(parsed_shift_expression_1, parsed_shift_expression_2);
+                }
+
+                throw new NotSupportedException(String.Format("Could not analyse item {0}", relational_operator_in.ToStringTree()));
+            }
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.constrained_nature_definition"/>.
@@ -2170,7 +2321,56 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitShift_expression([NotNull] vhdlParser.Shift_expressionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitShift_expression([NotNull] vhdlParser.Shift_expressionContext context) 
+        {
+            var shift_operator_in = context.shift_operator();
+            var simple_expressions_in = context.simple_expression();
+
+            Expression parsed_simple_expression_1 = Cast<VhdlElement, Expression>(VisitSimple_expression(simple_expressions_in[0]));
+
+            if (shift_operator_in == null)
+            {
+                return parsed_simple_expression_1;
+            }
+            else
+            {
+                Expression parsed_simple_expression_2 = Cast<VhdlElement, Expression>(VisitSimple_expression(simple_expressions_in[1]));
+
+                if (shift_operator_in.ROL() != null)
+                {
+                    return new VHDL.expression.Rol(parsed_simple_expression_1, parsed_simple_expression_2);
+                }
+
+                if (shift_operator_in.ROR() != null)
+                {
+                    return new VHDL.expression.Ror(parsed_simple_expression_1, parsed_simple_expression_2);
+                }
+
+                if (shift_operator_in.SLA() != null)
+                {
+                    return new VHDL.expression.Sla(parsed_simple_expression_1, parsed_simple_expression_2);
+                }
+
+                if (shift_operator_in.SLL() != null)
+                {
+                    return new VHDL.expression.Sll(parsed_simple_expression_1, parsed_simple_expression_2);
+                }
+
+                if (shift_operator_in.SRA() != null)
+                {
+                    return new VHDL.expression.Sra(parsed_simple_expression_1, parsed_simple_expression_2);
+                }
+
+                if (shift_operator_in.SRL() != null)
+                {
+                    return new VHDL.expression.Srl(parsed_simple_expression_1, parsed_simple_expression_2);
+                }
+
+                throw new NotSupportedException(String.Format("Could not analyse item {0}", shift_operator_in.ToStringTree()));
+            }
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.iteration_scheme"/>.
@@ -2475,8 +2675,62 @@ namespace VHDL_ANTLR4
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitSimple_expression([NotNull] vhdlParser.Simple_expressionContext context) 
         {
+            var plus_in = context.PLUS();
+            var minus_in = context.MINUS();
 
-            return VisitChildren(context); 
+            var terms_in = context.term();
+            var adding_operators_in = context.adding_operator();
+
+            List<Expression> parsed_terms = new List<Expression>();
+            foreach (var t in terms_in)
+            {
+                Expression term = Cast<VhdlElement, Expression>(VisitTerm(t));
+                parsed_terms.Add(term);
+            }
+
+            if (parsed_terms.Count == 0)
+            {
+                throw new NotSupportedException(String.Format("Could not analyse item {0}. Amount of terms is 0.", context.ToStringTree()));
+            }
+
+            Expression res = parsed_terms[0];
+
+            if (plus_in != null)
+            {
+                Expression new_exp = new VHDL.expression.Plus(res);
+                res = new_exp;
+            }
+
+            if (minus_in != null)
+            {
+                Expression new_exp = new VHDL.expression.Minus(res);
+                res = new_exp;
+            }
+
+            for (int i = 0; i < adding_operators_in.Length; i++)
+            {
+                var op = adding_operators_in[i];
+                Expression curr_expression = parsed_terms[i + 1];
+
+                if (op.MINUS() != null)
+                {
+                    Expression new_res = new VHDL.expression.Subtract(res, curr_expression);
+                    res = new_res;
+                    continue;
+                }
+
+                if (op.PLUS() != null)
+                {
+                    Expression new_res = new VHDL.expression.Add(res, curr_expression);
+                    res = new_res;
+                    continue;
+                }
+
+                throw new NotSupportedException(String.Format("Could not analyse item {0}", op.ToStringTree()));
+            }
+
+            return res;
+            //throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
         }
 
         /// <summary>
@@ -2996,7 +3250,45 @@ namespace VHDL_ANTLR4
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitPrimary([NotNull] vhdlParser.PrimaryContext context) 
         {
-            return VisitChildren(context); 
+            var aggregate = context.aggregate();
+            var allocator = context.allocator();
+            var expression = context.expression();
+            var function_call = context.function_call();
+            var literal = context.literal();
+            var qualified_expression = context.qualified_expression();
+
+
+            if (aggregate != null)
+            {
+                return VisitAggregate(aggregate);
+            }
+
+            if (allocator != null)
+            {
+                return VisitAllocator(allocator);
+            }
+
+            if (expression != null)
+            {
+                return VisitExpression(expression);
+            }
+
+            if (function_call != null)
+            {
+                return VisitFunction_call(function_call);
+            }
+
+            if (literal != null)
+            {
+                return VisitLiteral(literal);
+            }
+            
+            if (qualified_expression != null)
+            {
+                return VisitQualified_expression(qualified_expression);
+            }
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
         }
 
         /// <summary>
@@ -3625,7 +3917,63 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitTerm([NotNull] vhdlParser.TermContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitTerm([NotNull] vhdlParser.TermContext context) 
+        {
+            var factors_in = context.factor();
+            var multiplying_operators_in = context.multiplying_operator();
+
+            List<Expression> parsed_factors = new List<Expression>();
+
+            foreach (var f in factors_in)
+            {
+                Expression parsed_factor = Cast<VhdlElement, Expression>(VisitFactor(f));
+                parsed_factors.Add(parsed_factor);
+            }
+
+            if (parsed_factors.Count == 0)
+                throw new NotSupportedException(String.Format("Could not analyse item {0}. Amount of factors is 0.", context.ToStringTree()));
+
+            Expression res = parsed_factors[0];
+
+            for (int i = 0; i < multiplying_operators_in.Length; i++ )
+            {
+                var op = multiplying_operators_in[i];
+                Expression curr_exp = parsed_factors[i+1];
+
+                if(op.DIV() != null)
+                {
+                    Expression new_exp = new VHDL.expression.Divide(res, curr_exp);
+                    res = new_exp;
+                    continue;
+                }
+
+                if(op.MOD() != null)
+                {
+                    Expression new_exp = new VHDL.expression.Mod(res, curr_exp);
+                    res = new_exp;
+                    continue;
+                }
+
+                if(op.MUL() != null)
+                {
+                    Expression new_exp = new VHDL.expression.Multiply(res, curr_exp);
+                    res = new_exp;
+                    continue;
+                }
+
+                if(op.REM() != null)
+                {
+                    Expression new_exp = new VHDL.expression.Rem(res, curr_exp);
+                    res = new_exp;
+                    continue;
+                }
+
+                throw new NotSupportedException(String.Format("Could not analyse item {0}", op.ToStringTree()));
+
+            }
+
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.guarded_signal_specification"/>.

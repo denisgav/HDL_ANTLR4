@@ -19,25 +19,24 @@ using System;
 namespace VHDL.expression
 {
     /// <summary>
-    /// Qua expression.
+    /// And expression.
     /// </summary>
     [Serializable]
-    public class Qua : LogicalExpression
+    public class And : LogicalExpression
     {
         /// <summary>
         /// Creates a new and expression.
         /// </summary>
         /// <param name="left">the left-hand side expression</param>
         /// <param name="right">the right-hand side expression</param>
-        public Qua(Expression left, Expression right)
+        public And(Expression left, Expression right)
             : base(left, ExpressionKind.AND, right)
         {
         }
 
         public override Choice copy()
         {
-            return new Qua(Left.copy() as Expression, Right.copy() as Expression);
+            return new And(Left.copy() as Expression, Right.copy() as Expression);
         }
     }
-
 }

@@ -57,7 +57,7 @@ namespace VHDL.expression
                 Expression state = rising ? StdLogic1164.STD_LOGIC_1 : StdLogic1164.STD_LOGIC_0;
                 Expression condition2 = new Equals(clock, state);
 
-                return new Qua(condition1, condition2);
+                return new And(condition1, condition2);
             }
         }
 

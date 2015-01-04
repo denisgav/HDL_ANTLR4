@@ -115,6 +115,7 @@ grammar vhdl;
 	XOR : 'xor';
 
 //------------------------------------------Parser----------------------------------------
+
 abstract_literal
    :  INTEGER
    |  REAL_LITERAL
@@ -1020,7 +1021,7 @@ parameter_specification
   ;
 
 physical_literal
-  : ( abstract_literal )? name
+  : abstract_literal (options{greedy=true;}: name)
   ;
 
 physical_type_definition
@@ -1527,12 +1528,8 @@ BIT_STRING_LITERAL_HEX
     ;
 
 REAL_LITERAL
-   :    INTEGER  ( '.' INTEGER ) ( EXPONENT )?;
+   :    INTEGER '.' INTEGER  ( EXPONENT )?;
 
-EXTENDED_DIGIT
-   : INTEGER | LETTER
-   ;
-   
 BASIC_IDENTIFIER
    :   LETTER ( '_' | LETTER | DIGIT )*
    ;

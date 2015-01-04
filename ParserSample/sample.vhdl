@@ -2,7 +2,7 @@
 --using IEEE.std_logic_1164.all;
 
 entity Mux8to1 is
-generic ( some_constant: boolean := true );
+generic ( some_int_constant: integer := 20 + 15 + 2#101#);
 port (
      Inputs : in bit;
      Select_s : in bit;
