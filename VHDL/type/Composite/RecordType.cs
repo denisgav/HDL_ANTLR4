@@ -78,7 +78,7 @@ namespace VHDL.type
         /// Element declaration in a record type.
         /// </summary>
         [Serializable]
-        public class ElementDeclaration
+        public class ElementDeclaration : VhdlElement
         {
             private readonly List<string> identifiers;
             private ISubtypeIndication type;

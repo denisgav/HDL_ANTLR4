@@ -587,7 +587,20 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitRecord_type_definition([NotNull] vhdlParser.Record_type_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitRecord_type_definition([NotNull] vhdlParser.Record_type_definitionContext context) 
+        {
+            var element_declarations_in = context.element_declaration();
+
+            VHDL.type.RecordType res = new VHDL.type.RecordType("unknown");
+
+            foreach (var element_declaration in element_declarations_in)
+            {
+                VHDL.type.RecordType.ElementDeclaration el = Cast<VhdlElement, VHDL.type.RecordType.ElementDeclaration>(VisitElement_declaration(element_declaration));
+                res.Elements.Add(el);
+            }
+            
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.multiplying_operator"/>.
@@ -814,6 +827,22 @@ namespace VHDL_ANTLR4
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitSimultaneous_alternative([NotNull] vhdlParser.Simultaneous_alternativeContext context) { return VisitChildren(context); }
 
+        public void ParseArchitectureDeclarativePart([NotNull] Architecture arch, [NotNull] vhdlParser.Architecture_declarative_partContext architecture_declarative_part_in)
+        {
+            var block_declarative_items_in = architecture_declarative_part_in.block_declarative_item();
+
+            arch.Declarations.Clear();
+            foreach (var d in block_declarative_items_in)
+            {
+                VHDL.declaration.IBlockDeclarativeItem declaration = Cast<VhdlElement, VHDL.declaration.IBlockDeclarativeItem>(VisitBlock_declarative_item(d));
+                arch.Declarations.Add(declaration);
+            }
+        }
+
+        public void ParseArchitectureStatements([NotNull] Architecture arch, [NotNull] vhdlParser.Architecture_statement_partContext architecture_statement_part)
+        {
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.architecture_body"/>.
         /// <para>
@@ -823,7 +852,53 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitArchitecture_body([NotNull] vhdlParser.Architecture_bodyContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitArchitecture_body([NotNull] vhdlParser.Architecture_bodyContext context) 
+        {
+            //--------------------------------------------------
+            IDeclarativeRegion oldScope = currentScope;
+            //--------------------------------------------------
+            var identifiers_in = context.identifier();
+            var architecture_declarative_part_in = context.architecture_declarative_part();
+            var architecture_statement_part_in = context.architecture_statement_part();
+
+            string architecture_name = identifiers_in[0].GetText();
+            string entity_name = identifiers_in[1].GetText();
+            
+            Entity parentEntity = resolve<Entity>(entity_name);
+            if (parentEntity == null)
+            {
+                throw new ArgumentException(string.Format("Could not find entity {0}", entity_name));
+            }
+            Architecture res = new Architecture(architecture_name, parentEntity);
+            res.Parent = oldScope;
+            currentScope = res;
+
+            //------ architecture_declarative_part  ------------
+            ParseArchitectureDeclarativePart(res, architecture_declarative_part_in);
+            //--------------------------------------------------
+
+            //------ architecture_statement_part_in ------------
+            ParseArchitectureStatements(res, architecture_statement_part_in);
+            //--------------------------------------------------
+
+            //--------------------------------------------------
+            currentScope = oldScope;
+            AddAnnotations(res, context);
+
+            if (identifiers_in.Length == 3)
+            {
+                //end identifier shouls be the same as start identifier
+                string architecture_name_end = identifiers_in[2].GetText();
+                if (architecture_name_end.Equals(architecture_name, StringComparison.InvariantCultureIgnoreCase) == false)
+                {
+                    throw new ArgumentException(string.Format("Architecture end identifier mismatch. Architecture name is {0}, end identifier is {1}", architecture_name, architecture_name_end));
+                }
+            }
+
+            //--------------------------------------------------
+            
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.entity_tag"/>.
@@ -1019,7 +1094,10 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitIndex_subtype_definition([NotNull] vhdlParser.Index_subtype_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitIndex_subtype_definition([NotNull] vhdlParser.Index_subtype_definitionContext context) 
+        {
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.subprogram_body"/>.
@@ -1637,7 +1715,19 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitComposite_type_definition([NotNull] vhdlParser.Composite_type_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitComposite_type_definition([NotNull] vhdlParser.Composite_type_definitionContext context) 
+        {
+            var array_type_definition_in = context.array_type_definition();
+            var record_type_definition_in = context.record_type_definition();
+
+            if (array_type_definition_in != null)
+                return VisitArray_type_definition(array_type_definition_in);
+
+            if (record_type_definition_in != null)
+                return VisitRecord_type_definition(record_type_definition_in);
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.procedural_declarative_item"/>.
@@ -1832,7 +1922,23 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitUnconstrained_array_definition([NotNull] vhdlParser.Unconstrained_array_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitUnconstrained_array_definition([NotNull] vhdlParser.Unconstrained_array_definitionContext context) 
+        {
+            var index_subtype_definitions = context.index_subtype_definition();
+            var subtype_indication_in = context.subtype_indication();
+
+            List<VHDL.type.ISubtypeIndication> ranges = new List<VHDL.type.ISubtypeIndication>();
+            foreach (var index_subtype_definition in index_subtype_definitions)
+            {
+                VHDL.type.ISubtypeIndication range = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitIndex_subtype_definition(index_subtype_definition));
+                ranges.Add(range);
+            }
+
+            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+
+            VHDL.type.UnconstrainedArray res = new VHDL.type.UnconstrainedArray("unknown", si, ranges);
+            return res;
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.block_header"/>.
@@ -1975,7 +2081,19 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitArray_type_definition([NotNull] vhdlParser.Array_type_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitArray_type_definition([NotNull] vhdlParser.Array_type_definitionContext context) 
+        {
+            var constrained_array_definition_in = context.constrained_array_definition();
+            var unconstrained_array_definition_in = context.unconstrained_array_definition();
+
+            if (constrained_array_definition_in != null)
+                return VisitConstrained_array_definition(constrained_array_definition_in);
+
+            if (unconstrained_array_definition_in != null)
+                return VisitUnconstrained_array_definition(unconstrained_array_definition_in);
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.nature_declaration"/>.
@@ -2178,7 +2296,56 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitBlock_declarative_item([NotNull] vhdlParser.Block_declarative_itemContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitBlock_declarative_item([NotNull] vhdlParser.Block_declarative_itemContext context) 
+        {
+            var alias_declaration_in = context.alias_declaration();
+            var attribute_declaration_in = context.attribute_declaration();
+            var attribute_specification_in = context.attribute_specification();
+            var component_declaration_in = context.component_declaration();
+            var configuration_specification_in = context.configuration_specification();
+            var constant_declaration_in = context.constant_declaration();
+            var disconnection_specification_in = context.disconnection_specification();
+            var file_declaration_in = context.file_declaration();
+            var group_declaration_in = context.group_declaration();
+            var group_template_declaration_in = context.group_template_declaration();
+            var nature_declaration_in = context.nature_declaration();
+            var quantity_declaration_in = context.quantity_declaration();
+            var signal_declaration_in = context.signal_declaration();
+            var step_limit_specification_in = context.step_limit_specification();
+            var subnature_declaration_in = context.subnature_declaration();
+            var subprogram_body_in = context.subprogram_body();
+            var subprogram_declaration_in = context.subprogram_declaration();
+            var subtype_declaration_in = context.subtype_declaration();
+            var terminal_declaration_in = context.terminal_declaration();
+            var type_declaration_in = context.type_declaration();
+            var use_clause_in = context.use_clause();
+            var variable_declaration_in = context.variable_declaration();
+
+            if (alias_declaration_in != null) return VisitAlias_declaration(alias_declaration_in);
+            if (attribute_declaration_in != null) return VisitAttribute_declaration(attribute_declaration_in);
+            if (attribute_specification_in != null) return VisitAttribute_specification(attribute_specification_in);
+            if (component_declaration_in != null) return VisitComponent_declaration(component_declaration_in);
+            if (configuration_specification_in != null) return VisitConfiguration_specification(configuration_specification_in);
+            if (constant_declaration_in != null) return VisitConstant_declaration(constant_declaration_in);
+            if (disconnection_specification_in != null) return VisitDisconnection_specification(disconnection_specification_in);
+            if (file_declaration_in != null) return VisitFile_declaration(file_declaration_in);
+            if (group_declaration_in != null) return VisitGroup_declaration(group_declaration_in);
+            if (group_template_declaration_in != null) return VisitGroup_template_declaration(group_template_declaration_in);
+            if (nature_declaration_in != null) return VisitNature_declaration(nature_declaration_in);
+            if (quantity_declaration_in != null) return VisitQuantity_declaration(quantity_declaration_in);
+            if (signal_declaration_in != null) return VisitSignal_declaration(signal_declaration_in);
+            if (step_limit_specification_in != null) return VisitStep_limit_specification(step_limit_specification_in);
+            if (subnature_declaration_in != null) return VisitSubnature_declaration(subnature_declaration_in);
+            if (subprogram_body_in != null) return VisitSubprogram_body(subprogram_body_in);
+            if (subprogram_declaration_in != null) return VisitSubprogram_declaration(subprogram_declaration_in);
+            if (subtype_declaration_in != null) return VisitSubtype_declaration(subtype_declaration_in);
+            if (terminal_declaration_in != null) return VisitTerminal_declaration(terminal_declaration_in);
+            if (type_declaration_in != null) return VisitType_declaration(type_declaration_in);
+            if (use_clause_in != null) return VisitUse_clause(use_clause_in);
+            if (variable_declaration_in != null) return VisitVariable_declaration(variable_declaration_in);
+ 
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.signal_assignment_statement"/>.
@@ -2208,7 +2375,7 @@ namespace VHDL_ANTLR4
         /// The default implementation returns the VhdlElement of calling <see cref="AbstractParseTreeVisitor{VhdlElement}.VisitChildren(IRuleNode)"/>
         /// on <paramref name="context"/>.
         /// </para>
-        /// </summary>
+        /// </summar0y>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitProcedural_statement_part([NotNull] vhdlParser.Procedural_statement_partContext context) { return VisitChildren(context); }
@@ -2855,7 +3022,23 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitConstrained_array_definition([NotNull] vhdlParser.Constrained_array_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitConstrained_array_definition([NotNull] vhdlParser.Constrained_array_definitionContext context) 
+        {
+            var index_constraints_in = context.index_constraint();
+            var subtype_indication_in = context.subtype_indication();
+
+            List<VHDL.DiscreteRange> ranges = new List<DiscreteRange>();
+            foreach (var constraint in index_constraints_in.discrete_range())
+            {
+                VHDL.DiscreteRange range = Cast<VhdlElement, VHDL.DiscreteRange>(VisitDiscrete_range(constraint));
+                ranges.Add(range);
+            }
+
+            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+
+            VHDL.type.ConstrainedArray res = new VHDL.type.ConstrainedArray("unknown", si, ranges);
+            return res;
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.index_specification"/>.
@@ -3512,7 +3695,23 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitElement_declaration([NotNull] vhdlParser.Element_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitElement_declaration([NotNull] vhdlParser.Element_declarationContext context) 
+        {
+            var element_subtype_definition_in = context.element_subtype_definition();
+            var identifier_list_in = context.identifier_list();
+
+            List<string> identifiers = new List<string>();
+            foreach (var i in identifier_list_in.identifier())
+            {
+                identifiers.Add(i.GetText());
+            }
+
+            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitElement_subtype_definition(element_subtype_definition_in));
+
+            VHDL.type.RecordType.ElementDeclaration el = new VHDL.type.RecordType.ElementDeclaration(si, identifiers);
+
+            return el; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.attribute_specification"/>.
@@ -3600,7 +3799,10 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitFile_type_definition([NotNull] vhdlParser.File_type_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitFile_type_definition([NotNull] vhdlParser.File_type_definitionContext context) 
+        {
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.generation_scheme"/>.
@@ -3785,7 +3987,15 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitAccess_type_definition([NotNull] vhdlParser.Access_type_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitAccess_type_definition([NotNull] vhdlParser.Access_type_definitionContext context) 
+        {
+            var subtype_indication_in = context.subtype_indication();
+
+            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+
+            VHDL.type.AccessType access = new VHDL.type.AccessType("unknown", si);
+            return access; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.report_statement"/>.
@@ -3895,7 +4105,51 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitType_declaration([NotNull] vhdlParser.Type_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitType_declaration([NotNull] vhdlParser.Type_declarationContext context) 
+        {
+            var identifier_in =  context.identifier();
+            var type_definition_in = context.type_definition();
+
+            string typename = identifier_in.GetText();
+
+            if (type_definition_in.access_type_definition() != null)
+            {
+                var access_type_definition_in = type_definition_in.access_type_definition();
+
+                VHDL.type.AccessType access = Cast<VhdlElement, VHDL.type.AccessType>(VisitAccess_type_definition(access_type_definition_in));
+                access.Identifier = typename;                
+                return access;
+            }
+            
+            if (type_definition_in.composite_type_definition() != null)
+            {
+                var composite_type_definition_in = type_definition_in.composite_type_definition();
+
+                VHDL.type.Type composite = Cast<VhdlElement, VHDL.type.Type>(VisitComposite_type_definition(composite_type_definition_in));
+                composite.Identifier = typename;
+                return composite;
+            }
+
+            if (type_definition_in.file_type_definition() != null)
+            {
+                var file_type_definition_in = type_definition_in.file_type_definition();
+
+                VHDL.type.FileType file = Cast<VhdlElement, VHDL.type.FileType>(VisitFile_type_definition(file_type_definition_in));
+                file.Identifier = typename;
+                return file;
+            }
+
+            if (type_definition_in.scalar_type_definition() != null)
+            {
+                var scalar_type_definition_in = type_definition_in.scalar_type_definition();
+
+                VHDL.type.Type scalar = Cast<VhdlElement, VHDL.type.Type>(VisitScalar_type_definition(scalar_type_definition_in));
+                scalar.Identifier = typename;
+                return scalar;
+            }
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.attribute_declaration"/>.

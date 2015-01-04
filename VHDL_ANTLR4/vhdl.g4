@@ -175,7 +175,7 @@ allocator
   ;
 
 architecture_body
-  : ARCHITECTURE identifier OF name IS
+  : ARCHITECTURE identifier OF identifier IS
     architecture_declarative_part
     BEGIN
     architecture_statement_part
