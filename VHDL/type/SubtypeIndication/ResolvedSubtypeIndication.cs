@@ -22,7 +22,7 @@ namespace VHDL.type
     /// Subtype indication with a resolution function.
     /// </summary>
     [Serializable]
-    public class ResolvedSubtypeIndication : ISubtypeIndication
+    public class ResolvedSubtypeIndication : VhdlElement, ISubtypeIndication
     {
 
         //TODO: don't use string for resolution function

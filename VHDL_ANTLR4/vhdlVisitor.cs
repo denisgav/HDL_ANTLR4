@@ -102,10 +102,14 @@ namespace VHDL_ANTLR4
         {
             if (currentScope != null)
             {
-                return currentScope.Scope.resolve<T>(identifier);
+                T res = currentScope.Scope.resolve<T>(identifier);
+                if (res == null)
+                    throw new Exception(string.Format("Could not find item with name {0} and type {1}", identifier, typeof(T).FullName));
+                else
+                    return res;
             }
 
-            return null;
+            throw new Exception(string.Format("Could not find item with name {0} and type {1}", identifier, typeof(T).FullName));
         }
 
         private SourcePosition tokenToPosition(IToken token, bool start)
@@ -957,8 +961,10 @@ namespace VHDL_ANTLR4
                     res = new VHDL.type.IndexSubtypeIndication(res, ranges);
                 }
 
-
-                throw new NotSupportedException(String.Format("Could not analyse item {0}", constraint.ToStringTree()));
+                if ((range_constraint == null) && (index_constraint == null))
+                {
+                    throw new NotSupportedException(String.Format("Could not analyse item {0}", constraint.ToStringTree()));
+                }
             }
 
             VhdlElement return_value = res as VhdlElement;
@@ -1163,7 +1169,28 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitRange_constraint([NotNull] vhdlParser.Range_constraintContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitRange_constraint([NotNull] vhdlParser.Range_constraintContext context) 
+        {
+            var range_in = context.range();
+
+            VHDL.Range range = Cast<VhdlElement, VHDL.Range>(VisitRange(range_in));
+
+            VHDL.type.ISubtypeIndication range_from_type = range.From.Type;
+            VHDL.type.ISubtypeIndication range_to_type = range.To.Type;
+
+            if ((range_from_type == VHDL.builtin.Standard.INTEGER) && (range_to_type == VHDL.builtin.Standard.INTEGER))
+            {
+                VHDL.type.IntegerType res = new VHDL.type.IntegerType("unknown", range);
+                return res;
+            }
+            else
+            {
+                VHDL.type.RealType res = new VHDL.type.RealType("unknown", range);
+                return res;
+            }
+
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.secondary_unit_declaration"/>.
@@ -1400,7 +1427,23 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitScalar_type_definition([NotNull] vhdlParser.Scalar_type_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitScalar_type_definition([NotNull] vhdlParser.Scalar_type_definitionContext context) 
+        {
+            var enumeration_type_definition_in = context.enumeration_type_definition();
+            var physical_type_definition_in = context.physical_type_definition();
+            var range_constraint_in = context.range_constraint();
+
+            if (enumeration_type_definition_in != null)
+                return VisitEnumeration_type_definition(enumeration_type_definition_in);
+
+            if (physical_type_definition_in != null)
+                return VisitPhysical_type_definition(physical_type_definition_in);
+
+            if (range_constraint_in != null)
+                return VisitRange_constraint(range_constraint_in);
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.constant_declaration"/>.
@@ -1796,7 +1839,7 @@ namespace VHDL_ANTLR4
         public override VhdlElement VisitPhysical_literal([NotNull] vhdlParser.Physical_literalContext context) 
         {
             var abstract_literal = context.abstract_literal();
-            var name = context.name();
+            var name = context.identifier();
             AbstractLiteral al = Cast<VhdlElement, AbstractLiteral>(VisitAbstract_literal(abstract_literal));
             PhysicalLiteral  physLiteral = resolve<PhysicalLiteral>(name.GetText());
             PhysicalLiteral res = new PhysicalLiteral(al, name.GetText(), physLiteral.GetPhysicalType());
@@ -2609,7 +2652,18 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitSubtype_declaration([NotNull] vhdlParser.Subtype_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitSubtype_declaration([NotNull] vhdlParser.Subtype_declarationContext context) 
+        {
+            var identifier_in = context.identifier();
+            var subtype_indication_in = context.subtype_indication();
+
+            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            string identifier = identifier_in.GetText();
+
+            VHDL.declaration.Subtype subtype = new VHDL.declaration.Subtype(identifier, si);
+
+            return subtype; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.subprogram_specification"/>.
@@ -2736,7 +2790,36 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitPhysical_type_definition([NotNull] vhdlParser.Physical_type_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitPhysical_type_definition([NotNull] vhdlParser.Physical_type_definitionContext context) 
+        {
+            var base_unit_declaration_in = context.base_unit_declaration();
+            var range_constraint_in = context.range_constraint();
+            var secondary_unit_declarations_in = context.secondary_unit_declaration();
+
+            string base_unit_name = base_unit_declaration_in.GetText();
+
+            VHDL.Range range = Cast<VhdlElement, VHDL.Range>(VisitRange_constraint(range_constraint_in));
+
+            VHDL.type.PhysicalType pt = new VHDL.type.PhysicalType("unknown", range, base_unit_name);
+            pt.createUnit(base_unit_name);
+
+            foreach (var unit in secondary_unit_declarations_in)
+            {
+                string identifier = unit.identifier().GetText();
+                var physical_literal_in = unit.physical_literal();
+
+                var abstract_literal_in = physical_literal_in.abstract_literal();
+                var base_identifier_in = physical_literal_in.identifier();
+
+                string base_identifier = base_identifier_in.GetText();
+
+                AbstractLiteral al = Cast<VhdlElement, AbstractLiteral>(VisitAbstract_literal(abstract_literal_in));
+
+                pt.createUnit(identifier, al, base_identifier);
+            }
+            
+            return pt; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.configuration_declaration"/>.
@@ -3000,7 +3083,43 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitEnumeration_type_definition([NotNull] vhdlParser.Enumeration_type_definitionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitEnumeration_type_definition([NotNull] vhdlParser.Enumeration_type_definitionContext context) 
+        {
+            var enumeration_literals_in = context.enumeration_literal();
+
+            List<char> character_literals = new List<char>();
+            List<string> string_literals = new List<string>();
+
+            foreach (var l in enumeration_literals_in)
+            {
+                if (l.CHARACTER_LITERAL() != null)
+                    character_literals.Add(l.CHARACTER_LITERAL().GetText()[1]);
+
+                if (l.identifier() != null)
+                    string_literals.Add(l.identifier().GetText());
+
+                throw new NotSupportedException(String.Format("Could not analyse item {0}", l.ToStringTree()));
+            }
+
+            if ((character_literals.Count != 0) && (string_literals.Count != null))
+            {
+                throw new NotSupportedException(String.Format("Could not analyse item {0}. Amount of string literals is {1}, Amount of character literals is {2}", context.ToStringTree(), string_literals.Count, character_literals.Count));
+            }
+
+            if(character_literals.Count != 0)
+            {
+                VHDL.type.EnumerationType enumeration_type = new VHDL.type.EnumerationType("unknown", character_literals.ToArray());
+                return enumeration_type;
+            }
+
+            if (string_literals.Count != 0)
+            {
+                VHDL.type.EnumerationType enumeration_type = new VHDL.type.EnumerationType("unknown", string_literals.ToArray());
+                return enumeration_type;
+            }
+
+            throw new NotSupportedException(String.Format("Could not analyse item {0}. Amount of literals is 0.", context.ToStringTree()));
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.port_clause"/>.
@@ -3801,7 +3920,12 @@ namespace VHDL_ANTLR4
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitFile_type_definition([NotNull] vhdlParser.File_type_definitionContext context) 
         {
-            return VisitChildren(context); 
+            var subtype_indication_in = context.subtype_indication();
+
+            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+
+            VHDL.type.FileType file = new VHDL.type.FileType("unknown", si);
+            return file;
         }
 
         /// <summary>

@@ -676,7 +676,7 @@ file_open_information
   ;
 
 file_type_definition
-  : FILE OF name
+  : FILE OF subtype_indication
   ;
 
 formal_parameter_list
@@ -1021,7 +1021,7 @@ parameter_specification
   ;
 
 physical_literal
-  : abstract_literal (options{greedy=true;}: name)
+  : abstract_literal (options{greedy=true;}: identifier)
   ;
 
 physical_type_definition

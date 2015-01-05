@@ -27,7 +27,7 @@ namespace VHDL.type
     /// Index constraint subtype indication.
     /// </summary>
     [Serializable]
-	public class IndexSubtypeIndication : ISubtypeIndication
+    public class IndexSubtypeIndication : VhdlElement, ISubtypeIndication
 	{
 		private ISubtypeIndication baseType;
 		private readonly List<DiscreteRange> ranges;

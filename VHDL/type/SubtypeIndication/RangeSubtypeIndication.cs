@@ -25,7 +25,7 @@ namespace VHDL.type
     /// Range constraint subtype indication.
     /// </summary>
     [Serializable]
-    public class RangeSubtypeIndication : ISubtypeIndication
+    public class RangeSubtypeIndication : VhdlElement, ISubtypeIndication
     {
         private ISubtypeIndication baseType;
         private RangeProvider range;

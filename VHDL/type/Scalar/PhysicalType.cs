@@ -143,7 +143,7 @@ namespace VHDL.type
         /// A unit in a physical type.
         /// </summary>
         [Serializable]
-        public class Unit : INamedEntity
+        public class Unit : VhdlElement, INamedEntity
         {
             private string identifier;
             private Int64 factor;
