@@ -89,7 +89,7 @@ namespace VHDL.literal
 
         public override SubtypeIndication Type
         {
-            get { throw new Exception("Not supported yet."); }
+            get { return VHDL.builtin.Standard.REAL; }
         }
 
         public override Choice copy()

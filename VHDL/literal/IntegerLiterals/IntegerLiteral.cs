@@ -80,7 +80,7 @@ namespace VHDL.literal
 
         public override ISubtypeIndication Type
         {
-            get { throw new Exception("Not supported yet."); }
+            get { return VHDL.builtin.Standard.INTEGER; }
         }
 
         public override string ToString()

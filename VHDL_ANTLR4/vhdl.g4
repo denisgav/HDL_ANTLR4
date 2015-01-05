@@ -1386,9 +1386,17 @@ subprogram_kind
   ;
 
 subprogram_specification
+  : procedure_specification
+  | function_specification
+  ;
+
+procedure_specification
   : PROCEDURE designator ( LPAREN formal_parameter_list RPAREN )?
-  | ( PURE | IMPURE )? FUNCTION designator
-    ( LPAREN formal_parameter_list RPAREN )? RETURN name
+  ;
+
+function_specification
+  : ( PURE | IMPURE )? FUNCTION designator
+    ( LPAREN formal_parameter_list RPAREN )? RETURN subtype_indication
   ;
 
 subprogram_statement_part

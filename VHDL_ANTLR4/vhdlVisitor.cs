@@ -1114,7 +1114,87 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitSubprogram_body([NotNull] vhdlParser.Subprogram_bodyContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitSubprogram_body([NotNull] vhdlParser.Subprogram_bodyContext context) 
+        {
+            var designator_in = context.designator();
+            var subprogram_declarative_part_in = context.subprogram_declarative_part();
+            var subprogram_kind_in = context.subprogram_kind();
+            var subprogram_specification_in = context.subprogram_specification();
+            var subprogram_statement_part_in = context.subprogram_statement_part();
+
+            VHDL.declaration.SubprogramDeclaration declaration = Cast<VhdlElement, VHDL.declaration.SubprogramDeclaration>(VisitSubprogram_specification(subprogram_specification_in));
+            VHDL.declaration.SubprogramBody body = null;
+            if (declaration is VHDL.declaration.FunctionDeclaration)
+            {
+                body = new VHDL.declaration.FunctionBody(declaration as VHDL.declaration.FunctionDeclaration);                
+            }
+            else
+            {
+                body = new VHDL.declaration.ProcedureBody(declaration as VHDL.declaration.ProcedureDeclaration);
+            }
+
+            //-------------------------------------------
+            //   Before parsing
+            //-------------------------------------------
+            IDeclarativeRegion oldScope = currentScope;
+            body.Parent = oldScope;
+            currentScope = body;
+            //-------------------------------------------
+
+            //Analyse declaration part
+            foreach (var declaration_item in subprogram_declarative_part_in.subprogram_declarative_item())
+            {
+                ISubprogramDeclarativeItem di = Cast<VhdlElement, ISubprogramDeclarativeItem>(VisitSubprogram_declarative_item(declaration_item));
+                body.Declarations.Add(di);
+            }
+
+            //Analyse sequential statements
+            foreach (var statement in subprogram_statement_part_in.sequential_statement())
+            {
+                VHDL.statement.SequentialStatement sq = Cast<VhdlElement, VHDL.statement.SequentialStatement>(VisitSequential_statement(statement));
+                body.Statements.Add(sq);
+            }
+            
+            //-------------------------------------------
+            //   After parsing
+            //-------------------------------------------
+            currentScope = oldScope;
+            AddAnnotations(body, context);
+            //-------------------------------------------
+
+            //-------------------------------------------
+            //     Additional checkers
+            //-------------------------------------------
+
+            //1. End identier equals to function/procedure name
+            if (designator_in != null)
+            {
+                string end_name = designator_in.GetText();
+                if (end_name.Equals(declaration.Identifier, StringComparison.InvariantCultureIgnoreCase) == false)
+                {
+                    throw new ArgumentException(string.Format("End name And name in declaration mismatch. End name is '{0}', name in declaration is '{1}'", end_name, declaration.Identifier));
+                }                
+            }
+
+            // 2. Check that routine type is correct
+            if ((subprogram_kind_in != null) && (subprogram_kind_in.FUNCTION() != null))
+            {
+                if ((declaration is VHDL.declaration.FunctionDeclaration) == false)
+                {
+                    throw new ArgumentException(string.Format("End program body is for function, but declaration for procedure"));
+                }
+            }
+
+            if ((subprogram_kind_in != null) && (subprogram_kind_in.PROCEDURE() != null))
+            {
+                if ((declaration is VHDL.declaration.ProcedureDeclaration) == false)
+                {
+                    throw new ArgumentException(string.Format("End program body is for procedure, but declaration for function"));
+                }
+            }
+            //-------------------------------------------
+            return body;
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.delay_mechanism"/>.
@@ -2201,6 +2281,21 @@ namespace VHDL_ANTLR4
                 }
             }
 
+            foreach(var declaration in context.entity_declarative_part().entity_declarative_item())
+            {
+                IEntityDeclarativeItem decl = Cast<VhdlElement, IEntityDeclarativeItem>(VisitEntity_declarative_item(declaration));
+                res.Declarations.Add(decl);
+            }
+
+            if (entity_statement_part != null)
+            {
+                foreach (var statement in entity_statement_part.entity_statement())
+                {
+                    EntityStatement st = Cast<VhdlElement, EntityStatement>(VisitEntity_statement(statement));
+                    res.Statements.Add(st);
+                }
+            }
+
             //--------------------------------------
             currentScope = oldScope;
             AddAnnotations(res, context);
@@ -2674,7 +2769,91 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitSubprogram_specification([NotNull] vhdlParser.Subprogram_specificationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitSubprogram_specification([NotNull] vhdlParser.Subprogram_specificationContext context) 
+        {
+            var function_specification_in = context.function_specification();
+            var procedure_specification_in = context.procedure_specification();
+
+            if (function_specification_in != null)
+                return VisitFunction_specification(function_specification_in);
+
+            if (procedure_specification_in != null)
+                return VisitProcedure_specification(procedure_specification_in);
+
+            return VisitChildren(context); 
+        }
+
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="vhdlParser.function_specification"/>.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+        /// on <paramref name="context"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <return>The visitor result.</return>
+        public override VhdlElement VisitFunction_specification([NotNull] vhdlParser.Function_specificationContext context) 
+        {
+            bool is_impure = context.IMPURE() != null;
+            bool is_pure = context.PURE() != null;
+
+            if ((is_impure == true) && (is_pure == true))
+            {
+                throw new NotSupportedException(String.Format("Could not analyse item {0}. IMPURE AND PURE tokens are set in one statement.", context.ToStringTree()));
+            }
+
+            var designator_in = context.designator();
+            var formal_parameter_list_in = context.formal_parameter_list();
+            var return_type_in = context.subtype_indication();
+
+            string name = designator_in.GetText();
+
+            List<IVhdlObjectProvider> parameters = new List<IVhdlObjectProvider>();
+            if ((formal_parameter_list_in != null) && (formal_parameter_list_in.interface_list() != null))
+            {
+                foreach (var p in formal_parameter_list_in.interface_list().interface_element())
+                {
+                    IVhdlObjectProvider o = Cast<VhdlElement, IVhdlObjectProvider>(VisitInterface_element(p));
+                    parameters.Add(o);
+                }
+            }
+
+            VHDL.type.ISubtypeIndication returnType = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(return_type_in));
+
+            VHDL.declaration.FunctionDeclaration fd = new FunctionDeclaration(name, returnType, parameters);
+            fd.Impure = is_impure;
+            return fd;
+        }
+
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="vhdlParser.procedure_specification"/>.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+        /// on <paramref name="context"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <return>The visitor result.</return>
+        public override VhdlElement VisitProcedure_specification([NotNull] vhdlParser.Procedure_specificationContext context) 
+        {
+            var designator_in = context.designator();
+            var formal_parameter_list_in = context.formal_parameter_list();
+
+            string name = designator_in.GetText();
+
+            List<IVhdlObjectProvider> parameters = new List<IVhdlObjectProvider>();
+            if ((formal_parameter_list_in != null) && (formal_parameter_list_in.interface_list() != null))
+            {
+                foreach (var p in formal_parameter_list_in.interface_list().interface_element())
+                {
+                    IVhdlObjectProvider o = Cast<VhdlElement, IVhdlObjectProvider>(VisitInterface_element(p));
+                    parameters.Add(o);
+                }
+            }
+            
+            VHDL.declaration.ProcedureDeclaration pd = new ProcedureDeclaration(name, parameters);
+            return pd; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.range"/>.
@@ -3506,7 +3685,15 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitSubprogram_declaration([NotNull] vhdlParser.Subprogram_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitSubprogram_declaration([NotNull] vhdlParser.Subprogram_declarationContext context) 
+        {
+            var subprogram_specification_in = context.subprogram_specification();
+
+            SubprogramDeclaration res = Cast<VhdlElement, SubprogramDeclaration>(VisitSubprogram_specification(subprogram_specification_in));
+            AddAnnotations(res, context);
+            
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.free_quantity_declaration"/>.
