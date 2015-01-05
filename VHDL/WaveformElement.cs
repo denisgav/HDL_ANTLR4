@@ -25,7 +25,7 @@ namespace VHDL
     /// Waveform element.
     /// </summary>
     [Serializable]
-    public class WaveformElement
+    public class WaveformElement : VhdlElement
     {
         private Expression @value;
         private Expression after;

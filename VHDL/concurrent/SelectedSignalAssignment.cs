@@ -45,9 +45,20 @@ namespace VHDL.concurrent
         /// <param name="expression">the assigned expression</param>
         /// <param name="target">the assignment target</param>
         public SelectedSignalAssignment(Expression expression, SignalAssignmentTarget target)
+            : this(expression, target, new List<SelectedWaveform>())
+        {
+        }
+
+        /// <summary>
+        /// Creates a selected signal assignment.
+        /// </summary>
+        /// <param name="expression">the assigned expression</param>
+        /// <param name="target">the assignment target</param>
+        public SelectedSignalAssignment(Expression expression, SignalAssignmentTarget target, List<SelectedWaveform> selectedWaveforms)
         {
             this.expression = expression;
             this.target = target;
+            this.selectedWaveforms = selectedWaveforms;
         }
 
         /// <summary>
@@ -102,7 +113,7 @@ namespace VHDL.concurrent
         /// <summary>
         /// Selected waveform.
         /// </summary>
-        public class SelectedWaveform
+        public class SelectedWaveform : VhdlElement
         {
             private readonly List<WaveformElement> waveform;
             private readonly List<Choice> choices;

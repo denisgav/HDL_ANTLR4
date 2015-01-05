@@ -421,12 +421,7 @@ conditional_signal_assignment
   ;
 
 conditional_waveforms
-  : waveform (conditional_waveforms_bi )?
-    ( WHEN condition )?
-  ;
-conditional_waveforms_bi
-  : WHEN condition ELSE waveform
-    ( conditional_waveforms_bi )?
+  : waveform ( WHEN condition (ELSE conditional_waveforms)?)?
   ;
 
 configuration_declaration

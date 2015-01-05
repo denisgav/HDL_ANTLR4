@@ -437,7 +437,22 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitConditional_waveforms([NotNull] vhdlParser.Conditional_waveformsContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitConditional_waveforms([NotNull] vhdlParser.Conditional_waveformsContext context) 
+        {
+            var waveform_in = context.waveform();
+            var condition_in = context.condition();
+
+            List<WaveformElement> wes = new List<WaveformElement>();
+            foreach (var we_in in waveform_in.waveform_element())
+            {
+                WaveformElement we = Cast<VhdlElement, WaveformElement>(VisitWaveform_element(we_in));
+                wes.Add(we);
+            }
+            Expression condition = (condition_in != null) ? Cast<VhdlElement, Expression>(VisitCondition(condition_in)) : null;
+            VHDL.concurrent.ConditionalSignalAssignment.ConditionalWaveformElement cwe = new ConditionalSignalAssignment.ConditionalWaveformElement(wes, condition);
+
+            return cwe; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.sequential_statement"/>.
@@ -705,17 +720,6 @@ namespace VHDL_ANTLR4
         public override VhdlElement VisitObject_declaration([NotNull] vhdlParser.Object_declarationContext context) { return VisitChildren(context); }
 
         /// <summary>
-        /// Visit a parse tree produced by <see cref="vhdlParser.conditional_waveforms_bi"/>.
-        /// <para>
-        /// The default implementation returns the VhdlElement of calling <see cref="AbstractParseTreeVisitor{VhdlElement}.VisitChildren(IRuleNode)"/>
-        /// on <paramref name="context"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitConditional_waveforms_bi([NotNull] vhdlParser.Conditional_waveforms_biContext context) { return VisitChildren(context); }
-
-        /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.choice"/>.
         /// <para>
         /// The default implementation returns the VhdlElement of calling <see cref="AbstractParseTreeVisitor{VhdlElement}.VisitChildren(IRuleNode)"/>
@@ -845,6 +849,11 @@ namespace VHDL_ANTLR4
 
         public void ParseArchitectureStatements([NotNull] Architecture arch, [NotNull] vhdlParser.Architecture_statement_partContext architecture_statement_part)
         {
+            foreach (var statement in architecture_statement_part.architecture_statement())
+            {
+                ConcurrentStatement st = Cast<VhdlElement, ConcurrentStatement>(VisitArchitecture_statement(statement));
+                arch.Statements.Add(st);
+            }
         }
 
         /// <summary>
@@ -981,7 +990,81 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitProcess_statement([NotNull] vhdlParser.Process_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitProcess_statement([NotNull] vhdlParser.Process_statementContext context) 
+        {
+            var identifier_in =  context.identifier();
+            var label_colon_in = context.label_colon();
+            bool is_postponed = context.POSTPONED() != null;
+            var process_declarative_part_in = context.process_declarative_part();
+            var process_statement_part_in = context.process_statement_part();
+            var sensitivity_list_in = context.sensitivity_list();
+
+            ProcessStatement process = new ProcessStatement();
+
+            //----------------------------------------------------------
+            //   Before parsing
+            //----------------------------------------------------------
+            IDeclarativeRegion oldScope = currentScope;
+            process.Parent = oldScope;
+            currentScope = process;
+            //----------------------------------------------------------
+
+            // 1. check label
+            if (label_colon_in != null)
+            {
+                string label = label_colon_in.identifier().GetText();
+                process.Label = label;
+            }
+
+            //2. check postponed
+            process.Postponed = is_postponed;
+
+            //3. check sensitivity list
+            if(sensitivity_list_in != null)
+            {
+                foreach (var item in sensitivity_list_in.name())
+                {
+                    Signal s = resolve<Signal>(item.GetText());
+                    process.SensitivityList.Add(s);
+                }
+            }
+
+            //4. Add process declarations
+            foreach (var declaration in process_declarative_part_in.process_declarative_item())
+            {
+                IProcessDeclarativeItem pdi = Cast<VhdlElement, IProcessDeclarativeItem>(VisitProcess_declarative_item(declaration));
+                process.Declarations.Add(pdi);
+            }
+
+            //5. Add process sequential statements
+            foreach (var statement in process_statement_part_in.sequential_statement())
+            {
+                SequentialStatement st = Cast<VhdlElement, SequentialStatement>(VisitSequential_statement(statement));
+                process.Statements.Add(st);
+            }
+
+            //----------------------------------------------------------
+            //   After parsing
+            //----------------------------------------------------------
+            currentScope = oldScope;
+            //----------------------------------------------------------
+
+            //----------------------------------------------------------
+            //   Additioal check
+            //----------------------------------------------------------
+            CheckProcess(context, process);
+            if (identifier_in != null)
+            {
+                string end_identifier = identifier_in.GetText();
+                if (end_identifier.Equals(process.Label, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    throw new ArgumentException(string.Format("Identifier mismatch in process. End identifier is '{0}', process label is '{1}'", end_identifier, process.Label));
+                }
+            }
+            //----------------------------------------------------------
+
+            return process; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.entity_aspect"/>.
@@ -1205,7 +1288,33 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitDelay_mechanism([NotNull] vhdlParser.Delay_mechanismContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitDelay_mechanism([NotNull] vhdlParser.Delay_mechanismContext context) 
+        {
+            if (context.TRANSPORT() != null)
+            {
+                return DelayMechanism.TRANSPORT;
+            }
+            else
+            {
+                if (context.INERTIAL() != null)
+                {
+                    if (context.REJECT() == null)
+                    {
+                        return DelayMechanism.INERTIAL;
+                    }
+                    else
+                    {
+                        var expression_in = context.expression();
+                        Expression exp = Cast<VhdlElement, Expression>(VisitExpression(expression_in));
+                        return DelayMechanism.REJECT_INERTIAL(exp);
+                    }
+                }
+                else
+                {
+                    return DelayMechanism.DUTY_CYCLE;
+                }
+            }
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.process_declarative_item"/>.
@@ -1719,6 +1828,24 @@ namespace VHDL_ANTLR4
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitConstrained_nature_definition([NotNull] vhdlParser.Constrained_nature_definitionContext context) { return VisitChildren(context); }
 
+        private List<VHDL.concurrent.ConditionalSignalAssignment.ConditionalWaveformElement> FormConditionalWaveformList([NotNull] vhdlParser.Conditional_waveformsContext conditional_waveforms_in)
+        {
+            List<VHDL.concurrent.ConditionalSignalAssignment.ConditionalWaveformElement> res = new List<ConditionalSignalAssignment.ConditionalWaveformElement>();
+
+            vhdlParser.Conditional_waveformsContext current_conditional_waveforms = conditional_waveforms_in;
+            while (current_conditional_waveforms != null)
+            {
+                var conditional_waveforms_new_in = current_conditional_waveforms.conditional_waveforms();               
+
+                VHDL.concurrent.ConditionalSignalAssignment.ConditionalWaveformElement CWE = Cast<VhdlElement, VHDL.concurrent.ConditionalSignalAssignment.ConditionalWaveformElement>(VisitConditional_waveforms(current_conditional_waveforms));
+
+                res.Add(CWE);
+
+                current_conditional_waveforms = conditional_waveforms_new_in;
+            }
+            return res;
+        }
+
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.conditional_signal_assignment"/>.
         /// <para>
@@ -1728,7 +1855,25 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitConditional_signal_assignment([NotNull] vhdlParser.Conditional_signal_assignmentContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitConditional_signal_assignment([NotNull] vhdlParser.Conditional_signal_assignmentContext context) 
+        {
+            var opts_in = context.opts();
+            var target_in = context.target();
+            var conditional_waveforms_in = context.conditional_waveforms();
+
+            ISignalAssignmentTarget target = Cast<VhdlElement, ISignalAssignmentTarget>(VisitTarget(target_in));
+            bool is_guarded = opts_in.GUARDED() != null;
+            DelayMechanism delay_mechanism = (opts_in.delay_mechanism() != null) ? Cast<VhdlElement, DelayMechanism>(VisitDelay_mechanism(opts_in.delay_mechanism())) : DelayMechanism.DUTY_CYCLE;
+
+            List<VHDL.concurrent.ConditionalSignalAssignment.ConditionalWaveformElement> CWEs = FormConditionalWaveformList(conditional_waveforms_in);
+
+
+            ConditionalSignalAssignment csa = new ConditionalSignalAssignment(target, CWEs);
+            csa.DelayMechanism = delay_mechanism;
+            csa.Guarded = is_guarded;
+
+            return csa; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.process_declarative_part"/>.
@@ -1783,7 +1928,11 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitArchitecture_statement([NotNull] vhdlParser.Architecture_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitArchitecture_statement([NotNull] vhdlParser.Architecture_statementContext context) 
+        {
+            
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.component_specification"/>.
@@ -1827,7 +1976,11 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitIdentifier([NotNull] vhdlParser.IdentifierContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitIdentifier([NotNull] vhdlParser.IdentifierContext context) 
+        {
+            VhdlElement ve = resolve<VhdlElement>(context.GetText());
+            return ve;
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.composite_type_definition"/>.
@@ -1942,11 +2095,13 @@ namespace VHDL_ANTLR4
 
             if (identifier != null)
             {
+                /*
                 EnumerationLiteral literal = resolve<EnumerationLiteral>(identifier.GetText());
                 if (literal != null)
                     return literal;
                 else
-                    return resolve<VhdlElement>(identifier.GetText());
+                */
+                return resolve<VhdlElement>(identifier.GetText());
             }
 
             if (character_literal != null)
@@ -2001,7 +2156,10 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitName([NotNull] vhdlParser.NameContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitName([NotNull] vhdlParser.NameContext context) 
+        {
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.package_declaration"/>.
@@ -2494,7 +2652,32 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitSignal_assignment_statement([NotNull] vhdlParser.Signal_assignment_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitSignal_assignment_statement([NotNull] vhdlParser.Signal_assignment_statementContext context) 
+        {
+            var delay_mechanism_in = context.delay_mechanism();
+            var label_colon_in = context.label_colon();
+            var target_in = context.target();
+            var waveform_in = context.waveform();
+
+            ISignalAssignmentTarget target = Cast<VhdlElement, ISignalAssignmentTarget>(VisitTarget(target_in));
+            
+            List<WaveformElement> waveformelements = new List<WaveformElement>();
+            foreach(var w in waveform_in.waveform_element())
+            {
+                WaveformElement el = Cast<VhdlElement, WaveformElement>(VisitWaveform_element(w));
+                waveformelements.Add(el);
+            }
+            
+            
+            string label = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
+            DelayMechanism delay = (delay_mechanism_in != null) ? Cast<VhdlElement, DelayMechanism>(VisitDelay_mechanism(delay_mechanism_in)) : DelayMechanism.DUTY_CYCLE;
+
+            SignalAssignment sa = new SignalAssignment(target, waveformelements);
+            sa.Label = label;
+            sa.DelayMechanism = delay;
+
+            return sa; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.element_subtype_definition"/>.
@@ -2903,7 +3086,21 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitVariable_assignment_statement([NotNull] vhdlParser.Variable_assignment_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitVariable_assignment_statement([NotNull] vhdlParser.Variable_assignment_statementContext context) 
+        {
+            var target_in = context.target();
+            var label_colon_in = context.label_colon();
+            var expression_in = context.expression();
+
+            string label = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
+            Expression expresion = Cast<VhdlElement, Expression>(VisitExpression(expression_in));
+            IVariableAssignmentTarget target = Cast<VhdlElement, IVariableAssignmentTarget>(VisitTarget(target_in));
+
+            VariableAssignment va = new VariableAssignment(target, expresion);
+            va.Label = label;
+
+            return va; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.if_statement"/>.
@@ -3042,7 +3239,33 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitVariable_declaration([NotNull] vhdlParser.Variable_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitVariable_declaration([NotNull] vhdlParser.Variable_declarationContext context) 
+        {
+            var identifier_list = context.identifier_list();
+            var subtype_indication = context.subtype_indication();
+            var expression = context.expression();
+            bool is_shared = context.SHARED() != null;
+
+            Expression def = (expression != null) ? Cast<VhdlElement, Expression>(VisitExpression(expression)) : null;
+            VHDL.type.ISubtypeIndication type = (subtype_indication != null) ? Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication)) : null;
+
+            VariableDeclaration res = new VariableDeclaration();
+
+            foreach (var identifier in identifier_list.identifier())
+            {
+                string variable_name = identifier.GetText();
+                Variable v = new Variable(variable_name, type, def);
+
+                v.Shared = is_shared;
+
+                res.Objects.Add(v);
+            }
+
+            //--------------------------------------------------
+            AddAnnotations(res, context);
+            res.Parent = currentScope;
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.base_unit_declaration"/>.
@@ -3715,7 +3938,48 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitSelected_signal_assignment([NotNull] vhdlParser.Selected_signal_assignmentContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitSelected_signal_assignment([NotNull] vhdlParser.Selected_signal_assignmentContext context)
+        {
+            var expression_in = context.expression();
+            var target_in = context.target();
+            var opts_in = context.opts();
+            var selected_waveforms_in = context.selected_waveforms();
+
+            DelayMechanism delay = (opts_in.delay_mechanism() != null) ? Cast<VhdlElement, DelayMechanism>(VisitDelay_mechanism(opts_in.delay_mechanism())) : DelayMechanism.DUTY_CYCLE;
+            bool is_guarded = opts_in.GUARDED() != null;
+
+            ISignalAssignmentTarget target = Cast<VhdlElement, ISignalAssignmentTarget>(VisitTarget(target_in));
+            Expression exp = Cast<VhdlElement, Expression>(VisitExpression(expression_in));
+
+            List<VHDL.concurrent.SelectedSignalAssignment.SelectedWaveform> SWEs = new List<SelectedSignalAssignment.SelectedWaveform>();
+            for(int i=0; i<selected_waveforms_in.choices().Length; i++)
+            {
+                var choises_in = selected_waveforms_in.choices()[i];
+                var waveform_in = selected_waveforms_in.waveform()[i];
+
+                List<Choice> choices = new List<Choice>();
+                List<WaveformElement> waveforms = new List<WaveformElement>();
+                foreach (var ch_in in choises_in.choice())
+                {
+                    Choice ch = Cast<VhdlElement, Choice>(VisitChoice(ch_in));
+                    choices.Add(ch);
+                }
+                foreach (var w_in in waveform_in.waveform_element())
+                {
+                    WaveformElement we = Cast<VhdlElement, WaveformElement>(VisitWaveform_element(w_in));
+                    waveforms.Add(we);
+                }
+
+                VHDL.concurrent.SelectedSignalAssignment.SelectedWaveform SWE = new SelectedSignalAssignment.SelectedWaveform(waveforms, choices);
+                SWEs.Add(SWE);
+            }
+
+            SelectedSignalAssignment ssa = new SelectedSignalAssignment(exp, target, SWEs);
+            ssa.DelayMechanism = delay;
+            ssa.Guarded = is_guarded;
+
+            return ssa;
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.type_definition"/>.
@@ -3886,7 +4150,31 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitConcurrent_signal_assignment_statement([NotNull] vhdlParser.Concurrent_signal_assignment_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitConcurrent_signal_assignment_statement([NotNull] vhdlParser.Concurrent_signal_assignment_statementContext context) 
+        {
+            var label_colon = context.label_colon();
+            var selected_signal_assignment_in = context.selected_signal_assignment();
+            var conditional_signal_assignment_in = context.conditional_signal_assignment();
+
+            string label = (label_colon != null) ? label_colon.identifier().GetText() : string.Empty;
+            bool is_postponed = context.POSTPONED() != null;
+
+            AbstractPostponableConcurrentStatement apcs = null;
+            if (selected_signal_assignment_in != null)
+            {
+                apcs = Cast<VhdlElement, SelectedSignalAssignment>(VisitSelected_signal_assignment(selected_signal_assignment_in));
+            }
+
+            if (conditional_signal_assignment_in != null)
+            {
+                apcs = Cast<VhdlElement, ConditionalSignalAssignment>(VisitConditional_signal_assignment(conditional_signal_assignment_in));
+            }
+
+            apcs.Postponed = is_postponed;
+            apcs.Label = label;
+
+            return apcs; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.terminal_aspect"/>.
@@ -4157,7 +4445,34 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitWait_statement([NotNull] vhdlParser.Wait_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitWait_statement([NotNull] vhdlParser.Wait_statementContext context) 
+        {
+            var condition_clause_in = context.condition_clause();
+            var label_colon_in = context.label_colon();
+            var sensitivity_clause_in = context.sensitivity_clause();
+            var timeout_clause_in = context.timeout_clause();
+
+            string label = (label_colon_in != null) ? label_colon_in.GetText() : string.Empty;
+            List<Signal> sensitivityList = new List<Signal>();
+            if ((sensitivity_clause_in != null) && (sensitivity_clause_in.sensitivity_list() != null))
+            {
+                foreach (var s_in in sensitivity_clause_in.sensitivity_list().name())
+                {
+                    Signal s = Cast<VhdlElement, Signal>(VisitName(s_in));
+                    sensitivityList.Add(s);
+                }
+            }
+            Expression timeout = (timeout_clause_in != null) ? Cast<VhdlElement, Expression>(VisitTimeout_clause(timeout_clause_in)) : null;
+            Expression condition = (condition_clause_in != null) ? Cast<VhdlElement, Expression>(VisitCondition_clause(condition_clause_in)) : null;
+
+            WaitStatement ws = new WaitStatement(sensitivityList)
+            {
+                Timeout = timeout,
+                Label = label,
+                Condition = condition
+            };
+            return ws;
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.formal_parameter_list"/>.
@@ -4317,7 +4632,30 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitReport_statement([NotNull] vhdlParser.Report_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitReport_statement([NotNull] vhdlParser.Report_statementContext context) 
+        {
+            var expressions_in = context.expression();
+            var label_colon_in = context.label_colon();
+            bool has_severity = context.SEVERITY() != null;
+
+            VHDL.expression.Expression expression = Cast<VhdlElement, VHDL.expression.Expression>(VisitExpression(expressions_in[0]));
+
+            ReportStatement report = null;
+            if (has_severity)
+            {
+                VHDL.expression.Expression expression_severity = Cast<VhdlElement, VHDL.expression.Expression>(VisitExpression(expressions_in[1]));
+                report = new ReportStatement(expression, expression_severity);
+            }
+            else
+            {
+                report = new ReportStatement(expression);
+            }
+
+            if (label_colon_in != null)
+                report.Label = label_colon_in.identifier().GetText();
+
+            return report; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.procedure_call"/>.
@@ -4383,7 +4721,18 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitWaveform_element([NotNull] vhdlParser.Waveform_elementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitWaveform_element([NotNull] vhdlParser.Waveform_elementContext context) 
+        {
+            var expression_in = context.expression();
+            bool has_delay = context.AFTER() != null;
+
+            Expression wa_value = Cast<VhdlElement, Expression>(VisitExpression(expression_in[0]));
+            Expression wa_after = has_delay? Cast<VhdlElement, Expression>(VisitExpression(expression_in[1])) : null;
+
+            WaveformElement wa = new WaveformElement(wa_value, wa_after);
+
+            return wa; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.subprogram_statement_part"/>.

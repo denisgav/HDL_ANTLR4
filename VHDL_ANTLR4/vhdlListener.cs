@@ -413,19 +413,6 @@ namespace VHDL_ANTLR4
         public override void ExitObject_declaration([NotNull] vhdlParser.Object_declarationContext context) { }
 
         /// <summary>
-        /// Enter a parse tree produced by <see cref="vhdlParser.conditional_waveforms_bi"/>.
-        /// <para>The default implementation does nothing.</para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        public override void EnterConditional_waveforms_bi([NotNull] vhdlParser.Conditional_waveforms_biContext context) { }
-        /// <summary>
-        /// Exit a parse tree produced by <see cref="vhdlParser.conditional_waveforms_bi"/>.
-        /// <para>The default implementation does nothing.</para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        public override void ExitConditional_waveforms_bi([NotNull] vhdlParser.Conditional_waveforms_biContext context) { }
-
-        /// <summary>
         /// Enter a parse tree produced by <see cref="vhdlParser.choice"/>.
         /// <para>The default implementation does nothing.</para>
         /// </summary>

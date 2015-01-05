@@ -121,7 +121,7 @@ namespace VHDL.concurrent
         /// Conditional waveform element.
         /// </summary>
         [Serializable]
-        public class ConditionalWaveformElement
+        public class ConditionalWaveformElement : VhdlElement
         {
             private readonly List<WaveformElement> waveform;
             private Expression condition;
