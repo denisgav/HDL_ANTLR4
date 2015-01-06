@@ -20,6 +20,7 @@ begin
 		variable r1 : my_real := 550.0;
 		variable r2 : my_real := 220.5;
 		variable r3 : my_real := 0.1;
+		variable A, B, C, X, Y, Z : integer := 0;
 	begin
 	  report(r1);
 	  report(r2);
@@ -34,7 +35,23 @@ begin
 
 	  r3 := (r1 + r2)/3.2 - 1000.0;
 	  report(r3);
+
+	  for I in 0 to 3 loop
+		report(r1);
+		report(r2);
 	  
+		report(r3);--
+		report(r3);--
+	  end loop;
+
+	  if (X = 5) and (Y = 9) then
+			Z := A;
+		--elsif (X >= 5) then
+		--	Z := B;
+		else
+			Z := C;
+		end if;
+
 	  wait;
 	end process;
 

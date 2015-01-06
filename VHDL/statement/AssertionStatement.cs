@@ -116,16 +116,7 @@ namespace VHDL.statement
             get { return reportedExpression; }
             set { reportedExpression = value; }
         }
-
-        /// <summary>
-        /// Sets the reported message.
-        /// </summary>
-        /// <param name="reportedExpression">the reported message</param>
-        public virtual void setReportedExpression(string reportedExpression)
-        {
-            this.reportedExpression = new StringLiteral(reportedExpression);
-        }
-
+        
         /// <summary>
         /// Returns/Sets the severity.
         /// </summary>

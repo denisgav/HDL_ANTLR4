@@ -122,8 +122,14 @@ namespace VHDL.statement
             private readonly List<SequentialStatement> statements = new List<SequentialStatement>();
 
             public ElsifPart(Expression condition)
+                : this(condition, new List<SequentialStatement>())
+            {
+            }
+
+            public ElsifPart(Expression condition, List<SequentialStatement> statements)
             {
                 this.condition = condition;
+                this.statements = statements;
             }
 
             /// <summary>

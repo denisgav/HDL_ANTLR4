@@ -1076,7 +1076,7 @@ procedural_statement_part
   ;
 
 procedure_call
-  : name ( LPAREN actual_parameter_part RPAREN )?
+  : identifier ( LPAREN actual_parameter_part RPAREN )?
   ;
 
 procedure_call_statement

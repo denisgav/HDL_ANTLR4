@@ -109,7 +109,7 @@ namespace VHDL.statement
 //     * Case statement alternative.
 //     
         [Serializable]
-		public sealed class Alternative
+		public sealed class Alternative : VhdlElement
 		{
 			private readonly List<Choice> choices;
 			private readonly List<SequentialStatement> statements = new List<SequentialStatement>();

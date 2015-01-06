@@ -59,6 +59,18 @@ namespace VHDL_ANTLR4
             return res;
         }
 
+        static List<Out> ParseList<In, Out>(IList<In> data_in, Func<In, VhdlElement> visit_function) where In: class where Out: class
+        {
+            List<Out> res = new List<Out>();
+
+            foreach (In i in data_in)
+            {
+                Out new_item = Cast<VhdlElement, Out>(visit_function(i));
+                res.Add(new_item);
+            }
+
+            return res;
+        }
 
         private readonly List<ParseError> errors = new List<ParseError>();
         protected internal DeclarativeRegion currentScope = null;
@@ -360,7 +372,17 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitAssertion_statement([NotNull] vhdlParser.Assertion_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitAssertion_statement([NotNull] vhdlParser.Assertion_statementContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            var assertion_in = context.assertion();
+
+            AssertionStatement assertion = Cast<VhdlElement, AssertionStatement>(VisitAssertion(assertion_in));
+            string label = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
+            assertion.Label = label;
+            
+            return assertion; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.subprogram_kind"/>.
@@ -1412,7 +1434,18 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitProcedure_call_statement([NotNull] vhdlParser.Procedure_call_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitProcedure_call_statement([NotNull] vhdlParser.Procedure_call_statementContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            var procedure_call_in = context.procedure_call();
+
+            ProcedureCall procedureCall = Cast<VhdlElement, ProcedureCall>(VisitProcedure_call(procedure_call_in));
+
+            string label = (label_colon_in != null) ? (label_colon_in.identifier().GetText()) : string.Empty;
+            procedureCall.Label = label;
+
+            return procedureCall; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.expression"/>.
@@ -1605,7 +1638,23 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitNext_statement([NotNull] vhdlParser.Next_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitNext_statement([NotNull] vhdlParser.Next_statementContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            var identifier_in = context.identifier();
+            var condition_in = context.condition();
+
+            string label = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
+            string identifier = identifier_in.GetText();
+            Expression condition = (condition_in != null)? Cast<VhdlElement, Expression>(VisitCondition(condition_in)) : null;
+
+            LoopStatement loop = resolve<LoopStatement>(identifier);
+
+            NextStatement next = new NextStatement(loop, condition);
+            next.Label = label;
+
+            return next; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.scalar_type_definition"/>.
@@ -1744,7 +1793,34 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitCase_statement([NotNull] vhdlParser.Case_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitCase_statement([NotNull] vhdlParser.Case_statementContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            var expression_in = context.expression();
+            var case_statement_alternative_in = context.case_statement_alternative();
+            var identifier_in = context.identifier();
+
+            string label_begin = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
+            string label_end = (identifier_in != null) ? identifier_in.GetText() : string.Empty;
+
+            //1. parse expression
+            Expression expression = Cast<VhdlElement, Expression>(VisitExpression(expression_in));
+
+            CaseStatement case_statement = new CaseStatement(expression);
+
+            //2. parse alternatives
+            case_statement.Alternatives.AddRange(ParseList<vhdlParser.Case_statement_alternativeContext, CaseStatement.Alternative>(case_statement_alternative_in, VisitCase_statement_alternative));
+            
+            //3. Check that end identifier is the same as label at the beginning
+            case_statement.Label = label_begin;
+
+            if ((string.IsNullOrEmpty(label_end) == false) && (label_begin.Equals(label_end, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                throw new ArgumentException(string.Format("If statement begin & ennd identifier mismatch. Label at the begin is '{0}', albel at the end is '{1}'", label_begin, label_end));
+            }
+
+            return case_statement; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.logical_name_list"/>.
@@ -2285,7 +2361,29 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitAssertion([NotNull] vhdlParser.AssertionContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitAssertion([NotNull] vhdlParser.AssertionContext context) 
+        {
+            var condition_in = context.condition();
+            var has_report = context.REPORT() != null;
+            var has_severity = context.SEVERITY() != null;
+            var expression_in = context.expression();
+            int expression_idx_for_parse = 0;
+
+            //1. parse condition
+            Expression condition = Cast<VhdlElement, Expression>(VisitCondition(condition_in));
+
+            //2. Parse report epression
+            Expression report_expression = (has_report)? Cast<VhdlElement, Expression>(VisitExpression(expression_in[expression_idx_for_parse])) : null;
+            if (has_report) expression_idx_for_parse++;
+
+            //3. Parse severity
+            Expression severity_expression = (has_severity) ? Cast<VhdlElement, Expression>(VisitExpression(expression_in[expression_idx_for_parse])) : null;
+            if (has_severity) expression_idx_for_parse++;
+
+            AssertionStatement assertionStatement = new AssertionStatement(condition, report_expression, severity_expression);
+
+            return assertionStatement; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.package_body_declarative_item"/>.
@@ -2869,7 +2967,33 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitIteration_scheme([NotNull] vhdlParser.Iteration_schemeContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitIteration_scheme([NotNull] vhdlParser.Iteration_schemeContext context) 
+        {
+            bool is_while_iteration_scheme = context.WHILE() != null;
+            bool is_for_iteration_scheme = context.FOR() != null;
+
+            if (is_while_iteration_scheme)
+            {
+                var condition_in = context.condition();
+                Expression condition = Cast<VhdlElement, Expression>(VisitCondition(condition_in));
+                WhileStatement whileStatement = new WhileStatement(condition);
+                return whileStatement;
+            }
+
+            if (is_for_iteration_scheme)
+            {
+                var identifier_in = context.parameter_specification().identifier();
+                var discrete_range_in = context.parameter_specification().discrete_range();
+
+                string identifier = identifier_in.GetText();
+                DiscreteRange range = Cast<VhdlElement, DiscreteRange>(VisitDiscrete_range(discrete_range_in));
+
+                ForStatement forStatement = new ForStatement(identifier, range);
+                return forStatement;
+            }
+
+            return new LoopStatement();
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.concurrent_procedure_call_statement"/>.
@@ -3111,7 +3235,56 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitIf_statement([NotNull] vhdlParser.If_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitIf_statement([NotNull] vhdlParser.If_statementContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            var conditions_in = context.condition();
+            var sequence_of_statements_in = context.sequence_of_statements();
+            var identifier_in = context.identifier();
+
+            int condition_counter = 0;
+            int sequence_of_statements_counter = 0;
+
+            Expression condition = Cast<VhdlElement, Expression>(VisitCondition(conditions_in[condition_counter]));
+            condition_counter++;
+            string label_begin = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
+            string label_end = (identifier_in != null) ? identifier_in.GetText() : string.Empty;
+
+            VHDL.statement.IfStatement if_statement = new VHDL.statement.IfStatement(condition);
+
+            //1. parse statements in if block
+            if_statement.Statements.AddRange(ParseList<vhdlParser.Sequential_statementContext, SequentialStatement>(sequence_of_statements_in[sequence_of_statements_counter].sequential_statement(), VisitSequential_statement));
+            sequence_of_statements_counter++;
+
+            //2. parse elseif statements
+            int end_index_of_elseif_statements = (context.ELSE() != null) ? (sequence_of_statements_in.Length - 2) : (sequence_of_statements_in.Length - 1);
+            while (sequence_of_statements_counter <= end_index_of_elseif_statements)
+            {
+                Expression elseif_condition = Cast<VhdlElement, Expression>(VisitCondition(conditions_in[condition_counter]));
+                condition_counter++;
+                List<SequentialStatement> elseif_statements = ParseList<vhdlParser.Sequential_statementContext, SequentialStatement>(sequence_of_statements_in[sequence_of_statements_counter].sequential_statement(), VisitSequential_statement);
+                sequence_of_statements_counter++;
+                VHDL.statement.IfStatement.ElsifPart elseif = new VHDL.statement.IfStatement.ElsifPart(elseif_condition, elseif_statements);
+                if_statement.ElsifParts.Add(elseif);
+            }
+
+            //3. parse else statements
+            if (context.ELSE() != null)
+            {
+                List<SequentialStatement> else_statements = ParseList<vhdlParser.Sequential_statementContext, SequentialStatement>(sequence_of_statements_in[sequence_of_statements_counter].sequential_statement(), VisitSequential_statement);
+                if_statement.ElseStatements.AddRange(else_statements);
+            }
+
+            //4. Check that end identifier is the same as label at the beginning
+            if_statement.Label = label_begin;
+
+            if ((string.IsNullOrEmpty(label_end) == false) && (label_begin.Equals(label_end, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                throw new ArgumentException(string.Format("If statement begin & ennd identifier mismatch. Label at the begin is '{0}', albel at the end is '{1}'", label_begin, label_end));
+            }
+
+            return if_statement; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.constraint"/>.
@@ -3474,7 +3647,19 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitReturn_statement([NotNull] vhdlParser.Return_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitReturn_statement([NotNull] vhdlParser.Return_statementContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            var expression_in = context.expression();
+
+            string label = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
+            Expression expression = (expression_in != null) ? Cast<VhdlElement, Expression>(VisitExpression(expression_in)) : null;
+
+            ReturnStatement returnStatement = new ReturnStatement(expression);
+            returnStatement.Label = label;
+
+            return returnStatement; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.enumeration_type_definition"/>.
@@ -3695,7 +3880,10 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitBreak_statement([NotNull] vhdlParser.Break_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitBreak_statement([NotNull] vhdlParser.Break_statementContext context) 
+        {
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.element_subnature_definition"/>.
@@ -3717,7 +3905,23 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitExit_statement([NotNull] vhdlParser.Exit_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitExit_statement([NotNull] vhdlParser.Exit_statementContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            var identifier_in = context.identifier();
+            var condition_in = context.condition();
+
+            string label = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
+            string identifier = identifier_in.GetText();
+            Expression condition = (condition_in != null) ? Cast<VhdlElement, Expression>(VisitCondition(condition_in)) : null;
+
+            LoopStatement loop = resolve<LoopStatement>(identifier);
+
+            ExitStatement exit = new ExitStatement(loop, condition);
+            exit.Label = label;
+
+            return exit; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.block_statement"/>.
@@ -4338,7 +4542,21 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitConcurrent_assertion_statement([NotNull] vhdlParser.Concurrent_assertion_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitConcurrent_assertion_statement([NotNull] vhdlParser.Concurrent_assertion_statementContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            bool is_postponed = context.POSTPONED() != null;
+            var assertion_in = context.assertion();
+
+            string label = (label_colon_in != null)? label_colon_in.identifier().GetText() : string.Empty;
+            AssertionStatement assertionStatement = Cast<VhdlElement, AssertionStatement>(VisitAssertion(assertion_in));
+            assertionStatement.Label = label;
+
+            ConcurrentAssertionStatement concurrentAssertionStatement = new ConcurrentAssertionStatement(assertionStatement);
+            concurrentAssertionStatement.Postponed = is_postponed;
+
+            return concurrentAssertionStatement;
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.entity_class"/>.
@@ -4494,7 +4712,45 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitLoop_statement([NotNull] vhdlParser.Loop_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitLoop_statement([NotNull] vhdlParser.Loop_statementContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            var iteration_scheme_in = context.iteration_scheme();
+            var sequence_of_statements_in = context.sequence_of_statements();
+            var identifier_in = context.identifier();
+
+            string label_begin = (label_colon_in != null)? label_colon_in.identifier().GetText() : string.Empty;
+            string label_end = (identifier_in != null) ? identifier_in.GetText() : string.Empty;
+
+            //-------------------------------------------------------------
+            //      Before parsing
+            //-------------------------------------------------------------
+            IDeclarativeRegion oldScope = currentScope;
+            //-------------------------------------------------------------
+
+
+            VHDL.statement.LoopStatement loop = Cast<VhdlElement, VHDL.statement.LoopStatement>(VisitIteration_scheme(iteration_scheme_in));
+
+            loop.Label = label_begin;
+            loop.Parent = oldScope;
+            currentScope = loop;
+
+            loop.Statements.AddRange(ParseList<vhdlParser.Sequential_statementContext, SequentialStatement>(sequence_of_statements_in.sequential_statement(), VisitSequential_statement));
+
+            //-------------------------------------------------------------
+            //      After parsing
+            //-------------------------------------------------------------
+            currentScope = oldScope;
+            AddAnnotations(loop, context);
+            //-------------------------------------------------------------
+
+            if ((string.IsNullOrEmpty(label_end) == false) && (label_begin.Equals(label_end, StringComparison.InvariantCultureIgnoreCase) == false))
+            {
+                throw new ArgumentException(String.Format("Loop identifiers mismatch. Loop begin identifier is '{0}' and end identifier is '{1}'", label_begin, label_end));
+            }
+
+            return loop; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.actual_part"/>.
@@ -4666,7 +4922,19 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitProcedure_call([NotNull] vhdlParser.Procedure_callContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitProcedure_call([NotNull] vhdlParser.Procedure_callContext context) 
+        {
+            var identifier_in = context.identifier();
+            var actual_parameter_part_in = context.actual_parameter_part();
+
+            string procedure_name = identifier_in.GetText();
+
+            List<AssociationElement> parameters = ParseList<vhdlParser.Association_elementContext, AssociationElement>(actual_parameter_part_in.association_list().association_element(), VisitAssociation_element);
+
+            ProcedureCall procedureCall = new ProcedureCall(procedure_name, parameters);
+
+            return procedureCall; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.file_open_information"/>.

@@ -70,6 +70,14 @@ namespace VHDL.concurrent
             this.severity = severity;
         }
 
+        public ConcurrentAssertionStatement(VHDL.statement.AssertionStatement assertionStatement)
+        {
+            this.condition = assertionStatement.Condition;
+            this.reportedExpression = assertionStatement.ReportedExpression;
+            this.severity = assertionStatement.Severity;
+            this.Label = assertionStatement.Label;
+        }
+
         /// <summary>
         /// Returns/Sets the assertion condition.
         /// </summary>
