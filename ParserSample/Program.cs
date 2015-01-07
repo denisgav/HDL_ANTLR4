@@ -66,7 +66,7 @@ namespace ParserSample
             RootDeclarativeRegion rootScope = new RootDeclarativeRegion();
             LibraryDeclarativeRegion currentLibrary = new LibraryDeclarativeRegion("work");
             rootScope.Libraries.Add(currentLibrary);
-            //rootScope.getLibraries().Add(VHDL_Library_Manager.GetLibrary("STD"));
+            //rootScope.Libraries.Add(libraryManager.GetLibrary("STD"));
 
             Console.WriteLine("Parsing code");
             VhdlFile file = VhdlParser.parseFile("sample.vhdl", settings, rootScope, currentLibrary, libraryManager);

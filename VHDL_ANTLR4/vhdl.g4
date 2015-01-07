@@ -911,15 +911,34 @@ name
   : ( identifier | STRING_LITERAL )
     ( options{greedy=true;}:
       (
-          DOT suffix
-        | CHARACTER_LITERAL aggregate
-        | ( signature )? CHARACTER_LITERAL attribute_designator
-        | LPAREN expression ( COMMA expression )* RPAREN
-        | LPAREN actual_parameter_part RPAREN
-        | LPAREN discrete_range ( COMMA discrete_range )* RPAREN
+        name_part
       )
     )*
   ;
+
+name_part
+   : name_suffix_part
+   | name_function_call_part
+   | name_attribute_part
+   | name_slice_part
+   ;
+
+name_suffix_part
+   : DOT suffix
+   ;
+
+name_function_call_part
+   : identifier aggregate
+   ;
+
+name_attribute_part
+   : APOSTROPHE attribute_designator
+   ;
+
+name_slice_part
+   : LPAREN discrete_range ( COMMA discrete_range )* RPAREN
+   ;
+
 
 nature_declaration
   : NATURE identifier IS nature_definition SEMI
@@ -1044,6 +1063,7 @@ primary
   | function_call
   | allocator
   | aggregate
+  | name
   ;
 
 primary_unit
@@ -1570,7 +1590,7 @@ CR
   ;
   
 CHARACTER_LITERAL
-   : '\'' .* '\''
+   : APOSTROPHE . APOSTROPHE
    ;
 
 STRING_LITERAL

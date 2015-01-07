@@ -84,14 +84,13 @@ namespace VHDL.parser
         /// </summary>
         public void LoadData(string LibraryPath)
         {
-            /*
             if (IsLibraryCompiled == false)
             {
                 compiler = new VHDL_LibraryCompiler(this, LibraryPath, LibraryConfigurationPath);
                 compiler.Compile();
             }
             parsedLibraries = LibraryInfo.LoadLibraries(logger, LibraryConfigurationPath);
-            */
+            
         }
 
         /// <summary>

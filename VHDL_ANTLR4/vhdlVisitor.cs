@@ -3762,7 +3762,22 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitUse_clause([NotNull] vhdlParser.Use_clauseContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitUse_clause([NotNull] vhdlParser.Use_clauseContext context) 
+        {
+            var names_in = context.name();
+
+
+            List<string> names = new List<string>();
+            foreach (var name_in in names_in)
+            {
+                names.Add(name_in.GetText());
+            }
+
+            UseClause use = new UseClause(names);
+            AddAnnotations(use, context);
+            CheckUseClause(context, use);
+            return use;
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.return_statement"/>.
@@ -4411,7 +4426,23 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitLibrary_clause([NotNull] vhdlParser.Library_clauseContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitLibrary_clause([NotNull] vhdlParser.Library_clauseContext context) 
+        {
+            var logical_name_list_in = context.logical_name_list();
+
+            List<string> libraries = new List<string>();
+            foreach (var lib_in in logical_name_list_in.logical_name())
+            {
+                libraries.Add(lib_in.identifier().GetText());
+            }
+
+            LibraryClause library = new LibraryClause(libraries);
+
+            AddAnnotations(library, context);
+            CheckLibraryClause(context, library);
+
+            return library; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.architecture_declarative_part"/>.
