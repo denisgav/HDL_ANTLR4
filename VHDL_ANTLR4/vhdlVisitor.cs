@@ -59,7 +59,26 @@ namespace VHDL_ANTLR4
             return res;
         }
 
-        static List<Out> ParseList<In, Out>(IList<In> data_in, Func<In, VhdlElement> visit_function) where In: class where Out: class
+        static bool TryCast<In, Out>(In in_data, out Out res)
+            where In : class
+            where Out : class
+        {
+            Type in_type = typeof(In);
+            Type out_type = typeof(Out);
+
+            res = in_data as Out;
+
+            if (in_data == null)
+                return false;
+
+            if (res == null)
+                return false;
+            return true;
+        }
+
+        static List<Out> ParseList<In, Out>(IList<In> data_in, Func<In, VhdlElement> visit_function)
+            where In: class
+            where Out: class
         {
             List<Out> res = new List<Out>();
 
@@ -70,6 +89,45 @@ namespace VHDL_ANTLR4
             }
 
             return res;
+        }
+
+        static bool TryParseList<In, Out>(IList<In> data_in, Func<In, VhdlElement> visit_function, out List<Out> res)
+            where In : class
+            where Out : class
+        {
+            res = new List<Out>();
+
+            foreach (In i in data_in)
+            {
+                Out new_item;
+                bool successfull = TryCast<VhdlElement, Out>(visit_function(i), out new_item);
+                if (successfull)
+                {
+                    res.Add(new_item);
+                }
+                else
+                    return false;
+            }
+
+            return true;
+        }
+
+        static Out Parse<In, Out>(In data_in, Func<In, VhdlElement> visit_function)
+            where In : class
+            where Out : class
+        {
+            VhdlElement parsed_data = visit_function(data_in);
+            Out res = Cast<VhdlElement, Out>(parsed_data);
+            return res;
+        }
+
+        static bool TryParse<In, Out>(In data_in, Func<In, VhdlElement> visit_function, out Out res)
+            where In : class
+            where Out : class
+        {
+            VhdlElement parsed_data = visit_function(data_in);
+            bool successfull = TryCast<VhdlElement, Out>(parsed_data, out res);
+            return successfull;
         }
 
         private readonly List<ParseError> errors = new List<ParseError>();
@@ -956,45 +1014,39 @@ namespace VHDL_ANTLR4
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitSubtype_indication([NotNull] vhdlParser.Subtype_indicationContext context) 
-        {
-            
-            var constraint = context.constraint();
-            var tolerance_aspect = context.tolerance_aspect();
-            var name =  context.name()[0];
-            string string_name = name.GetText();
-            var resolution_function = (context.name().Length == 2) ? context.name()[1] : null;
+        {            
+            var constraint_in = context.constraint();
+            var tolerance_aspect_in = context.tolerance_aspect();
+            var name_in =  context.name()[0];
+            string string_name = name_in.GetText();
+            var resolution_function_in = (context.name().Length == 2) ? context.name()[1] : null;
 
             VHDL.type.ISubtypeIndication res = resolve<VHDL.type.ISubtypeIndication>(string_name);
-            if (resolution_function != null)
+            if (resolution_function_in != null)
             {
-                string resolution_function_name = resolution_function.GetText();
+                string resolution_function_name = resolution_function_in.GetText();
                 res = new VHDL.type.ResolvedSubtypeIndication(resolution_function_name, res);
             }
 
-            if (constraint != null)
+            if (constraint_in != null)
             {
-                var range_constraint = constraint.range_constraint();
+                var range_constraint = constraint_in.range_constraint();
                 if (range_constraint != null)
                 {
-                    RangeProvider range = Cast<VhdlElement, RangeProvider>(VisitRange(range_constraint.range()));
+                    RangeProvider range = Parse<vhdlParser.RangeContext, RangeProvider>(range_constraint.range(), VisitRange);
                     res = new VHDL.type.RangeSubtypeIndication(res, range);
                 }
 
-                var index_constraint = constraint.index_constraint();
+                var index_constraint = constraint_in.index_constraint();
                 if (index_constraint != null)
                 {
-                    //index_constraint.discrete_range
-                    DiscreteRange[] ranges = new DiscreteRange[index_constraint.discrete_range().Length];
-                    for(int i=0; i<index_constraint.discrete_range().Length; i++)
-                    {
-                        ranges[i] = Cast<VhdlElement, DiscreteRange>(VisitDiscrete_range(index_constraint.discrete_range()[i]));
-                    }
+                    List<DiscreteRange> ranges = ParseList<vhdlParser.Discrete_rangeContext, DiscreteRange>(index_constraint.discrete_range(), VisitDiscrete_range);
                     res = new VHDL.type.IndexSubtypeIndication(res, ranges);
                 }
 
                 if ((range_constraint == null) && (index_constraint == null))
                 {
-                    throw new NotSupportedException(String.Format("Could not analyse item {0}", constraint.ToStringTree()));
+                    throw new NotSupportedException(String.Format("Could not analyse item {0}", constraint_in.ToStringTree()));
                 }
             }
 
@@ -1054,14 +1106,14 @@ namespace VHDL_ANTLR4
             //4. Add process declarations
             foreach (var declaration in process_declarative_part_in.process_declarative_item())
             {
-                IProcessDeclarativeItem pdi = Cast<VhdlElement, IProcessDeclarativeItem>(VisitProcess_declarative_item(declaration));
+                IProcessDeclarativeItem pdi = Parse<vhdlParser.Process_declarative_itemContext, IProcessDeclarativeItem>(declaration, VisitProcess_declarative_item);
                 process.Declarations.Add(pdi);
             }
 
             //5. Add process sequential statements
             foreach (var statement in process_statement_part_in.sequential_statement())
             {
-                SequentialStatement st = Cast<VhdlElement, SequentialStatement>(VisitSequential_statement(statement));
+                SequentialStatement st = Parse<vhdlParser.Sequential_statementContext, SequentialStatement>(statement, VisitSequential_statement);
                 process.Statements.Add(st);
             }
 
@@ -1111,12 +1163,7 @@ namespace VHDL_ANTLR4
         public override VhdlElement VisitChoices([NotNull] vhdlParser.ChoicesContext context) 
         {
             var choices_in = context.choice();
-            List<Choice> ch = new List<Choice>();
-            foreach (var curr_choice in choices_in)
-            {
-                Choice c = Cast<VhdlElement, Choice>(VisitChoice(curr_choice));
-                ch.Add(c);
-            }
+            List<Choice> ch = ParseList<vhdlParser.ChoiceContext, Choice>(choices_in, VisitChoice);
             return new Choices(ch);
         }
 
@@ -1143,9 +1190,8 @@ namespace VHDL_ANTLR4
 
             if (library_unit != null)
             {
-                res = Cast<VhdlElement, LibraryUnit>(VisitLibrary_unit(library_unit));
+                res = Parse<vhdlParser.Library_unitContext, LibraryUnit>(library_unit, VisitLibrary_unit);
                 return res;
-
             }
 
             throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
@@ -1163,11 +1209,11 @@ namespace VHDL_ANTLR4
         public override VhdlElement VisitFactor([NotNull] vhdlParser.FactorContext context) 
         {
             var primary1_in = context.primary()[0];
-            Expression primary1 = Cast<VhdlElement, Expression>( VisitPrimary(primary1_in));
+            Expression primary1 = Parse<vhdlParser.PrimaryContext, Expression>(primary1_in, VisitPrimary);
             if (context.DOUBLESTAR() != null)
             {
                 var primary2_in = context.primary()[1];
-                Expression primary2 = Cast<VhdlElement, Expression>(VisitPrimary(primary2_in));
+                Expression primary2 = Parse<vhdlParser.PrimaryContext, Expression>(primary2_in, VisitPrimary);
 
                 return new Pow(primary1, primary2);
             }
@@ -1207,7 +1253,13 @@ namespace VHDL_ANTLR4
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitIndex_subtype_definition([NotNull] vhdlParser.Index_subtype_definitionContext context) 
         {
-            return VisitChildren(context); 
+            var name_in = context.name();
+
+            VHDL.type.ISubtypeIndication subtype = resolve<VHDL.type.ISubtypeIndication>(name_in.GetText());
+
+            VHDL.type.RangeSubtypeIndication range_si = new VHDL.type.RangeSubtypeIndication(subtype, null);
+
+            return range_si; 
         }
 
         /// <summary>
@@ -1227,7 +1279,7 @@ namespace VHDL_ANTLR4
             var subprogram_specification_in = context.subprogram_specification();
             var subprogram_statement_part_in = context.subprogram_statement_part();
 
-            VHDL.declaration.SubprogramDeclaration declaration = Cast<VhdlElement, VHDL.declaration.SubprogramDeclaration>(VisitSubprogram_specification(subprogram_specification_in));
+            VHDL.declaration.SubprogramDeclaration declaration = Parse<vhdlParser.Subprogram_specificationContext, VHDL.declaration.SubprogramDeclaration>(subprogram_specification_in, VisitSubprogram_specification);
             VHDL.declaration.SubprogramBody body = null;
             if (declaration is VHDL.declaration.FunctionDeclaration)
             {
@@ -1249,17 +1301,13 @@ namespace VHDL_ANTLR4
             //Analyse declaration part
             foreach (var declaration_item in subprogram_declarative_part_in.subprogram_declarative_item())
             {
-                ISubprogramDeclarativeItem di = Cast<VhdlElement, ISubprogramDeclarativeItem>(VisitSubprogram_declarative_item(declaration_item));
+                ISubprogramDeclarativeItem di = Parse<vhdlParser.Subprogram_declarative_itemContext, ISubprogramDeclarativeItem>(declaration_item, VisitSubprogram_declarative_item);
                 body.Declarations.Add(di);
             }
 
             //Analyse sequential statements
-            foreach (var statement in subprogram_statement_part_in.sequential_statement())
-            {
-                VHDL.statement.SequentialStatement sq = Cast<VhdlElement, VHDL.statement.SequentialStatement>(VisitSequential_statement(statement));
-                body.Statements.Add(sq);
-            }
-            
+            body.Statements.AddRange(ParseList<vhdlParser.Sequential_statementContext, VHDL.statement.SequentialStatement>(subprogram_statement_part_in.sequential_statement(), VisitSequential_statement));
+                        
             //-------------------------------------------
             //   After parsing
             //-------------------------------------------
@@ -1327,7 +1375,7 @@ namespace VHDL_ANTLR4
                     else
                     {
                         var expression_in = context.expression();
-                        Expression exp = Cast<VhdlElement, Expression>(VisitExpression(expression_in));
+                        Expression exp = Parse<vhdlParser.ExpressionContext, Expression>(expression_in, VisitExpression);
                         return DelayMechanism.REJECT_INERTIAL(exp);
                     }
                 }
@@ -1369,7 +1417,49 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitPackage_body([NotNull] vhdlParser.Package_bodyContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitPackage_body([NotNull] vhdlParser.Package_bodyContext context) 
+        {
+            var identifiers_in = context.identifier();
+            var identifier_begin_in = ((identifiers_in != null) && (identifiers_in.Length != 0)) ? identifiers_in[0] : null;
+            var identifier_end_in = ((identifiers_in != null) && (identifiers_in.Length == 2)) ? identifiers_in[1] : null;
+
+            var package_body_declarative_part_in = context.package_body_declarative_part();
+
+            string identifier_begin = (identifier_begin_in != null) ? identifier_begin_in.GetText() : string.Empty;
+            string identifier_end = (identifier_end_in != null) ? identifier_end_in.GetText() : string.Empty;
+
+            PackageDeclaration declaration = resolve<PackageDeclaration>(identifier_begin);
+
+            PackageBody pb = new PackageBody(declaration); 
+
+            //--------------------------------------------------------------------------
+            //         Before Parsing
+            //--------------------------------------------------------------------------
+            IDeclarativeRegion oldScope = currentScope;
+            //--------------------------------------------------------------------------
+
+            pb.Parent = oldScope;
+            currentScope = pb;
+
+            foreach (var declaration_in in package_body_declarative_part_in.package_body_declarative_item())
+            {
+                IPackageBodyDeclarativeItem item = Parse<vhdlParser.Package_body_declarative_itemContext, IPackageBodyDeclarativeItem>(declaration_in, VisitPackage_body_declarative_item);
+                pb.Declarations.Add(item);
+            }
+
+            if ((string.IsNullOrEmpty(identifier_end) == false) && (identifier_end.Equals(identifier_begin, StringComparison.InvariantCultureIgnoreCase) == false))
+            {
+                throw new ArgumentException(string.Format("Package begin & end name mismatch. Identifier is '{0}', end name is '{1}'", identifier_begin, identifier_end));
+            }
+
+            //--------------------------------------------------------------------------
+            //         After Parsing
+            //--------------------------------------------------------------------------
+            currentScope = oldScope;
+            AddAnnotations(pb, context);
+            //--------------------------------------------------------------------------
+            return pb; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.range_constraint"/>.
@@ -1384,7 +1474,7 @@ namespace VHDL_ANTLR4
         {
             var range_in = context.range();
 
-            VHDL.Range range = Cast<VhdlElement, VHDL.Range>(VisitRange(range_in));
+            VHDL.Range range = Parse<vhdlParser.RangeContext, Range>(range_in, VisitRange);
 
             VHDL.type.ISubtypeIndication range_from_type = range.From.Type;
             VHDL.type.ISubtypeIndication range_to_type = range.To.Type;
@@ -1439,7 +1529,7 @@ namespace VHDL_ANTLR4
             var label_colon_in = context.label_colon();
             var procedure_call_in = context.procedure_call();
 
-            ProcedureCall procedureCall = Cast<VhdlElement, ProcedureCall>(VisitProcedure_call(procedure_call_in));
+            ProcedureCall procedureCall = Parse<vhdlParser.Procedure_callContext, ProcedureCall>(procedure_call_in, VisitProcedure_call);
 
             string label = (label_colon_in != null) ? (label_colon_in.identifier().GetText()) : string.Empty;
             procedureCall.Label = label;
@@ -1461,13 +1551,7 @@ namespace VHDL_ANTLR4
             var relations_in = context.relation();
             var logical_operators_in = context.logical_operator();
 
-            List<Expression> parsed_relations = new List<Expression>();
-
-            foreach (vhdlParser.RelationContext r in relations_in)
-            {
-                Expression parsed_relation = Cast<VhdlElement, Expression>(VisitRelation(r));
-                parsed_relations.Add(parsed_relation);
-            }
+            List<Expression> parsed_relations = ParseList<vhdlParser.RelationContext, Expression>(relations_in, VisitRelation);
 
             if (parsed_relations.Count == 0)
             {
@@ -1604,9 +1688,9 @@ namespace VHDL_ANTLR4
             bool hasMode = context.signal_mode() != null;
 
             var subtype_indication_in = context.subtype_indication();
-            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
             var def_value_in = context.expression();
-            Expression def_value = Cast<VhdlElement, Expression>(VisitExpression(def_value_in));
+            Expression def_value = Parse<vhdlParser.ExpressionContext, Expression>(def_value_in, VisitExpression);
 
             var identifiers_in = context.identifier_list();
             InterfaceDeclarationFormat format = new InterfaceDeclarationFormat(hasObjectClass, hasMode);
@@ -1646,7 +1730,7 @@ namespace VHDL_ANTLR4
 
             string label = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
             string identifier = identifier_in.GetText();
-            Expression condition = (condition_in != null)? Cast<VhdlElement, Expression>(VisitCondition(condition_in)) : null;
+            Expression condition = (condition_in != null)? Parse<vhdlParser.ConditionContext, Expression>(condition_in, VisitCondition) : null;
 
             LoopStatement loop = resolve<LoopStatement>(identifier);
 
@@ -1718,7 +1802,7 @@ namespace VHDL_ANTLR4
         {
             FileGroup res = new FileGroup();
             var subtype_indication_in = context.subtype_indication();
-            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
             var identifier_list_in = context.identifier_list();
             foreach (var identifier in identifier_list_in.identifier())
             {
@@ -1804,7 +1888,7 @@ namespace VHDL_ANTLR4
             string label_end = (identifier_in != null) ? identifier_in.GetText() : string.Empty;
 
             //1. parse expression
-            Expression expression = Cast<VhdlElement, Expression>(VisitExpression(expression_in));
+            Expression expression = Parse<vhdlParser.ExpressionContext, Expression>(expression_in, VisitExpression);
 
             CaseStatement case_statement = new CaseStatement(expression);
 
@@ -1847,7 +1931,7 @@ namespace VHDL_ANTLR4
             var shift_expressions_in = context.shift_expression();
             var relational_operator_in = context.relational_operator();
 
-            Expression parsed_shift_expression_1 = Cast<VhdlElement, Expression>(VisitShift_expression(shift_expressions_in[0]));
+            Expression parsed_shift_expression_1 = Parse<vhdlParser.Shift_expressionContext, Expression>(shift_expressions_in[0], VisitShift_expression);
 
             if (relational_operator_in == null)
             {
@@ -1855,7 +1939,7 @@ namespace VHDL_ANTLR4
             }
             else
             {
-                Expression parsed_shift_expression_2 = Cast<VhdlElement, Expression>(VisitShift_expression(shift_expressions_in[1]));
+                Expression parsed_shift_expression_2 = Parse<vhdlParser.Shift_expressionContext, Expression>(shift_expressions_in[1], VisitShift_expression);
 
                 if (relational_operator_in.EQ() != null)
                 {
@@ -2204,10 +2288,10 @@ namespace VHDL_ANTLR4
             bool hasMode = context.IN() != null;
 
             var def_value_in = context.expression();
-            Expression def_value = Cast<VhdlElement, Expression>(VisitExpression(def_value_in));
+            Expression def_value = Parse<vhdlParser.ExpressionContext, Expression>(def_value_in, VisitExpression);
 
             var subtype_indication_in = context.subtype_indication();
-            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
 
             InterfaceDeclarationFormat format = new InterfaceDeclarationFormat(hasObjectClass, hasMode);
 
@@ -2246,7 +2330,47 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitPackage_declaration([NotNull] vhdlParser.Package_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitPackage_declaration([NotNull] vhdlParser.Package_declarationContext context) 
+        {
+            var identifiers_in = context.identifier();
+            var identifier_begin_in = ((identifiers_in != null) && (identifiers_in.Length != 0))?identifiers_in[0]:null;
+            var identifier_end_in = ((identifiers_in != null) && (identifiers_in.Length == 2))?identifiers_in[1]:null;
+
+            var package_declarative_part_in = context.package_declarative_part();
+
+            string identifier_begin = (identifier_begin_in != null)? identifier_begin_in.GetText() : string.Empty;
+            string identifier_end = (identifier_end_in != null)? identifier_end_in.GetText() : string.Empty;
+
+            PackageDeclaration pd = new PackageDeclaration(identifier_begin);
+
+            //--------------------------------------------------------------------------
+            //         Before Parsing
+            //--------------------------------------------------------------------------
+            IDeclarativeRegion oldScope = currentScope; 
+            //--------------------------------------------------------------------------
+
+            pd.Parent = oldScope;
+            currentScope = pd;
+
+            foreach(var declaration_in in package_declarative_part_in.package_declarative_item())
+            {
+                IPackageDeclarativeItem item = Parse<vhdlParser.Package_declarative_itemContext, IPackageDeclarativeItem>(declaration_in, VisitPackage_declarative_item);
+                pd.Declarations.Add(item);
+            }
+
+            if ((string.IsNullOrEmpty(identifier_end) == false) && (identifier_end.Equals(identifier_begin, StringComparison.InvariantCultureIgnoreCase) == false))
+            {
+                throw new ArgumentException(string.Format("Package begin & end name mismatch. Identifier is '{0}', end name is '{1}'", identifier_begin, identifier_end));
+            }
+
+            //--------------------------------------------------------------------------
+            //         After Parsing
+            //--------------------------------------------------------------------------
+            currentScope = oldScope;
+            AddAnnotations(pd, context);
+            //--------------------------------------------------------------------------
+            return pd; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.entity_class_entry"/>.
@@ -2284,6 +2408,9 @@ namespace VHDL_ANTLR4
             var index_subtype_definitions = context.index_subtype_definition();
             var subtype_indication_in = context.subtype_indication();
 
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
+            VHDL.type.UnconstrainedArray res = new VHDL.type.UnconstrainedArray("unknown", si);
+
             List<VHDL.type.ISubtypeIndication> ranges = new List<VHDL.type.ISubtypeIndication>();
             foreach (var index_subtype_definition in index_subtype_definitions)
             {
@@ -2291,9 +2418,8 @@ namespace VHDL_ANTLR4
                 ranges.Add(range);
             }
 
-            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
-
-            VHDL.type.UnconstrainedArray res = new VHDL.type.UnconstrainedArray("unknown", si, ranges);
+            res.IndexSubtypes.AddRange(ranges);
+            
             return res;
         }
 
@@ -2579,7 +2705,7 @@ namespace VHDL_ANTLR4
                     throw new Exception(string.Format("Expression {0} should hawe all choises, or not use them in all cases", context.ToStringTree()));
                 }
                 var expression_in = aggregate_item.expression();
-                Expression exp = Cast<VhdlElement, Expression>(VisitExpression(expression_in));
+                Expression exp = Parse<vhdlParser.ExpressionContext, Expression>(expression_in, VisitExpression); 
 
                 if (has_choises)
                 {
@@ -3018,16 +3144,16 @@ namespace VHDL_ANTLR4
         public override VhdlElement VisitDiscrete_range([NotNull] vhdlParser.Discrete_rangeContext context) 
         {
             var range = context.range();
-            var subtype_indication = context.subtype_indication();
+            var subtype_indication_in = context.subtype_indication();
 
             if (range != null)
             {
                 return VisitRange(range);
             }
 
-            if (subtype_indication != null)
+            if (subtype_indication_in != null)
             {
-                VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication));
+                VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
                 SubtypeDiscreteRange res = new SubtypeDiscreteRange(si);
                 return res;
             }
@@ -3059,7 +3185,7 @@ namespace VHDL_ANTLR4
             var identifier_in = context.identifier();
             var subtype_indication_in = context.subtype_indication();
 
-            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
             string identifier = identifier_in.GetText();
 
             VHDL.declaration.Subtype subtype = new VHDL.declaration.Subtype(identifier, si);
@@ -3680,15 +3806,21 @@ namespace VHDL_ANTLR4
             foreach (var l in enumeration_literals_in)
             {
                 if (l.CHARACTER_LITERAL() != null)
+                {
                     character_literals.Add(l.CHARACTER_LITERAL().GetText()[1]);
+                    continue;
+                }
 
                 if (l.identifier() != null)
+                {
                     string_literals.Add(l.identifier().GetText());
+                    continue;
+                }
 
                 throw new NotSupportedException(String.Format("Could not analyse item {0}", l.ToStringTree()));
             }
 
-            if ((character_literals.Count != 0) && (string_literals.Count != null))
+            if ((character_literals.Count != 0) && (string_literals.Count != 0))
             {
                 throw new NotSupportedException(String.Format("Could not analyse item {0}. Amount of string literals is {1}, Amount of character literals is {2}", context.ToStringTree(), string_literals.Count, character_literals.Count));
             }
@@ -3740,7 +3872,7 @@ namespace VHDL_ANTLR4
                 ranges.Add(range);
             }
 
-            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
 
             VHDL.type.ConstrainedArray res = new VHDL.type.ConstrainedArray("unknown", si, ranges);
             return res;
@@ -3780,7 +3912,7 @@ namespace VHDL_ANTLR4
 
             if (subtype_indication_in != null)
             {
-                VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+                VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
                 SubtypeIndicationAllocator sia = new SubtypeIndicationAllocator(si);
                 return sia;
             }
@@ -4329,7 +4461,7 @@ namespace VHDL_ANTLR4
             var aggregate_in = context.aggregate();
             var expression_in = context.expression();
 
-            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
             if (aggregate_in != null)
             {
                 Aggregate agg = Cast<VhdlElement, Aggregate>(VisitAggregate(aggregate_in));
@@ -4615,7 +4747,7 @@ namespace VHDL_ANTLR4
         {
             var subtype_indication_in = context.subtype_indication();
 
-            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
 
             VHDL.type.FileType file = new VHDL.type.FileType("unknown", si);
             return file;
@@ -4824,7 +4956,7 @@ namespace VHDL_ANTLR4
             //--------------------------------------------------
             var identifier_list = context.identifier_list();
             var signal_mode = context.signal_mode();
-            var subtype_indication = context.subtype_indication();
+            var subtype_indication_in = context.subtype_indication();
             var expression = context.expression();
 
             var BUS = context.BUS();
@@ -4837,7 +4969,7 @@ namespace VHDL_ANTLR4
             Signal.ModeEnum m = ParseSignalMode(signal_mode);
 
             Expression def = (expression != null)?Cast<VhdlElement, Expression>(VisitExpression(expression)):null;
-            VHDL.type.ISubtypeIndication type = (subtype_indication != null)?Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication)):null;
+            VHDL.type.ISubtypeIndication type = (subtype_indication_in != null)?Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication):null;
 
             SignalGroup res = new SignalGroup();
 
@@ -4873,7 +5005,7 @@ namespace VHDL_ANTLR4
         {
             var subtype_indication_in = context.subtype_indication();
 
-            VHDL.type.ISubtypeIndication si = Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication_in));
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
 
             VHDL.type.AccessType access = new VHDL.type.AccessType("unknown", si);
             return access; 
@@ -5088,7 +5220,19 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitAttribute_declaration([NotNull] vhdlParser.Attribute_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitAttribute_declaration([NotNull] vhdlParser.Attribute_declarationContext context) 
+        {
+            var label_colon_in = context.label_colon();
+            var name_in = context.name();
+
+            string attribute_name = label_colon_in.identifier().GetText();
+
+            VHDL.type.ISubtypeIndication si = resolve<VHDL.type.ISubtypeIndication>(name_in.GetText());
+
+            VHDL.declaration.Attribute attribute = new VHDL.declaration.Attribute(attribute_name, si);
+
+            return attribute; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.term"/>.
