@@ -21,6 +21,7 @@ namespace VHDL.Object
 {
     using VHDL.expression;
     using SubtypeIndication = VHDL.type.ISubtypeIndication;
+    using System.Collections.Generic;
 
     //TODO: check if slice is a valid signal assignment or variable assignment target
     /// <summary>
@@ -30,17 +31,17 @@ namespace VHDL.Object
     public class Slice : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
     {
         private readonly Name prefix;
-        private readonly DiscreteRange range;
+        private readonly List<DiscreteRange> ranges;
 
         /// <summary>
         /// Creates a slice.
         /// </summary>
         /// <param name="prefix">the slice prefix</param>
         /// <param name="range">the range</param>
-        public Slice(Name prefix, DiscreteRange range)
+        public Slice(Name prefix, List<DiscreteRange> ranges)
         {
             this.prefix = prefix;
-            this.range = range;
+            this.ranges = ranges;
         }
 
         /// <summary>
@@ -54,9 +55,9 @@ namespace VHDL.Object
         /// <summary>
         /// Returns the range of this slice.
         /// </summary>
-        public virtual DiscreteRange Range
+        public virtual List<DiscreteRange> Ranges
         {
-            get { return range; }
+            get { return ranges; }
         }
 
         public override SubtypeIndication Type

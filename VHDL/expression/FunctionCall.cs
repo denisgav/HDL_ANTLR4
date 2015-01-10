@@ -38,10 +38,30 @@ namespace VHDL.expression
         /// Creates a function call.
         /// </summary>
         /// <param name="function">the called function</param>
-		public FunctionCall(Function function)
+        public FunctionCall(Function function)
+            : this(function, new List<AssociationElement>())
+        {
+        }
+
+        /// <summary>
+        /// Creates a function call.
+        /// </summary>
+        /// <param name="function">the called function</param>
+        public FunctionCall(Function function, List<AssociationElement> parameters)
 		{
+            this.parameters = parameters;
 			this.function = function;
 		}
+
+        /// <summary>
+        /// Creates a function call.
+        /// </summary>
+        /// <param name="function">the called function</param>
+        public FunctionCall(Function function, params AssociationElement[] parameters)
+        {
+            this.parameters.AddRange(parameters);
+            this.function = function;
+        }
 
         /// <summary>
         /// Returns/Sets the called function.

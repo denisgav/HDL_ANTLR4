@@ -149,6 +149,7 @@
     <Compile Include="DeclarativeRegion.cs" />
     <Compile Include="DelayMechanism.cs" />
     <Compile Include="literal\ILiteralVisitor.cs" />
+    <Compile Include="object\TypedName.cs" />
     <Compile Include="range\DiscreteRange.cs" />
     <Compile Include="EntityAspect.cs" />
     <Compile Include="expression\UnaryExpression\Abs.cs" />

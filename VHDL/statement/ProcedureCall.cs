@@ -31,14 +31,14 @@ namespace VHDL.statement
     [Serializable]
     public class ProcedureCall : SequentialStatement
     {
-        private string procedure;
+        private VHDL.declaration.ProcedureDeclaration procedure;
         private readonly List<AssociationElement> parameters;
 
         /// <summary>
         /// Creates a procedure call statement.
         /// </summary>
         /// <param name="procedure">the procedure</param>
-        public ProcedureCall(string procedure)
+        public ProcedureCall(VHDL.declaration.ProcedureDeclaration procedure)
         {
             this.procedure = procedure;
             this.parameters = new List<AssociationElement>();
@@ -49,7 +49,7 @@ namespace VHDL.statement
         /// </summary>
         /// <param name="procedure">the procedure</param>
         /// <param name="parameters">the parameters</param>
-        public ProcedureCall(string procedure, List<AssociationElement> parameters)
+        public ProcedureCall(VHDL.declaration.ProcedureDeclaration procedure, List<AssociationElement> parameters)
         {
             this.procedure = procedure;
             this.parameters = new List<AssociationElement>(parameters);
@@ -60,7 +60,7 @@ namespace VHDL.statement
         /// </summary>
         /// <param name="procedure">the procedure</param>
         /// <param name="parameters">the parameters</param>
-        public ProcedureCall(string procedure, params AssociationElement[] parameters)
+        public ProcedureCall(VHDL.declaration.ProcedureDeclaration procedure, params AssociationElement[] parameters)
             : this(procedure, new List<AssociationElement>(parameters))
         {
         }
@@ -76,7 +76,7 @@ namespace VHDL.statement
         /// <summary>
         /// Returns/Sets the called procedure.
         /// </summary>
-        public virtual string Procedure
+        public virtual VHDL.declaration.ProcedureDeclaration Procedure
         {
             get { return procedure; }
             set { procedure = value; }

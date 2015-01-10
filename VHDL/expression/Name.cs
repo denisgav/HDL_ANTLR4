@@ -40,10 +40,10 @@ namespace VHDL.expression
         /// </summary>
         /// <param name="range">the slice range.</param>
         /// <returns>the slice</returns>
-        public Slice getSlice(DiscreteRange range)
+        public Slice getSlice(List<DiscreteRange> ranges)
         {
             //safe if T extends VhdlObject<T>
-            return new Slice(this, range);
+            return new Slice(this, ranges);
         }
 
         /// <summary>
@@ -118,10 +118,10 @@ namespace VHDL.expression
         /// <param name="attribute">the attribute</param>
         /// <param name="parameter">the parameter</param>
         /// <returns>the record element</returns>
-        public virtual AttributeExpression getAttributeExpression(Attribute attribute, Expression parameter)
+        public virtual AttributeExpression getAttributeExpression(Attribute attribute, List<AssociationElement> parameters)
         {
             //safe if T extends VhdlObject<T>
-            return new AttributeExpression(this, attribute, parameter);
+            return new AttributeExpression(this, attribute, parameters);
         }
 
         public override void accept(ExpressionVisitor visitor)

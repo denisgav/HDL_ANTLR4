@@ -23,6 +23,7 @@ namespace VHDL.Object
 	using Expression = VHDL.expression.Expression;
 	using Name = VHDL.expression.Name;
 	using SubtypeIndication = VHDL.type.ISubtypeIndication;
+    using System.Collections.Generic;
    
     /// <summary>
     /// Attribute expression.
@@ -32,7 +33,7 @@ namespace VHDL.Object
 	{
         private readonly Name prefix;
 		private readonly Attribute attribute;
-		private readonly Expression parameter;
+        private readonly List<AssociationElement> parameters;
 
         /// <summary>
         /// Creates an attribute expression.
@@ -43,7 +44,7 @@ namespace VHDL.Object
 		{
 			this.prefix = prefix;
 			this.attribute = attribute;
-			this.parameter = null;
+			this.parameters = new List<AssociationElement>();
 		}
 
         /// <summary>
@@ -52,11 +53,11 @@ namespace VHDL.Object
         /// <param name="prefix">the prefix of this attribute expression</param>
         /// <param name="attribute">the attribute</param>
         /// <param name="parameter">the parameter</param>
-        public AttributeExpression(Name prefix, Attribute attribute, Expression parameter)
+        public AttributeExpression(Name prefix, Attribute attribute, List<AssociationElement> parameters)
 		{
 			this.prefix = prefix;
 			this.attribute = attribute;
-			this.parameter = parameter;
+			this.parameters = parameters;
 		}
 
         /// <summary>
@@ -78,9 +79,9 @@ namespace VHDL.Object
         /// <summary>
         /// Returns the parameter.
         /// </summary>
-		public virtual Expression Parameter
+        public virtual List<AssociationElement> Parameters
 		{
-            get { return parameter; }
+            get { return parameters; }
 		}
 
 		public override SubtypeIndication Type

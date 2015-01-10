@@ -20,6 +20,7 @@ using System;
 namespace VHDL.parser
 {
     using PositionInformation = VHDL.annotation.PositionInformation;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Parse error.
@@ -81,6 +82,27 @@ namespace VHDL.parser
             UNKNOWN_CASE,
             UNKNOWN_IF,
             UNKNOWN_PROCESS
+        }
+    }
+
+    /// <summary>
+    /// Parse errors annotation.
+    /// The parse errors annotation is used to store parse errors in a <code>VhdlFile</code> instance.
+    /// </summary>
+    [Serializable]
+    public class ParseErrors
+    {
+
+        private readonly List<ParseError> errors;
+
+        public ParseErrors(List<ParseError> errors)
+        {
+            this.errors = new List<ParseError>(errors);
+        }
+
+        public virtual List<ParseError> Errors
+        {
+            get { return errors; }
         }
     }
 

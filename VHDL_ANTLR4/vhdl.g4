@@ -75,6 +75,7 @@ grammar vhdl;
 	PURE : 'pure';
 	QUANTITY : 'quantity';
 	RANGE : 'range';
+	REVERSE_RANGE : 'reverse_range';
 	REJECT : 'reject';
 	REM : 'rem';
 	RECORD : 'record';
@@ -238,6 +239,7 @@ attribute_declaration
 attribute_designator
   : identifier
   | RANGE
+  | REVERSE_RANGE
   | ACROSS
   | THROUGH
   | REFERENCE
@@ -688,7 +690,7 @@ free_quantity_declaration
   ;
 
 function_call
-  : name ( LPAREN actual_parameter_part? RPAREN )
+  : selected_name ( LPAREN actual_parameter_part? RPAREN )
   ;
 
 generate_statement
@@ -908,35 +910,33 @@ multiplying_operator
 // slice_name, and attribute_name, respectively)
 // (2.2.2004, e.f.)
 name
-  : ( identifier | STRING_LITERAL )
-    ( options{greedy=true;}:
-      (
-        name_part
-      )
-    )*
+  :
+  ( identifier | function_call )
+  (name_part)*
   ;
 
 name_part
-   : name_suffix_part
-   | name_function_call_part
-   | name_attribute_part
-   | name_slice_part
+   : (name_suffix_part | name_attribute_part | name_slice_part | name_indexed_part)
    ;
 
 name_suffix_part
    : DOT suffix
    ;
 
-name_function_call_part
-   : identifier aggregate
-   ;
-
 name_attribute_part
-   : APOSTROPHE attribute_designator
+   : APOSTROPHE attribute_designator ( LPAREN actual_parameter_part? RPAREN )?
    ;
 
 name_slice_part
    : LPAREN discrete_range ( COMMA discrete_range )* RPAREN
+   ;
+
+name_indexed_part
+   : LPAREN expression ( COMMA expression )* RPAREN
+   ;
+
+selected_name
+   : identifier (DOT suffix)*
    ;
 
 
@@ -1060,7 +1060,6 @@ primary
   : literal
   | qualified_expression
   | LPAREN expression RPAREN
-  | function_call
   | allocator
   | aggregate
   | name
@@ -1096,7 +1095,7 @@ procedural_statement_part
   ;
 
 procedure_call
-  : identifier ( LPAREN actual_parameter_part RPAREN )?
+  : selected_name ( LPAREN actual_parameter_part RPAREN )?
   ;
 
 procedure_call_statement
@@ -1487,7 +1486,7 @@ unconstrained_nature_definition
   ;
 
 use_clause
-  : USE name ( COMMA name )* SEMI
+  : USE selected_name ( COMMA selected_name )* SEMI
   ;
 
 variable_assignment_statement

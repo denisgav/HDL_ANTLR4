@@ -27,7 +27,7 @@ namespace VHDL
     [Serializable]
     public class RangeAttributeName : RangeProvider
     {
-        private string prefix;
+        private VHDL.expression.Name prefix;
         private RangeAttributeNameType type;
         private Expression index;
 
@@ -36,7 +36,7 @@ namespace VHDL
         /// </summary>
         /// <param name="prefix">the prefix</param>
         /// <param name="type">the type</param>
-        public RangeAttributeName(string prefix, RangeAttributeNameType type)
+        public RangeAttributeName(VHDL.expression.Name prefix, RangeAttributeNameType type)
         {
             this.prefix = prefix;
             this.type = type;
@@ -48,7 +48,7 @@ namespace VHDL
         /// <param name="prefix">the prefix</param>
         /// <param name="type">the type</param>
         /// <param name="index">the index</param>
-        public RangeAttributeName(string prefix, RangeAttributeNameType type, Expression index)
+        public RangeAttributeName(VHDL.expression.Name prefix, RangeAttributeNameType type, Expression index)
         {
             this.prefix = prefix;
             this.type = type;
@@ -67,7 +67,7 @@ namespace VHDL
         /// <summary>
         /// Get/Set prefix
         /// </summary>
-        public virtual string Prefix
+        public virtual VHDL.expression.Name Prefix
         {
             get { return prefix; }
             set { this.prefix = value; }

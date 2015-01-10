@@ -25,7 +25,6 @@ namespace VHDL.parser
     using LibraryDeclarativeRegion = VHDL.LibraryDeclarativeRegion;
     using RootDeclarativeRegion = VHDL.RootDeclarativeRegion;
     using VhdlFile = VHDL.VhdlFile;
-    using ParseErrors = VHDL.parser.annotation.ParseErrors;
     using Antlr4.Runtime;
     using VHDL.parser.util;
     using VHDL_ANTLR4;

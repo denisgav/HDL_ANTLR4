@@ -32,8 +32,9 @@ namespace VHDL.type
     /// Type.
     /// </summary>
     [Serializable]
-	public abstract class Type : VhdlElement, BlockDeclarativeItem, EntityDeclarativeItem, PackageBodyDeclarativeItem, PackageDeclarativeItem, ProcessDeclarativeItem, SubprogramDeclarativeItem, ISubtypeIndication, INamedEntity
+	public class Type : VhdlElement, BlockDeclarativeItem, EntityDeclarativeItem, PackageBodyDeclarativeItem, PackageDeclarativeItem, ProcessDeclarativeItem, SubprogramDeclarativeItem, ISubtypeIndication, INamedEntity
 	{
+        public static Type VHDLBaseType = new Type("Base");
 		private string identifier;
 
         /// <summary>
@@ -54,7 +55,10 @@ namespace VHDL.type
             set { identifier = value; }
         }
 
-		internal abstract void accept(TypeVisitor visitor);
+		internal virtual void accept(TypeVisitor visitor)
+        {
+            visitor.visit(this);
+        }
 
         public void accept(ISubtypeIndicationVisitor visitor)
         {
