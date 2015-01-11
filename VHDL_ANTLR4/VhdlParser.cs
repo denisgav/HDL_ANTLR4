@@ -52,7 +52,7 @@ namespace VHDL.parser
             vhdlParser parser = new vhdlParser(tokens);
             parser.AddParseListener(listener);
             IParseTree tree = parser.design_file();
-            Console.WriteLine(tree.ToStringTree(parser));
+            //Console.WriteLine(tree.ToStringTree(parser));
             vhdlVisitor visitor = new vhdlVisitor(settings, rootScope, libraryScope, libraryManager) { FileName = stream.SourceName };
             VhdlFile res = visitor.Visit(tree) as VhdlFile;
             return res;

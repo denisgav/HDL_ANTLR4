@@ -61,12 +61,12 @@ namespace ParserSample
 
             VHDL_Library_Manager libraryManager = new VHDL_Library_Manager("", @"Libraries\LibraryRepository.xml", loggercompile);
             libraryManager.Logger.OnWriteEvent += new VHDLParser.Logger.OnWriteDeleagte(Logger_OnWriteEvent);
-            //libraryManager.LoadData(@"Libraries");
+            libraryManager.LoadData(@"Libraries");
             VhdlParserSettings settings = VhdlParser.DEFAULT_SETTINGS;
             RootDeclarativeRegion rootScope = new RootDeclarativeRegion();
             LibraryDeclarativeRegion currentLibrary = new LibraryDeclarativeRegion("work");
             rootScope.Libraries.Add(currentLibrary);
-            //rootScope.Libraries.Add(libraryManager.GetLibrary("STD"));
+            rootScope.Libraries.Add(libraryManager.GetLibrary("STD"));
 
             Console.WriteLine("Parsing code");
             VhdlFile file = VhdlParser.parseFile("sample.vhdl", settings, rootScope, currentLibrary, libraryManager);

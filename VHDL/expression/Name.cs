@@ -118,7 +118,7 @@ namespace VHDL.expression
         /// <param name="attribute">the attribute</param>
         /// <param name="parameter">the parameter</param>
         /// <returns>the record element</returns>
-        public virtual AttributeExpression getAttributeExpression(Attribute attribute, List<AssociationElement> parameters)
+        public virtual AttributeExpression getAttributeExpression(Attribute attribute, List<Expression> parameters)
         {
             //safe if T extends VhdlObject<T>
             return new AttributeExpression(this, attribute, parameters);

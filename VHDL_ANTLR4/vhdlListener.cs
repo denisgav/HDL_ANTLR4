@@ -361,19 +361,6 @@ namespace VHDL_ANTLR4
         public override void ExitBranch_quantity_declaration([NotNull] vhdlParser.Branch_quantity_declarationContext context) { }
 
         /// <summary>
-        /// Enter a parse tree produced by <see cref="vhdlParser.function_call"/>.
-        /// <para>The default implementation does nothing.</para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        public override void EnterFunction_call([NotNull] vhdlParser.Function_callContext context) { }
-        /// <summary>
-        /// Exit a parse tree produced by <see cref="vhdlParser.function_call"/>.
-        /// <para>The default implementation does nothing.</para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        public override void ExitFunction_call([NotNull] vhdlParser.Function_callContext context) { }
-
-        /// <summary>
         /// Enter a parse tree produced by <see cref="vhdlParser.timeout_clause"/>.
         /// <para>The default implementation does nothing.</para>
         /// </summary>

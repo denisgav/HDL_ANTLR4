@@ -178,6 +178,18 @@ namespace VHDL.parser.antlr
             }
         }
 
+        public virtual VHDL.expression.Name GetName()
+        {
+            //VHDL.expression.Name name = resolve<VHDL.expression.Name>(currentScore);
+            VhdlElement element = resolve<VhdlElement>(currentScore);
+            if (element is VHDL.expression.Name)
+                return element as VHDL.expression.Name;
+            if (element is VHDL.type.ISubtypeIndication)
+                return new VHDL.Object.TypedName(element as VHDL.type.ISubtypeIndication);
+
+            return null;
+        }
+
         public virtual VHDL.Object.Signal GetSignal()
         {
             VHDL.Object.Signal signal = resolve<VHDL.Object.Signal>(currentScore);
@@ -247,25 +259,8 @@ namespace VHDL.parser.antlr
 
         public virtual VHDL.declaration.FunctionDeclaration GetFunction()
         {
-            VHDL.declaration.FunctionDeclaration function = resolve<VHDL.declaration.FunctionDeclaration>(currentScore);
-            if (function != null)
-            {
-                return function;
-            }
-            else
-            {
-                string identifier = Identifier;
-                visitor.resolveError(context, ParseError.ParseErrorTypeEnum.PROCESS_TYPE_ERROR, identifier);
-
-                if (visitor.Settings.CreateDummyObjects)
-                {
-                    return new VHDL.declaration.FunctionDeclaration(identifier, null);
-                }
-                else
-                {
-                    return null;
-                }
-            }
+            VHDL.declaration.FunctionDeclaration function = resolve<VHDL.declaration.FunctionDeclaration>(currentScore);            
+            return function;            
         }
 
         public virtual VHDL.expression.FunctionCall GetFunctionCall(List<AssociationElement> arguments, VHDL.type.ISubtypeIndication currentAssignTarget)

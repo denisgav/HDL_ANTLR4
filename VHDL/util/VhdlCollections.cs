@@ -326,7 +326,7 @@ namespace VHDL.util
                         Alias objDecl = declaration as Alias;
                         if (objDecl.Designator.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            return new Variable(objDecl.Aliased, objDecl.SubtypeIndication);
+                            return objDecl.Aliased;//new Variable(objDecl.Aliased, objDecl.SubtypeIndication);
                         }
                     }
                     else if (declaration is Subtype)

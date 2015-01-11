@@ -119,13 +119,17 @@ namespace VHDL_ANTLR4
             foreach (In i in data_in)
             {
                 Out new_item;
-                bool successfull = TryCast<VhdlElement, Out>(visit_function(i), out new_item);
-                if (successfull)
+                try
                 {
-                    res.Add(new_item);
+                    bool successfull = TryCast<VhdlElement, Out>(visit_function(i), out new_item);
+                    if (successfull)
+                    {
+                        res.Add(new_item);
+                    }
+                    else
+                        return false;
                 }
-                else
-                    return false;
+                catch { return false; }
             }
 
             return true;
@@ -144,9 +148,17 @@ namespace VHDL_ANTLR4
             where In : class
             where Out : class
         {
-            VhdlElement parsed_data = visit_function(data_in);
-            bool successfull = TryCast<VhdlElement, Out>(parsed_data, out res);
-            return successfull;
+            try
+            {
+                VhdlElement parsed_data = visit_function(data_in);
+                bool successfull = TryCast<VhdlElement, Out>(parsed_data, out res);
+                return successfull;
+            }
+            catch
+            {
+                res = null;
+                return false;
+            }
         }
 
         public static bool VHDLIdentifierEquals(string identifier1, string identifier2)
@@ -168,6 +180,7 @@ namespace VHDL_ANTLR4
 
         private readonly List<ParseError> errors = new List<ParseError>();
         protected internal DeclarativeRegion currentScope = null;
+        protected List<LibraryUnit> contextItems = new List<LibraryUnit>();
         protected internal readonly VhdlParserSettings settings;
         protected internal readonly LibraryDeclarativeRegion libraryScope;
         protected internal readonly RootDeclarativeRegion rootScope;
@@ -570,7 +583,13 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitSequential_statement([NotNull] vhdlParser.Sequential_statementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitSequential_statement([NotNull] vhdlParser.Sequential_statementContext context) 
+        {
+            if (context.NULL() != null)
+                return new NullStatement();
+
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.interface_quantity_declaration"/>.
@@ -771,7 +790,7 @@ namespace VHDL_ANTLR4
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitBranch_quantity_declaration([NotNull] vhdlParser.Branch_quantity_declarationContext context) { return VisitChildren(context); }
-
+        /*
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.function_call"/>.
         /// <para>
@@ -795,6 +814,7 @@ namespace VHDL_ANTLR4
             return functionCall;
         }
 
+        */
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.timeout_clause"/>.
         /// <para>
@@ -887,7 +907,10 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitAlias_designator([NotNull] vhdlParser.Alias_designatorContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitAlias_designator([NotNull] vhdlParser.Alias_designatorContext context) 
+        {
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.entity_statement"/>.
@@ -920,7 +943,25 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitAlias_declaration([NotNull] vhdlParser.Alias_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitAlias_declaration([NotNull] vhdlParser.Alias_declarationContext context) 
+        {
+            var alias_designator_in = context.alias_designator();
+            var alias_indication_in = context.alias_indication();
+            var name_in = context.name();
+            var signature_in = context.signature();
+
+            string designator = alias_designator_in.GetText();
+            Name name = Parse<vhdlParser.NameContext, Name>(name_in, VisitName);
+            Signature signature = (signature_in != null)?Parse<vhdlParser.SignatureContext, Signature>(signature_in, VisitSignature):null;
+            VHDL.type.ISubtypeIndication subtypeIndication = ((alias_indication_in!=null) && (alias_indication_in.subtype_indication() != null)) ? Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(alias_indication_in.subtype_indication(), VisitSubtype_indication) : null;
+
+            Alias res = new Alias(designator, subtypeIndication, name);
+            res.Signature = signature;
+
+            AddAnnotations(res, context);
+
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.attribute_designator"/>.
@@ -992,6 +1033,7 @@ namespace VHDL_ANTLR4
                 throw new ArgumentException(string.Format("Could not find entity {0}", entity_name));
             }
             Architecture res = new Architecture(architecture_name, parentEntity);
+            res.ContextItems.AddRange(contextItems);
             res.Parent = oldScope;
             currentScope = res;
 
@@ -1046,9 +1088,9 @@ namespace VHDL_ANTLR4
         {            
             var constraint_in = context.constraint();
             var tolerance_aspect_in = context.tolerance_aspect();
-            var name_in =  context.name()[0];
+            var name_in =  context.selected_name()[0];
             string string_name = name_in.GetText();
-            var resolution_function_in = (context.name().Length == 2) ? context.name()[1] : null;
+            var resolution_function_in = (context.selected_name().Length == 2) ? context.selected_name()[1] : null;
 
             VHDL.type.ISubtypeIndication res = null;
             if (resolution_function_in != null)
@@ -1463,7 +1505,8 @@ namespace VHDL_ANTLR4
 
             PackageDeclaration declaration = resolve<PackageDeclaration>(identifier_begin);
 
-            PackageBody pb = new PackageBody(declaration); 
+            PackageBody pb = new PackageBody(declaration);
+            pb.ContextItems.AddRange(contextItems);
 
             //--------------------------------------------------------------------------
             //         Before Parsing
@@ -1723,7 +1766,7 @@ namespace VHDL_ANTLR4
             var subtype_indication_in = context.subtype_indication();
             VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
             var def_value_in = context.expression();
-            Expression def_value = Parse<vhdlParser.ExpressionContext, Expression>(def_value_in, VisitExpression);
+            Expression def_value = (def_value_in != null)?Parse<vhdlParser.ExpressionContext, Expression>(def_value_in, VisitExpression):null;
 
             var identifiers_in = context.identifier_list();
             InterfaceDeclarationFormat format = new InterfaceDeclarationFormat(hasObjectClass, hasMode);
@@ -1911,7 +1954,17 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitAssociation_element([NotNull] vhdlParser.Association_elementContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitAssociation_element([NotNull] vhdlParser.Association_elementContext context) 
+        {
+            var actual_part_in = context.actual_part();
+            var formal_part_in = context.formal_part();
+
+            string formal = (formal_part_in != null)?formal_part_in.identifier().GetText():string.Empty;
+            Expression exp = Parse<vhdlParser.Actual_partContext, Expression>(actual_part_in, VisitActual_part);
+            
+            AssociationElement el = new AssociationElement(formal, exp);
+            return el; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.condition"/>.
@@ -2362,7 +2415,7 @@ namespace VHDL_ANTLR4
 
             return res; 
         }
-
+        
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.name"/>.
         /// <para>
@@ -2374,41 +2427,169 @@ namespace VHDL_ANTLR4
         /// <return>The visitor VhdlElement.</return>
         public override VhdlElement VisitName([NotNull] vhdlParser.NameContext context) 
         {
-            var identifier_in = context.identifier();
-            var function_call_in = context.function_call();
             var name_parts_in = context.name_part();
+            bool first_entry = true;
 
             Name res = null;
 
-            if (identifier_in != null)
+            if (context.selected_name() != null)
             {
-                VhdlElement el = resolve<VhdlElement>(identifier_in.GetText());
-                if (el is Name)
-                    res = el as Name;
-                else
+                VHDL.parser.antlr.TemporaryName tm = Parse<vhdlParser.Selected_nameContext, VHDL.parser.antlr.TemporaryName>(context.selected_name(), VisitSelected_name);
+                res = tm.GetName();
+            }
+            else
+            {
+                foreach (var name_part_in in name_parts_in)
                 {
-                    if (el is VHDL.type.ISubtypeIndication)
-                        res = new TypedName(el as VHDL.type.ISubtypeIndication);
+                    var selected_name = name_part_in.selected_name();
+
+                    if (first_entry)
+                    {
+                        res = TemporaryVisitFirstNamePart(name_part_in);
+                        first_entry = false;
+                    }
                     else
-                        throw new ArgumentException(string.Format("Could not cast {0} to Name", el.GetType().FullName));
+                    {
+                        res = TemporaryVisitNamePart(name_part_in, res);
+                    }
                 }
             }
 
-            if (function_call_in != null)
-            {
-                FunctionCall fc = Parse<vhdlParser.Function_callContext, FunctionCall>(function_call_in, VisitFunction_call);
-                res = fc;
-            }
-
-            foreach (var name_part_in in name_parts_in)
-            {
-                Name new_name = Parse<vhdlParser.Name_partContext, Name>(name_part_in, VisitName_part);
-                res = new_name;
-            }
-
-            return res; 
+            return res;
         }
 
+        private Name TemporaryVisitFirstNamePart(vhdlParser.Name_partContext name_part_in)
+        {
+            if (name_part_in.name_function_call_or_indexed_part() != null)
+                return TemporaryVisitFirstIndiciesNamePart(name_part_in);
+
+            List<VHDL.parser.antlr.Part> parts = TemporaryNameSelectedPart(name_part_in);
+            VHDL.parser.antlr.TemporaryName tm = Parse<vhdlParser.Selected_nameContext, VHDL.parser.antlr.TemporaryName>(name_part_in.selected_name(), VisitSelected_name);
+            Name res = tm.GetName();
+
+            if (name_part_in.name_slice_part() != null)
+                return TemporaryVisitSliceNamePart(name_part_in, res);
+            if (name_part_in.name_attribute_part() != null)
+                return TemporaryVisitAttributeNamePart(name_part_in, res);          
+
+            
+            return res;
+        }
+
+        private Name TemporaryVisitNamePart(vhdlParser.Name_partContext name_part_in, Name previousName)
+        {
+            List<VHDL.parser.antlr.Part> parts = TemporaryNameSelectedPart(name_part_in);
+
+            Name res = previousName;
+            for (int i = 1; i < parts.Count; i++)
+            {
+                VHDL.parser.antlr.Part p = parts[i];
+                res = new RecordElement(res, (p as VHDL.parser.antlr.Part.SelectedPart).Suffix);
+            }
+
+            if (name_part_in.name_function_call_or_indexed_part() != null)
+                return TemporaryVisitIndiciesNamePart(name_part_in, res);
+            if (name_part_in.name_slice_part() != null)
+                return TemporaryVisitSliceNamePart(name_part_in, res);
+            if (name_part_in.name_attribute_part() != null)
+                return TemporaryVisitAttributeNamePart(name_part_in, res);
+            
+            return res;
+        }
+
+        private Name TemporaryVisitAttributeNamePart(vhdlParser.Name_partContext name_part_in, Name previousName)
+        {
+            List<VHDL.parser.antlr.Part> parts = TemporaryNameSelectedPart(name_part_in);
+
+            Name res = previousName;
+            foreach (VHDL.parser.antlr.Part p in parts)
+            {
+                res = new RecordElement(res, (p as VHDL.parser.antlr.Part.SelectedPart).Suffix);
+            }
+
+            string attributeName = name_part_in.name_attribute_part().attribute_designator().GetText();
+            Attribute standard_attribute = Attribute.GetStandardAttribute(attributeName);
+            Attribute attribute = (standard_attribute == null) ? resolve<Attribute>(attributeName) : standard_attribute;
+
+            List<Expression> expressions = ParseList<vhdlParser.ExpressionContext, Expression>(name_part_in.name_attribute_part().expression(), VisitExpression);
+            res = new AttributeExpression(res, attribute, expressions);
+            VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = res;
+            return res;
+        }
+
+
+        private Name TemporaryVisitFirstIndiciesNamePart(vhdlParser.Name_partContext name_part_in)
+        {
+            List<VHDL.parser.antlr.Part> parts = TemporaryNameSelectedPart(name_part_in);
+            VHDL.parser.antlr.TemporaryName tm = new VHDL.parser.antlr.TemporaryName(parts, this, name_part_in);
+            FunctionDeclaration FD = tm.GetFunction();
+            if (FD != null)
+            {
+                List<AssociationElement> arguments = ParseList<vhdlParser.Association_elementContext, AssociationElement>(name_part_in.name_function_call_or_indexed_part().actual_parameter_part().association_list().association_element(), VisitAssociation_element);
+
+                //TODO::IMPLEMENT FUNCTION CALL RESO:UTION FUNCTION IN THE FUTURE!!!!!!!!
+
+                //FunctionCall functionCall = tm.GetFunctionCall(arguments, VHDL.parser.antlr.TemporaryName.CurrentAssignTarget.Type);
+                FunctionCall functionCall = new FunctionCall(FD, arguments);
+                VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = functionCall;
+                Name res = functionCall;
+                return res;
+            }
+            else
+            {
+                List<Expression> expressions = TemporaryIndiciesNamePartExpressions(name_part_in.name_function_call_or_indexed_part().actual_parameter_part());
+                Name base_name = tm.GetName();
+                ArrayElement ae = new ArrayElement(base_name, expressions);
+                VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = ae;
+                Name res = ae;
+                return res;
+            }
+        }
+
+        private Name TemporaryVisitIndiciesNamePart(vhdlParser.Name_partContext name_part_in, Name previousName)
+        {
+            Name res = previousName;
+            List<Expression> expressions = TemporaryIndiciesNamePartExpressions(name_part_in.name_function_call_or_indexed_part().actual_parameter_part());
+            res = new ArrayElement(res, expressions);
+            VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = res;
+            return res;
+        }
+
+        private Name TemporaryVisitSliceNamePart(vhdlParser.Name_partContext name_part_in, Name previousName)
+        {
+            Name res = previousName;
+            List<DiscreteRange> ranges = new List<DiscreteRange>();
+            ranges.AddRange(ParseList<vhdlParser.Explicit_rangeContext, Range>(name_part_in.name_slice_part().explicit_range(), VisitExplicit_range));
+            res = new Slice(res, ranges);
+            VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = res;
+            return res;
+        }
+        
+        private List<Expression> TemporaryIndiciesNamePartExpressions(vhdlParser.Actual_parameter_partContext actual_parameter_part_in)
+        {
+            List<Expression> expressions = new List<Expression>();
+            foreach (var ae_in in actual_parameter_part_in.association_list().association_element())
+            {
+                Expression exp = Parse<vhdlParser.ExpressionContext, Expression>(ae_in.actual_part().actual_designator().expression(), VisitExpression);
+                expressions.Add(exp);
+            }
+
+            return expressions;
+        }
+
+        private List<VHDL.parser.antlr.Part> TemporaryNameSelectedPart(vhdlParser.Name_partContext name_part_in)
+        {
+            var selected_name_in = name_part_in.selected_name();
+            List<VHDL.parser.antlr.Part> parts = new List<VHDL.parser.antlr.Part>();
+            parts.Add(VHDL.parser.antlr.Part.CreateSelected(selected_name_in.identifier().GetText()));
+            foreach (var suffix_in in selected_name_in.suffix())
+                parts.Add(VHDL.parser.antlr.Part.CreateSelected(suffix_in.GetText()));
+
+            return parts;
+        }
+
+
+        
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.selected_name"/>.
         /// <para>
@@ -2430,97 +2611,7 @@ namespace VHDL_ANTLR4
 
             return new VHDL.parser.antlr.TemporaryName(parts, this, context);
         }
-
-        /// <summary>
-        /// Visit a parse tree produced by <see cref="vhdlParser.name_attribute_part"/>.
-        /// <para>
-        /// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-        /// on <paramref name="context"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        /// <return>The visitor result.</return>
-        public override VhdlElement VisitName_attribute_part(vhdlParser.Name_attribute_partContext context)
-        {
-            var actual_parameter_part_in = context.actual_parameter_part();
-            var attribute_designator_in = context.attribute_designator();
-
-            string attribute_name = attribute_designator_in.GetText();
-            List<AssociationElement> parameters = (actual_parameter_part_in != null) ? ParseList<vhdlParser.Association_elementContext, AssociationElement>(actual_parameter_part_in.association_list().association_element(), VisitAssociation_element) : new List<AssociationElement>();
-
-            Attribute std_attribute = Attribute.GetStandardAttribute(attribute_name);
-
-            Attribute attribute = (std_attribute == null)?resolve<Attribute>(attribute_name):std_attribute;
-            AttributeExpression ae = new AttributeExpression(VHDL.parser.antlr.TemporaryName.CurrentName, attribute, parameters);
-            
-            VHDL.parser.antlr.TemporaryName.CurrentName = ae;
-
-            return ae;
-        }
-
-        /// <summary>
-        /// Visit a parse tree produced by <see cref="vhdlParser.name_indexed_part"/>.
-        /// <para>
-        /// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-        /// on <paramref name="context"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        /// <return>The visitor result.</return>
-        public override VhdlElement VisitName_indexed_part(vhdlParser.Name_indexed_partContext context)
-        {
-            var expression_in = context.expression();
-            List<Expression> expressions = ParseList<vhdlParser.ExpressionContext, Expression>(expression_in, VisitExpression);
-
-            ArrayElement ae = new ArrayElement(VHDL.parser.antlr.TemporaryName.CurrentName, expressions);
-
-            VHDL.parser.antlr.TemporaryName.CurrentName = ae;
-
-            return ae;
-        }
-
-        /// <summary>
-        /// Visit a parse tree produced by <see cref="vhdlParser.name_slice_part"/>.
-        /// <para>
-        /// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-        /// on <paramref name="context"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        /// <return>The visitor result.</return>
-        public override VhdlElement VisitName_slice_part(vhdlParser.Name_slice_partContext context)
-        {
-            var ranges_in = context.range();
-
-            List<DiscreteRange> ranges = ParseList<vhdlParser.RangeContext, DiscreteRange>(ranges_in, VisitRange);
-
-            Slice slice = new Slice(VHDL.parser.antlr.TemporaryName.CurrentName, ranges);
-
-            VHDL.parser.antlr.TemporaryName.CurrentName = slice;
-
-            return slice;
-        }
-
-        /// <summary>
-        /// Visit a parse tree produced by <see cref="vhdlParser.name_suffix_part"/>.
-        /// <para>
-        /// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-        /// on <paramref name="context"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        /// <return>The visitor result.</return>
-        public override VhdlElement VisitName_suffix_part(vhdlParser.Name_suffix_partContext context)
-        {
-            var suffix_in = context.suffix();
-
-            RecordElement re = new RecordElement(VHDL.parser.antlr.TemporaryName.CurrentName, suffix_in.GetText());
-
-            VHDL.parser.antlr.TemporaryName.CurrentName = re;
-
-            return re;
-        }
-
+        
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.package_declaration"/>.
         /// <para>
@@ -2542,6 +2633,7 @@ namespace VHDL_ANTLR4
             string identifier_end = (identifier_end_in != null)? identifier_end_in.GetText() : string.Empty;
 
             PackageDeclaration pd = new PackageDeclaration(identifier_begin);
+            pd.ContextItems.AddRange(contextItems);
 
             //--------------------------------------------------------------------------
             //         Before Parsing
@@ -2837,6 +2929,7 @@ namespace VHDL_ANTLR4
             VHDL_ANTLR4.vhdlParser.IdentifierContext identifier = identifiers[0];
             
             Entity res = new Entity(identifier.GetText());
+            res.ContextItems.AddRange(contextItems);
             res.Parent = oldScope;
             currentScope = res;
 
@@ -2848,9 +2941,9 @@ namespace VHDL_ANTLR4
             var port_clause = entity_header.port_clause();
             if (port_clause != null)
             {
-                foreach (var port in port_clause.port_list().interface_signal_list().interface_signal_declaration())
+                foreach (var port in port_clause.port_list().interface_port_list().interface_port_declaration())
                 {
-                    res.Port.Add(Cast<VhdlElement, IVhdlObjectProvider>(VisitInterface_signal_declaration(port)));
+                    res.Port.Add(Cast<VhdlElement, IVhdlObjectProvider>(VisitInterface_port_declaration(port)));
                 }
             }
 
@@ -2946,7 +3039,18 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitCase_statement_alternative([NotNull] vhdlParser.Case_statement_alternativeContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitCase_statement_alternative([NotNull] vhdlParser.Case_statement_alternativeContext context) 
+        {
+            var choices_in = context.choices();
+            var sequence_of_statements_in = context.sequence_of_statements();
+
+            List<Choice> choices = ParseList<vhdlParser.ChoiceContext, Choice>(choices_in.choice(), VisitChoice);
+            List<VHDL.statement.SequentialStatement> statements = ParseList<vhdlParser.Sequential_statementContext, VHDL.statement.SequentialStatement>(sequence_of_statements_in.sequential_statement(), VisitSequential_statement);
+            VHDL.statement.CaseStatement.Alternative res = new VHDL.statement.CaseStatement.Alternative(choices);
+            res.Statements.AddRange(statements);
+
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.binding_indication"/>.
@@ -3511,27 +3615,48 @@ namespace VHDL_ANTLR4
                 }
                 else
                 {
+                    if (name is AttributeExpression)
+                    {
+                        AttributeExpression ae = name as AttributeExpression;
+                        if (ae.Attribute.Identifier.Equals("RANGE", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            res = new RangeAttributeName(name, RangeAttributeName.RangeAttributeNameType.RANGE);
+                            return res;
+                        }
+                        if (ae.Attribute.Identifier.Equals("REVERSE_RANGE", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            res = new RangeAttributeName(name, RangeAttributeName.RangeAttributeNameType.REVERSE_RANGE);
+                            return res;
+                        }
+                    }
                     res = resolve<RangeProvider>(name_in.GetText());
                 }
                 return res;
             }
             else
             {
-                if ((context.simple_expression().Length == 2) && (context.direction() != null))
-                {
-                    var expression_left_in = context.simple_expression()[0];
-                    var expression_right_in = context.simple_expression()[1];
-                    var direction_in = context.direction();
-
-                    Range.RangeDirection direction = (direction_in.GetText().Equals("To", StringComparison.InvariantCultureIgnoreCase)) ? Range.RangeDirection.TO : Range.RangeDirection.DOWNTO;
-                    Expression expression_left = Cast<VhdlElement, Expression>(VisitSimple_expression(expression_left_in));
-                    Expression expression_right = Cast<VhdlElement, Expression>(VisitSimple_expression(expression_right_in));
-
-                    res = new Range(expression_left, direction, expression_right);
-                    return res;
-                }
+                return Parse<vhdlParser.Explicit_rangeContext, Range>(context.explicit_range(), VisitExplicit_range);
             }
 
+            throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
+        }
+
+        public override VhdlElement VisitExplicit_range(vhdlParser.Explicit_rangeContext context)
+        {
+            var simple_expressions_in = context.simple_expression();
+            var direction_in = context.direction();
+            if ((simple_expressions_in.Length == 2) && (direction_in != null))
+            {
+                var expression_left_in = simple_expressions_in[0];
+                var expression_right_in = simple_expressions_in[1];
+
+                Range.RangeDirection direction = (direction_in.GetText().Equals("To", StringComparison.InvariantCultureIgnoreCase)) ? Range.RangeDirection.TO : Range.RangeDirection.DOWNTO;
+                Expression expression_left = Cast<VhdlElement, Expression>(VisitSimple_expression(expression_left_in));
+                Expression expression_right = Cast<VhdlElement, Expression>(VisitSimple_expression(expression_right_in));
+
+                Range res = new Range(expression_left, direction, expression_right);
+                return res;
+            }
             throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
         }
 
@@ -3680,9 +3805,9 @@ namespace VHDL_ANTLR4
             var range_constraint_in = context.range_constraint();
             var secondary_unit_declarations_in = context.secondary_unit_declaration();
 
-            string base_unit_name = base_unit_declaration_in.GetText();
+            string base_unit_name = base_unit_declaration_in.identifier().GetText();
 
-            VHDL.Range range = Cast<VhdlElement, VHDL.Range>(VisitRange_constraint(range_constraint_in));
+            VHDL.Range range = Cast<VhdlElement, VHDL.Range>(VisitRange(range_constraint_in.range()));
 
             VHDL.type.PhysicalType pt = new VHDL.type.PhysicalType("unknown", range, base_unit_name);
             pt.createUnit(base_unit_name);
@@ -3886,6 +4011,13 @@ namespace VHDL_ANTLR4
                     continue;
                 }
 
+                if (op.AMPERSAND() != null)
+                {
+                    Expression new_res = new VHDL.expression.Concatenate(res, curr_expression);
+                    res = new_res;
+                    continue;
+                }
+
                 throw new NotSupportedException(String.Format("Could not analyse item {0}", op.ToStringTree()));
             }
 
@@ -4024,44 +4156,28 @@ namespace VHDL_ANTLR4
         {
             var enumeration_literals_in = context.enumeration_literal();
 
-            List<char> character_literals = new List<char>();
-            List<string> string_literals = new List<string>();
+            VHDL.type.EnumerationType enumeration_type = new VHDL.type.EnumerationType("unknown");
 
             foreach (var l in enumeration_literals_in)
             {
                 if (l.CHARACTER_LITERAL() != null)
                 {
-                    character_literals.Add(l.CHARACTER_LITERAL().GetText()[1]);
+                    char literal = l.CHARACTER_LITERAL().GetText()[1];
+                    enumeration_type.createLiteral(literal);
                     continue;
                 }
 
                 if (l.identifier() != null)
                 {
-                    string_literals.Add(l.identifier().GetText());
+                    string literal = l.identifier().GetText();
+                    enumeration_type.createLiteral(literal);
                     continue;
                 }
 
                 throw new NotSupportedException(String.Format("Could not analyse item {0}", l.ToStringTree()));
             }
 
-            if ((character_literals.Count != 0) && (string_literals.Count != 0))
-            {
-                throw new NotSupportedException(String.Format("Could not analyse item {0}. Amount of string literals is {1}, Amount of character literals is {2}", context.ToStringTree(), string_literals.Count, character_literals.Count));
-            }
-
-            if(character_literals.Count != 0)
-            {
-                VHDL.type.EnumerationType enumeration_type = new VHDL.type.EnumerationType("unknown", character_literals.ToArray());
-                return enumeration_type;
-            }
-
-            if (string_literals.Count != 0)
-            {
-                VHDL.type.EnumerationType enumeration_type = new VHDL.type.EnumerationType("unknown", string_literals.ToArray());
-                return enumeration_type;
-            }
-
-            throw new NotSupportedException(String.Format("Could not analyse item {0}. Amount of literals is 0.", context.ToStringTree()));
+            return enumeration_type;
         }
 
         /// <summary>
@@ -4268,7 +4384,7 @@ namespace VHDL_ANTLR4
             var condition_in = context.condition();
 
             string label = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
-            string identifier = identifier_in.GetText();
+            string identifier = (identifier_in != null)?identifier_in.GetText():string.Empty;
             Expression condition = (condition_in != null) ? Cast<VhdlElement, Expression>(VisitCondition(condition_in)) : null;
 
             LoopStatement loop = resolve<LoopStatement>(identifier);
@@ -4790,12 +4906,16 @@ namespace VHDL_ANTLR4
 
             if (primary_unit != null)
             {
-                return VisitPrimary_unit(primary_unit);
+                PrimaryUnit primary = Parse<vhdlParser.Primary_unitContext, PrimaryUnit>(primary_unit, VisitPrimary_unit);
+                contextItems.Clear();
+                return primary;
             }
 
             if (secondary_unit != null)
             {
-                return VisitSecondary_unit(secondary_unit);
+                SecondaryUnit secondary = Parse<vhdlParser.Secondary_unitContext, SecondaryUnit>(secondary_unit, VisitSecondary_unit);
+                contextItems.Clear();
+                return secondary;
             }
             
             throw new NotSupportedException(String.Format("Could not analyse item {0}", context.ToStringTree()));
@@ -4810,7 +4930,35 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitContext_clause([NotNull] vhdlParser.Context_clauseContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitContext_clause([NotNull] vhdlParser.Context_clauseContext context) 
+        {
+            var context_items_in = context.context_item();
+
+            List<UseClause> uses = new List<UseClause>();
+            foreach (var c_in in context_items_in)
+            {
+                var use_clause_in = c_in.use_clause();
+                var library_clause_in = c_in.library_clause();
+
+                if (use_clause_in != null)
+                {
+                    UseClause use = Parse<vhdlParser.Use_clauseContext, UseClause>(use_clause_in, VisitUse_clause);
+                    uses.Add(use);
+                }
+
+                if (library_clause_in != null)
+                {
+                    LibraryDeclarativeRegion loaded_library = LoadLibrary(library_clause_in.GetText());
+                    if (loaded_library != null)
+                        rootScope.AddLibrary(loaded_library);
+                }
+            }
+            
+            contextItems.Clear();
+            contextItems.AddRange(uses);
+
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.shift_operator"/>.
@@ -5133,7 +5281,13 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitActual_part([NotNull] vhdlParser.Actual_partContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitActual_part([NotNull] vhdlParser.Actual_partContext context) 
+        {
+            if ((context.actual_designator() != null) && (context.actual_designator().expression() != null))
+                return VisitExpression(context.actual_designator().expression());
+
+            return VisitChildren(context); 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.entity_statement_part"/>.
@@ -5237,18 +5391,15 @@ namespace VHDL_ANTLR4
             bool isBus = false;
             //--------------------------------------------------
             var identifier_list = context.identifier_list();
-            var signal_mode = context.signal_mode();
             var subtype_indication_in = context.subtype_indication();
             var expression = context.expression();
 
             var BUS = context.BUS();
 
             isBus = BUS != null;
-            hasMode = signal_mode != null;
             hasObjectClass = context.SIGNAL() != null;
 
             InterfaceDeclarationFormat format = new InterfaceDeclarationFormat(hasObjectClass, hasMode);
-            Signal.ModeEnum m = ParseSignalMode(signal_mode);
 
             Expression def = (expression != null)?Cast<VhdlElement, Expression>(VisitExpression(expression)):null;
             VHDL.type.ISubtypeIndication type = (subtype_indication_in != null)?Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication):null;
@@ -5257,8 +5408,48 @@ namespace VHDL_ANTLR4
 
             foreach (var identifier in identifier_list.identifier()) {
                 string signal_name = identifier.GetText();
-                Signal s = new Signal(signal_name, m, type, def);
+                Signal s = new Signal(signal_name, Signal.ModeEnum.INOUT, type, def);
                 if (isBus) 
+                {
+                    s.Kind = Signal.KindEnum.BUS;
+                }
+                Annotations.putAnnotation(s, format);
+
+                res.Elements.Add(s);
+            }
+
+            //--------------------------------------------------
+            AddAnnotations(res, context);
+            return res; 
+        }
+
+        public override VhdlElement VisitInterface_port_declaration(vhdlParser.Interface_port_declarationContext context)
+        {
+            bool hasObjectClass = false;
+            bool hasMode = false;
+            bool isBus = false;
+            //--------------------------------------------------
+            var identifier_list = context.identifier_list();
+            var signal_mode = context.signal_mode();
+            var subtype_indication_in = context.subtype_indication();
+
+            var BUS = context.BUS();
+
+            isBus = BUS != null;
+            hasMode = signal_mode != null;
+
+            InterfaceDeclarationFormat format = new InterfaceDeclarationFormat(hasObjectClass, hasMode);
+            Signal.ModeEnum m = ParseSignalMode(signal_mode);
+
+            VHDL.type.ISubtypeIndication type = (subtype_indication_in != null) ? Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication) : null;
+
+            SignalGroup res = new SignalGroup();
+
+            foreach (var identifier in identifier_list.identifier())
+            {
+                string signal_name = identifier.GetText();
+                Signal s = new Signal(signal_name, m, type, null);
+                if (isBus)
                 {
                     s.Kind = Signal.KindEnum.BUS;
                 }
@@ -5678,3 +5869,4 @@ namespace VHDL_ANTLR4
         }
     }
 }
+

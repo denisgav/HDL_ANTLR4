@@ -22,6 +22,7 @@ namespace VHDL.declaration
 {
     using Signature = VHDL.Signature;
     using SubtypeIndication = VHDL.type.ISubtypeIndication;
+    using VHDL.expression;
 
     //TODO: replace dummy implementation
     /// <summary>
@@ -32,7 +33,7 @@ namespace VHDL.declaration
 	{
 		private string designator;
 		private SubtypeIndication subtypeIndication;
-		private string aliased;
+		private Name aliased;
 		private Signature signature;
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace VHDL.declaration
         /// </summary>
         /// <param name="designator">the alias designator</param>
         /// <param name="aliased">the identifier of the aliased object</param>
-		public Alias(string designator, string aliased)
+        public Alias(string designator, Name aliased)
 		{
 			this.designator = designator;
 			this.aliased = aliased;
@@ -63,7 +64,7 @@ namespace VHDL.declaration
         /// <param name="designator">the alias designator</param>
         /// <param name="subtypeIndication">the subtype indication</param>
         /// <param name="aliased">the identifier of the aliased object</param>
-		public Alias(string designator, SubtypeIndication subtypeIndication, string aliased)
+        public Alias(string designator, SubtypeIndication subtypeIndication, Name aliased)
 		{
 			this.designator = designator;
 			this.subtypeIndication = subtypeIndication;
@@ -73,7 +74,7 @@ namespace VHDL.declaration
         /// <summary>
         /// Returns/Sets the identifier of the aliased object.
         /// </summary>
-		public virtual string Aliased
+        public virtual Name Aliased
 		{
             get { return aliased; }
             set { aliased = value; }

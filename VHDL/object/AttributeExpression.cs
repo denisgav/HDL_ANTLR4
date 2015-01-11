@@ -33,7 +33,7 @@ namespace VHDL.Object
 	{
         private readonly Name prefix;
 		private readonly Attribute attribute;
-        private readonly List<AssociationElement> parameters;
+        private readonly List<Expression> parameters;
 
         /// <summary>
         /// Creates an attribute expression.
@@ -44,7 +44,7 @@ namespace VHDL.Object
 		{
 			this.prefix = prefix;
 			this.attribute = attribute;
-			this.parameters = new List<AssociationElement>();
+            this.parameters = new List<Expression>();
 		}
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace VHDL.Object
         /// <param name="prefix">the prefix of this attribute expression</param>
         /// <param name="attribute">the attribute</param>
         /// <param name="parameter">the parameter</param>
-        public AttributeExpression(Name prefix, Attribute attribute, List<AssociationElement> parameters)
+        public AttributeExpression(Name prefix, Attribute attribute, List<Expression> parameters)
 		{
 			this.prefix = prefix;
 			this.attribute = attribute;
@@ -79,7 +79,7 @@ namespace VHDL.Object
         /// <summary>
         /// Returns the parameter.
         /// </summary>
-        public virtual List<AssociationElement> Parameters
+        public virtual List<Expression> Parameters
 		{
             get { return parameters; }
 		}
