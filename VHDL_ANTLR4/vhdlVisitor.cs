@@ -2317,7 +2317,7 @@ namespace VHDL_ANTLR4
             bool hasMode = context.IN() != null;
 
             var def_value_in = context.expression();
-            Expression def_value = Parse<vhdlParser.ExpressionContext, Expression>(def_value_in, VisitExpression);
+            Expression def_value = (def_value_in != null)?Parse<vhdlParser.ExpressionContext, Expression>(def_value_in, VisitExpression) : null;
 
             var subtype_indication_in = context.subtype_indication();
             VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
@@ -5142,7 +5142,49 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitFile_declaration([NotNull] vhdlParser.File_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitFile_declaration([NotNull] vhdlParser.File_declarationContext context) 
+        {
+            var file_open_information_in = context.file_open_information();
+            var identifier_list_in = context.identifier_list();
+            var subtype_indication_in = context.subtype_indication();
+
+            //1. parse identifiers
+            List<string> identifiers = new List<string>();
+            foreach (var identifier_in in identifier_list_in.identifier())
+            {
+                identifiers.Add(identifier_in.GetText());
+            }
+
+            //2. parse file type
+            VHDL.type.ISubtypeIndication si = Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication);
+
+            //FileDeclaration res = new FileDeclaration(
+            Expression open_kind = null;
+            Expression filename_logical_name = null;
+
+            //3. parse file open information
+            if(file_open_information_in != null)
+            {
+                var file_open_expression_in = file_open_information_in.expression();
+                var file_logical_name_in = file_open_information_in.file_logical_name();
+
+                open_kind = (file_open_expression_in != null)?Parse<vhdlParser.ExpressionContext, Expression>(file_open_expression_in, VisitExpression) : null;
+                filename_logical_name = (file_logical_name_in != null)?Parse<vhdlParser.ExpressionContext, Expression>(file_logical_name_in.expression(), VisitExpression) : null;
+            }
+
+            List<FileObject> FOs = new List<FileObject>();
+            foreach (string filetype_name in identifiers)
+            {
+                FileObject fo = new FileObject(filetype_name, si, open_kind, filename_logical_name);
+                FOs.Add(fo);
+            }
+
+            FileDeclaration FD = new FileDeclaration(FOs);
+
+            AddAnnotations(FD, context);
+
+            return FD; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.interface_signal_declaration"/>.
