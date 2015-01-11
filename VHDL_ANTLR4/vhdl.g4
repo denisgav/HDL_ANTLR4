@@ -942,7 +942,7 @@ name_attribute_part
    ;
 
 name_slice_part
-   : LPAREN discrete_range ( COMMA discrete_range )* RPAREN
+   : LPAREN range ( COMMA range )* RPAREN
    ;
 
 name_indexed_part
@@ -1607,7 +1607,7 @@ CHARACTER_LITERAL
    ;
 
 STRING_LITERAL
-  : '\"' .* '\"'
+  : '"' (~('"'|'\n'|'\r'))* '"'
   ;
 
 OTHER_SPECIAL_CHARACTER

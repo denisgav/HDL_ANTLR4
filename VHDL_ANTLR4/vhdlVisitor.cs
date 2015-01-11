@@ -1050,11 +1050,15 @@ namespace VHDL_ANTLR4
             string string_name = name_in.GetText();
             var resolution_function_in = (context.name().Length == 2) ? context.name()[1] : null;
 
-            VHDL.type.ISubtypeIndication res = resolve<VHDL.type.ISubtypeIndication>(string_name);
+            VHDL.type.ISubtypeIndication res = null;
             if (resolution_function_in != null)
             {
                 string resolution_function_name = resolution_function_in.GetText();
                 res = new VHDL.type.ResolvedSubtypeIndication(resolution_function_name, res);
+            }
+            else
+            {
+                res = resolve<VHDL.type.ISubtypeIndication>(string_name);
             }
 
             if (constraint_in != null)
@@ -1805,7 +1809,30 @@ namespace VHDL_ANTLR4
         /// </summary>
         /// <param name="context">The parse tree.</param>
         /// <return>The visitor VhdlElement.</return>
-        public override VhdlElement VisitConstant_declaration([NotNull] vhdlParser.Constant_declarationContext context) { return VisitChildren(context); }
+        public override VhdlElement VisitConstant_declaration([NotNull] vhdlParser.Constant_declarationContext context) 
+        {
+            var identifier_list = context.identifier_list();
+            var subtype_indication = context.subtype_indication();
+            var expression = context.expression();
+
+            Expression def = (expression != null) ? Cast<VhdlElement, Expression>(VisitExpression(expression)) : null;
+            VHDL.type.ISubtypeIndication type = (subtype_indication != null) ? Cast<VhdlElement, VHDL.type.ISubtypeIndication>(VisitSubtype_indication(subtype_indication)) : null;
+
+            ConstantDeclaration res = new ConstantDeclaration();
+
+            foreach (var identifier in identifier_list.identifier())
+            {
+                string constant_name = identifier.GetText();
+                Constant c = new Constant(constant_name, type, def);
+
+                res.Objects.Add(c);
+            }
+
+            //--------------------------------------------------
+            AddAnnotations(res, context);
+            res.Parent = currentScope;
+            return res; 
+        }
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="vhdlParser.component_declaration"/>.
@@ -2295,7 +2322,7 @@ namespace VHDL_ANTLR4
 
             if (character_literal != null)
             {
-                CharacterLiteral literal = resolve<CharacterLiteral>(identifier.GetText());
+                VHDL.type.EnumerationType.CharacterEnumerationLiteral literal = resolve<VHDL.type.EnumerationType.CharacterEnumerationLiteral>(character_literal.GetText());
                 return literal;
             }
 
@@ -2463,9 +2490,9 @@ namespace VHDL_ANTLR4
         /// <return>The visitor result.</return>
         public override VhdlElement VisitName_slice_part(vhdlParser.Name_slice_partContext context)
         {
-            var discrete_ranges_in = context.discrete_range();
+            var ranges_in = context.range();
 
-            List<DiscreteRange> ranges = ParseList<vhdlParser.Discrete_rangeContext, DiscreteRange>(discrete_ranges_in, VisitDiscrete_range);
+            List<DiscreteRange> ranges = ParseList<vhdlParser.RangeContext, DiscreteRange>(ranges_in, VisitRange);
 
             Slice slice = new Slice(VHDL.parser.antlr.TemporaryName.CurrentName, ranges);
 
@@ -2896,7 +2923,7 @@ namespace VHDL_ANTLR4
                     res.CreateAssociation(exp);
                 }
             }
-            return VisitChildren(context); 
+            return res; 
         }
 
         /// <summary>
@@ -3474,10 +3501,18 @@ namespace VHDL_ANTLR4
         {
             RangeProvider res = null;
 
-            var name = context.name();
-            if(name != null)
+            var name_in = context.name();
+            if(name_in != null)
             {
-                res = resolve<RangeProvider>(name.GetText());
+                Name name = Parse<vhdlParser.NameContext, Name>(name_in, VisitName);
+                if (name is TypedName)
+                {
+                    res = new RangeAttributeName(name, RangeAttributeName.RangeAttributeNameType.RANGE);
+                }
+                else
+                {
+                    res = resolve<RangeProvider>(name_in.GetText());
+                }
                 return res;
             }
             else
