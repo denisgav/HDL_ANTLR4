@@ -56,7 +56,7 @@ namespace VHDL.builtin
         /// CHARACTER type. 
         //TODO: add missing enumeration literals
         //TODO: add characters
-        public static readonly EnumerationType CHARACTER = new EnumerationType("CHARACTER", "NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "HT", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "DC1", "DC2", "DC3", "DC4", "NAK", "SYN", "ETB", "CAN", "EM", "SUB", "ESC", "FSP", "GSP", "RSP", "USP", "DEL", "C128", "C129", "C130", "C131", "C132", "C133", "C134", "C135", "C136", "C137", "C138", "C139", "C140", "C141", "C142", "C143", "C144", "C145", "C146", "C147", "C148", "C149", "C150", "C151", "C152", "C153", "C154", "C155", "C156", "C157", "C158", "C159");
+        public static readonly EnumerationType CHARACTER = new EnumerationType("CHARACTER");
         /// SEVERITY_LEVEL type. 
         public static readonly EnumerationType SEVERITY_LEVEL = new EnumerationType("SEVERITY_LEVEL", "NOTE", "WARNING", "ERROR", "FAILURE");
         /// NOTE literal. 
@@ -169,6 +169,9 @@ namespace VHDL.builtin
             PACKAGE.Declarations.Add(BIT_VECTOR);
             PACKAGE.Declarations.Add(FILE_OPEN_KIND);
             PACKAGE.Declarations.Add(FILE_OPEN_STATUS);
+
+            CHARACTER.AddLiterals("NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "HT", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "DC1", "DC2", "DC3", "DC4", "NAK", "SYN", "ETB", "CAN", "EM", "SUB", "ESC", "FSP", "GSP", "RSP", "USP", "DEL", "C128", "C129", "C130", "C131", "C132", "C133", "C134", "C135", "C136", "C137", "C138", "C139", "C140", "C141", "C142", "C143", "C144", "C145", "C146", "C147", "C148", "C149", "C150", "C151", "C152", "C153", "C154", "C155", "C156", "C157", "C158", "C159");
+            CHARACTER.AddLiterals(' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', 	'8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~');
 
             TIME.createUnit("fs");
             TIME.createUnit("ps", 1000, "fs");

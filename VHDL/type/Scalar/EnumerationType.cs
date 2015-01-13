@@ -62,10 +62,24 @@ namespace VHDL.type
         public EnumerationType(string identifier, params char[] literals)
             : base(identifier)
         {
+            AddLiterals(literals);
+            
+        }
 
+
+        public void AddLiterals(params char[] literals)
+        {
             foreach (char literal in literals)
             {
                 this.literals.Add(new CharacterEnumerationLiteral(literal, this));
+            }
+        }
+
+        public void AddLiterals(params string[] literals)
+        {
+            foreach (string literal in literals)
+            {
+                this.literals.Add(new IdentifierEnumerationLiteral(literal, this));
             }
         }
 

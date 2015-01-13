@@ -204,7 +204,7 @@ namespace VHDL
                     {
                         var named = obj as INamedEntity;
                         if (named != null)
-                            if (named.Identifier == name)
+                            if (named.Identifier.Equals(name, StringComparison.InvariantCultureIgnoreCase))
                                 result.Add(named);
                     }
                 }

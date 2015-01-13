@@ -4948,16 +4948,19 @@ namespace VHDL_ANTLR4
 
                 if (library_clause_in != null)
                 {
-                    LibraryDeclarativeRegion loaded_library = LoadLibrary(library_clause_in.GetText());
-                    if (loaded_library != null)
-                        rootScope.AddLibrary(loaded_library);
+                    foreach (var library_in in library_clause_in.logical_name_list().logical_name())
+                    {
+                        LibraryDeclarativeRegion loaded_library = LoadLibrary(library_in.identifier().GetText());
+                        if (loaded_library != null)
+                            rootScope.AddLibrary(loaded_library);
+                    }
                 }
             }
             
             contextItems.Clear();
             contextItems.AddRange(uses);
 
-            return VisitChildren(context); 
+            return null; 
         }
 
         /// <summary>
@@ -5249,7 +5252,7 @@ namespace VHDL_ANTLR4
             //-------------------------------------------------------------
 
 
-            VHDL.statement.LoopStatement loop = Cast<VhdlElement, VHDL.statement.LoopStatement>(VisitIteration_scheme(iteration_scheme_in));
+            VHDL.statement.LoopStatement loop = (iteration_scheme_in != null)? Cast<VhdlElement, VHDL.statement.LoopStatement>(VisitIteration_scheme(iteration_scheme_in)) : new LoopStatement();
 
             loop.Label = label_begin;
             loop.Parent = oldScope;
@@ -5536,7 +5539,11 @@ namespace VHDL_ANTLR4
 
             VHDL.parser.antlr.TemporaryName tn = Parse<vhdlParser.Selected_nameContext, VHDL.parser.antlr.TemporaryName>(selected_name_in, VisitSelected_name);
 
-            ProcedureCall procedureCall = tn.GetProcedureCall(parameters);
+            // TODO: Add procedure call resolution code here !!!!!!!!!!!
+            //ProcedureCall procedureCall = tn.GetProcedureCall(parameters);
+
+            ProcedureDeclaration procedureDeclaration = tn.GetProcedure();
+            ProcedureCall procedureCall = new ProcedureCall(procedureDeclaration, parameters);
 
             return procedureCall; 
         }

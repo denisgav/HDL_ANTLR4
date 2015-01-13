@@ -230,24 +230,7 @@ namespace VHDL.parser.antlr
         public virtual VHDL.declaration.ProcedureDeclaration GetProcedure()
         {
             VHDL.declaration.ProcedureDeclaration procedure = resolve<VHDL.declaration.ProcedureDeclaration>(currentScore);
-            if (procedure != null)
-            {
-                return procedure;
-            }
-            else
-            {
-                string identifier = Identifier;
-                visitor.resolveError(context, ParseError.ParseErrorTypeEnum.PROCESS_TYPE_ERROR, identifier);
-
-                if (visitor.Settings.CreateDummyObjects)
-                {
-                    return new VHDL.declaration.ProcedureDeclaration(identifier);
-                }
-                else
-                {
-                    return null;
-                }
-            }
+            return procedure;
         }
 
 
