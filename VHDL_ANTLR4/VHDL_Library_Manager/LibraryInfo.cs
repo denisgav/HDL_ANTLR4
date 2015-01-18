@@ -22,7 +22,7 @@ using System.Text;
 using System.Xml;
 using VHDL;
 
-namespace VHDLParser
+namespace VHDL.parser
 {
     /// <summary>
     /// Информация о библиотеке

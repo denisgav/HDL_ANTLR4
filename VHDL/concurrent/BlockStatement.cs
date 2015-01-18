@@ -155,7 +155,7 @@ namespace VHDL.concurrent
 
             public virtual object Resolve(string identifier)
             {
-                if (parent.guardExpression != null && identifier.Equals("GUARD", System.StringComparison.InvariantCultureIgnoreCase))
+                if (parent.guardExpression != null && identifier.VHDLIdentifierEquals("GUARD"))
                 {
                     return new Signal("guard", Standard.BOOLEAN);
                 }

@@ -150,7 +150,7 @@ namespace VHDL.declaration
         {
             foreach(Attribute a in predefinedAttributes)
             {
-                if(a.identifier.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                if(a.identifier.VHDLIdentifierEquals(name))
                     return a;
             }
             return null;

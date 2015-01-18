@@ -23,7 +23,7 @@ using VHDL.libraryunit;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace VHDLParser
+namespace VHDL.parser
 {
     public class PackageInfo
     {

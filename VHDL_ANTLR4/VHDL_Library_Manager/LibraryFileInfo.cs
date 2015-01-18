@@ -22,7 +22,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace VHDLParser
+namespace VHDL.parser
 {
     public class LibraryFileInfo
     {
@@ -171,7 +171,7 @@ namespace VHDLParser
                         return true;
             foreach (ArchitectureInfo arch in architectures)
                 foreach (string entity in otherLibraryFile.entities)
-                    if (arch.EntityName.Equals(entity, StringComparison.InvariantCultureIgnoreCase))
+                    if (arch.EntityName.VHDLIdentifierEquals(entity))
                         return true;
             return false;
         }

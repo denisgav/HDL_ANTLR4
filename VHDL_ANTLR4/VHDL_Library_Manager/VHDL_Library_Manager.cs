@@ -119,18 +119,18 @@ namespace VHDL.parser
         /// <returns></returns>
         public bool ContainsLibrary(string libraryName)
         {
-            if (libraryName.Equals("work", StringComparison.InvariantCultureIgnoreCase))
+            if (libraryName.VHDLIdentifierEquals("work"))
                 return true;
             if (IsLibraryCompiled == false)
             {
                 foreach (LibraryInfo inf in compiler.ParsedLibraries)
-                    if (inf.Name.Equals(libraryName, StringComparison.InvariantCultureIgnoreCase))
+                    if (inf.Name.VHDLIdentifierEquals(libraryName))
                         return true;
             }
             else
             {
                 foreach (LibraryInfo inf in parsedLibraries)
-                    if (inf.Name.Equals(libraryName, StringComparison.InvariantCultureIgnoreCase))
+                    if (inf.Name.VHDLIdentifierEquals(libraryName))
                         return true;
             }
             return false;
@@ -173,7 +173,7 @@ namespace VHDL.parser
                 {
                     if (unit is PackageBody)
                     {
-                        if ((unit as PackageBody).Package.Identifier.Equals(PackageName, StringComparison.InvariantCultureIgnoreCase))
+                        if ((unit as PackageBody).Package.Identifier.VHDLIdentifierEquals(PackageName))
                         {
                             return (unit as PackageBody);
                         }

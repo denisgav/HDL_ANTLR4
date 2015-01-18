@@ -33,14 +33,14 @@ namespace VHDL.parser
     /// <summary>
     /// VHDL parser.
     /// </summary>
-    public class VhdlParser
+    public class VhdlParserWrapper
     {
         public static readonly VhdlParserSettings DEFAULT_SETTINGS = new VhdlParserSettings();
 
         /// <summary>
         /// Prevent instantiation.
         /// </summary>
-        private VhdlParser()
+        private VhdlParserWrapper()
         {
         }
 

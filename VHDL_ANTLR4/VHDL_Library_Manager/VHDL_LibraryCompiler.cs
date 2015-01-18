@@ -24,7 +24,7 @@ using VHDL.parser;
 using VHDL;
 using VHDL.libraryunit;
 
-namespace VHDLParser
+namespace VHDL.parser
 {
     public class VHDL_LibraryCompiler
     {
@@ -171,7 +171,7 @@ namespace VHDLParser
         /// </summary>
         private void CompileFiles()
         {
-            VhdlParserSettings settings = VhdlParser.DEFAULT_SETTINGS;
+            VhdlParserSettings settings = VhdlParserWrapper.DEFAULT_SETTINGS;
             settings.AddPositionInformation = true;
             RootDeclarativeRegion rootScope = new RootDeclarativeRegion();
             foreach (LibraryFileInfo file in compileQueue)
@@ -226,7 +226,7 @@ namespace VHDLParser
             try
             {
                 Console.WriteLine("parsing file {0} ", file.Path);
-                VhdlFile vhdfile = VhdlParser.parseFile(file.Path, settings, rootScope, currentLibrary.LibraryScope, libraryManager);
+                VhdlFile vhdfile = VhdlParserWrapper.parseFile(file.Path, settings, rootScope, currentLibrary.LibraryScope, libraryManager);
                 foreach (LibraryUnit unit in vhdfile.Elements)
                 {
                     if (unit is PackageDeclaration)
@@ -236,7 +236,7 @@ namespace VHDLParser
                         bool foundPackage = false;
                         foreach (PackageInfo inf in currentLibrary.Packages)
                         {
-                            if (inf.Name.Equals(pd.Identifier, StringComparison.InvariantCultureIgnoreCase))
+                            if (inf.Name.VHDLIdentifierEquals(pd.Identifier))
                             {
                                 inf.DeclarationPath = file.Path;
                                 string path = FormCompilePath(file.Path, "decl");
@@ -264,7 +264,7 @@ namespace VHDLParser
                         bool foundPackage = false;
                         foreach (PackageInfo inf in currentLibrary.Packages)
                         {
-                            if (inf.Name.Equals(pb.Package.Identifier, StringComparison.InvariantCultureIgnoreCase))
+                            if (inf.Name.VHDLIdentifierEquals(pb.Package.Identifier))
                             {
                                 inf.BodyPath = file.Path;
                                 string path = FormCompilePath(file.Path, "body");

@@ -57,19 +57,19 @@ namespace ParserSample
 
             // TODO: Implement Functionality Here
             string appBase = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            VHDLParser.Logger loggercompile = VHDLParser.Logger.CreateLogger(appBase, "compiler");
+            VHDL.parser.Logger loggercompile = VHDL.parser.Logger.CreateLogger(appBase, "compiler");
 
             VHDL_Library_Manager libraryManager = new VHDL_Library_Manager("", @"Libraries\LibraryRepository.xml", loggercompile);
-            libraryManager.Logger.OnWriteEvent += new VHDLParser.Logger.OnWriteDeleagte(Logger_OnWriteEvent);
+            libraryManager.Logger.OnWriteEvent += new VHDL.parser.Logger.OnWriteDeleagte(Logger_OnWriteEvent);
             libraryManager.LoadData(@"Libraries");
-            VhdlParserSettings settings = VhdlParser.DEFAULT_SETTINGS;
+            VhdlParserSettings settings = VhdlParserWrapper.DEFAULT_SETTINGS;
             RootDeclarativeRegion rootScope = new RootDeclarativeRegion();
             LibraryDeclarativeRegion currentLibrary = new LibraryDeclarativeRegion("work");
             rootScope.Libraries.Add(currentLibrary);
             rootScope.Libraries.Add(libraryManager.GetLibrary("STD"));
 
             Console.WriteLine("Parsing code");
-            VhdlFile file = VhdlParser.parseFile("sample.vhdl", settings, rootScope, currentLibrary, libraryManager);
+            VhdlFile file = VhdlParserWrapper.parseFile("sample.vhdl", settings, rootScope, currentLibrary, libraryManager);
             Console.WriteLine("Parsing complete");
 
 
@@ -77,7 +77,7 @@ namespace ParserSample
             Console.ReadKey(true);
         }
 
-        static void Logger_OnWriteEvent(VHDLParser.LoggerMessageVerbosity verbosity, string message)
+        static void Logger_OnWriteEvent(VHDL.parser.LoggerMessageVerbosity verbosity, string message)
         {
             Console.WriteLine(String.Format("[{0}] {1}", verbosity, message));
         }

@@ -221,7 +221,7 @@ namespace VHDL.expression
             if (expression is AttributeExpression)
             {
                 AttributeExpression ae = (AttributeExpression)expression;
-                if (!ae.Attribute.Identifier.Equals("event", System.StringComparison.InvariantCultureIgnoreCase))
+                if (!ae.Attribute.Identifier.VHDLIdentifierEquals("event"))
                 {
                     return false;
                 }
@@ -234,7 +234,7 @@ namespace VHDL.expression
                 if (not.Expression is AttributeExpression)
                 {
                     AttributeExpression ae = (AttributeExpression)not.Expression;
-                    if (!ae.Attribute.Identifier.Equals("stable", System.StringComparison.InvariantCultureIgnoreCase))
+                    if (!ae.Attribute.Identifier.VHDLIdentifierEquals("stable"))
                     {
                         return false;
                     }

@@ -50,24 +50,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressionType.cs" />
+    <Compile Include="util\ExpressionTypeCreator.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="ObjectSearcher.cs" />
-    <Compile Include="ParseError.cs" />
-    <Compile Include="Part.cs" />
+    <Compile Include="util\ObjectSearcher.cs" />
+    <Compile Include="vhdlParser\CastExtention.cs" />
+    <Compile Include="vhdlParser\ParseError.cs" />
+    <Compile Include="util\Part.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemporaryName.cs" />
+    <Compile Include="util\TemporaryName.cs" />
     <Compile Include="typeinfer\ExpressionInference.cs" />
     <Compile Include="typeinfer\LiteralInference.cs" />
     <Compile Include="typeinfer\TypeHelper.cs" />
     <Compile Include="typeinfer\TypeInference.cs" />
-    <Compile Include="util\CaseInsensitiveFileStream.cs" />
-    <Compile Include="util\CaseInsensitiveInputStream.cs" />
-    <Compile Include="util\CaseInsensitiveStringStream.cs" />
-    <Compile Include="vhdlListener.cs" />
-    <Compile Include="VhdlParser.cs" />
-    <Compile Include="VhdlParserSettings.cs" />
-    <Compile Include="vhdlVisitor.cs" />
+    <Compile Include="antlt_stream\CaseInsensitiveFileStream.cs" />
+    <Compile Include="antlt_stream\CaseInsensitiveInputStream.cs" />
+    <Compile Include="antlt_stream\CaseInsensitiveStringStream.cs" />
+    <Compile Include="vhdlParser\ParseExtention.cs" />
+    <Compile Include="vhdlParser\vhdlListener.cs" />
+    <Compile Include="vhdlParser\VhdlParserWrapper.cs" />
+    <Compile Include="vhdlParser\VhdlParserSettings.cs" />
+    <Compile Include="vhdlParser\vhdlVisitor.cs" />
+    <Compile Include="vhdlParser\vhdlAbstractVisitor.cs" />
     <Compile Include="VHDL_Library_Manager\ArchitectureInfo.cs" />
     <Compile Include="VHDL_Library_Manager\LibraryFileInfo.cs" />
     <Compile Include="VHDL_Library_Manager\LibraryInfo.cs" />
@@ -118,7 +121,7 @@
     </None>
     <None Include="Properties\app.config" />
     <None Include="Properties\packages.config" />
-    <Antlr4 Include="vhdl.g4" />
+    <Antlr4 Include="grammar\vhdl.g4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Antlr4.Runtime\Antlr4.Runtime.net40-client.csproj">

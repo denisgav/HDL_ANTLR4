@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace VHDLParser
+namespace VHDL.parser
 {
     public enum LoggerMessageVerbosity
     {
