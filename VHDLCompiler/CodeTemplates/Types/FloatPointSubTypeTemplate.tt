@@ -1,0 +1,57 @@
+﻿<#@ template language="C#" #>
+using System;
+using VHDLRuntime.Range;
+using VHDLRuntime.Types;
+using VHDLRuntime.Values;
+
+namespace <#= NameSpaceName#>
+{
+  [Serializable]
+  public class <#= Name #> : <#= BaseTypeName #>
+  {
+    private static FloatingPointRange floatingPointRange2;
+    private static VHDLFloatingPointType floatingPointType2;
+
+    public static FloatingPointRange FloatBase
+    {
+      get
+      {
+        if (floatingPointRange2 == null)
+		{
+			floatingPointRange2 =
+				new FloatingPointRange(
+					new VHDLFloatingPointValue(<#= RangeLeft#>),
+					new VHDLFloatingPointValue(<#= RangeRight#>),
+					<#= Direction#>);
+		}
+        return floatingPointRange2;
+      }
+    }
+
+    protected override VHDLFloatingPointType FloatType
+    {
+      get
+      {
+        if (floatingPointType2 == null)
+		{
+			floatingPointType2 = new VHDLFloatingPointType(FloatBase);
+		}
+        return floatingPointType2;
+      }
+    }
+
+    public <#= Name #>(double i)
+		:base(i)
+    {
+    }
+
+    public <#= Name #>(VHDLFloatingPointValue i)
+		: base(i)
+    {
+    }
+
+    public <#= Name #>()
+    {      
+    }
+  }
+}

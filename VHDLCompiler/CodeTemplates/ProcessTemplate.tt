@@ -1,0 +1,30 @@
+﻿<#@ template language="C#" #>
+
+#region <#= Name #>
+
+
+//**********************************//
+//**** Declaration of the <#= Name #>
+//**********************************//
+
+	<# foreach (var item in DeclarationList) 
+	{ #>
+	<#= item #>
+	<# } // end of foreach #>
+
+//**********************************//
+//**** Body of the <#= Name #>
+//**********************************//
+    public void <#= Name #>(ProcessRuntimeInfo pi)
+    {
+		<# foreach (var item in StatementList) 
+		{ #>
+		<#= item #>;
+		<# } // end of foreach #>
+    }
+
+//**********************************//
+//**** End
+//**********************************//
+
+#endregion 

@@ -1,0 +1,61 @@
+﻿<#@ template language="C#" #>
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+using VHDLRuntime.Range;
+using VHDLRuntime.Values;
+
+namespace <#= NameSpaceName#>
+{
+    [Serializable]
+    public class <#= Name #>_Enum : EnumBaseType<<#= Name #>_Enum>
+    {
+		<# foreach (var item in dict) 
+		// Items that declared in type definition
+		{ #>
+			public static <#= Name #>_Enum <#= item.FieldName #> = new <#= Name #>_Enum(<#= item.Key.ToString() #>, "<#= item.FieldName #>");
+		<# } // end of foreach #>
+
+        static <#= Name #>_Enum()
+        {
+            Init();
+        }
+
+        public <#= Name #>_Enum(int idx, string value)
+            : base(idx, value)
+        {
+        }
+
+        public static void Init()
+        {
+			<# foreach (var item in dict) 
+			// Items that declared in type definition
+			{ #>
+				if (<#= item.FieldName #> == null)
+					<#= item.FieldName #> = new <#= Name #>_Enum(<#= item.Key.ToString() #>, "<#= item.FieldName #>");
+			<# } // end of foreach #>
+        }
+    }
+
+    [Serializable]
+    public class <#= Name #> : VHDLEnumValue<<#= Name #>_Enum>
+    {
+        public <#= Name #>(<#= Name #>_Enum Value)
+            : base(Value)
+        {
+            <#= Name #>_Enum.Init();
+        }
+
+        public <#= Name #>()
+			: this(<#= Name #>_Enum.<#= dict[0].FieldName #>)
+        {
+        }
+
+        public static implicit operator <#= Name #>(<#= Name #>_Enum Value)
+        {
+            return new <#= Name #>(Value);
+        }
+
+    }
+}

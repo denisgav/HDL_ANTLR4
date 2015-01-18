@@ -1,0 +1,57 @@
+﻿<#@ template language="C#" #>
+using System;
+using VHDLRuntime.Range;
+using VHDLRuntime.Types;
+using VHDLRuntime.Values;
+
+namespace <#= NameSpaceName#>
+{
+  [Serializable]
+  public class <#= Name #> : VHDLIntegerValue
+  {
+    protected static IntegerRange integerRange;
+    protected static VHDLIntegerType integerType;
+
+    public virtual IntegerRange IntegerRange
+    {
+      get
+      {
+        if (integerRange == null)
+		{
+          integerRange = 
+			new IntegerRange(
+				new VHDLIntegerValue(<#= RangeLeft#>),
+				new VHDLIntegerValue(<#= RangeRight#>),
+				<#= Direction#>);
+		}
+        return integerRange;
+      }
+    }
+
+
+    protected override VHDLIntegerType IntegerType
+    {
+      get
+      {
+        if (integerType == null)
+          integerType = new VHDLIntegerType(this.IntegerRange);
+        return integerType;
+      }
+    }
+
+    public <#= Name #>(long i)
+    {
+      this.init(i);
+    }
+
+    public <#= Name #>(VHDLIntegerValue i)
+    {
+      this.init(i.Value);
+    }
+
+    public <#= Name #>()
+    {
+      this.init(0L);
+    }
+  }
+}

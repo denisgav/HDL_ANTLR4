@@ -1,0 +1,3 @@
+﻿<#@ template language="C#" #>
+
+Variable<<#= TypeName #>> <#= Name #>	= new Variable<<#= TypeName #>>(new <#= TypeName #>(<# for(int i=0; i<ConstructorParameters.Length; i++){#><#= ConstructorParameters[i] #><#if(i != (ConstructorParameters.Length - 1) ){#>, <#}#><# } // end of foreach #>));

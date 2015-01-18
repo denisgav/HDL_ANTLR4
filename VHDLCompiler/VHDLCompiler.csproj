@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1B9E7B24-C8C3-47FA-8AC5-2278B08C8571}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VHDLCompiler</RootNamespace>
+    <AssemblyName>VHDLCompiler</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeGenerator\EnumBaseTypeInfo.cs" />
+    <Compile Include="CodeGenerator\EnumTypeGeneratorHelper.cs" />
+    <Compile Include="CodeGenerator\FloatingPointSubTypeGeneratorHelper.cs" />
+    <Compile Include="CodeGenerator\FloatingPointTypeGeneratorHelper.cs" />
+    <Compile Include="CodeGenerator\IntegerSubTypeGeneratorHelper.cs" />
+    <Compile Include="CodeGenerator\IntegerTypeGeneratorHelper.cs" />
+    <Compile Include="CodeGenerator\PhysicalTypeBaseInfo.cs" />
+    <Compile Include="CodeGenerator\PhysicalTypeGeneratorHelper.cs" />
+    <Compile Include="CodeGenerator\VHDLExpressionTypeGenerator.cs" />
+    <Compile Include="CodeGenerator\VHDLOperandGenerator.cs" />
+    <Compile Include="CodeTemplates\ArchitectureTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArchitectureTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CodeTemplates\ArchitectureTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Declarations\SignalDeclarationTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Declarations\SignalDeclarationTemplate.cs">
+      <DependentUpon>SignalDeclarationTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Statements\RegisterDutyCycleDelayEvent.cs">
+      <DependentUpon>RegisterDutyCycleDelayEvent.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Statements\RegisterDutyCycleDelayEventCode.cs" />
+    <Compile Include="CodeTemplates\Statements\RegisterInertialDelayEvent.cs">
+      <DependentUpon>RegisterInertialDelayEvent.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Statements\RegisterInertialDelayEventCode.cs" />
+    <Compile Include="CodeTemplates\Statements\RegisterTransportDelayEvent.cs">
+      <DependentUpon>RegisterTransportDelayEvent.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Statements\RegisterTransportDelayEventCode.cs" />
+    <Compile Include="CodeTemplates\Statements\WhileTemplate.cs">
+      <DependentUpon>WhileTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Statements\WhileTemplateCode.cs" />
+    <Compile Include="CodeTemplates\VariableAssignTemplate.cs">
+      <DependentUpon>VariableAssignTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\VariableAssignTemplateCode.cs" />
+    <Compile Include="CodeTemplates\ProcesRoutineInfo.cs" />
+    <Compile Include="CodeTemplates\ProcessTemplate.cs">
+      <DependentUpon>ProcessTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Declarations\VariableDeclarationTemplate.cs">
+      <DependentUpon>VariableDeclarationTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Declarations\VariableDeclarationTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Helpers\FunctionCallTemplate.cs">
+      <DependentUpon>FunctionCallTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Helpers\FunctionCallTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Helpers\NewStatementTemplate.cs">
+      <DependentUpon>NewStatementTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Helpers\NewStatementTemplateCode.cs" />
+    <Compile Include="CodeTemplates\ProcessTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Statements\ForTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Statements\ForTemplate.cs">
+      <DependentUpon>ForTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Statements\ForRangeTemplate.cs">
+      <DependentUpon>ForRangeTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Statements\ForRangeTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Statements\IfTemplate.cs">
+      <DependentUpon>IfTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Statements\IfTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Types\PhysicalTypeTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Types\PhysicalTypeTemplate.cs">
+      <DependentUpon>PhysicalTypeTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Types\EnumTypeTemplate.cs">
+      <DependentUpon>EnumTypeTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Types\EnumTypeTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Types\FloatPointSubTypeTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Types\FloatPointSubTypeTemplate.cs">
+      <DependentUpon>FloatPointSubTypeTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Types\FloatPointTypeTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Types\FloatPointTypeTemplate.cs">
+      <DependentUpon>FloatPointTypeTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Types\IntegerSubTypeTemplateCode.cs" />
+    <Compile Include="CodeTemplates\Types\IntegerSubTypeTemplate.cs">
+      <DependentUpon>IntegerSubTypeTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Types\IntegerTypeTemplate.cs">
+      <DependentUpon>IntegerTypeTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeTemplates\Types\IntegerTypeTemplateCode.cs" />
+    <Compile Include="Dictionaries\VHDLTypeRangeDictionary.cs" />
+    <Compile Include="Dictionaries\VHDLLiteralDictionary.cs" />
+    <Compile Include="Dictionaries\VHDLObjectDictionary.cs" />
+    <Compile Include="CodeGenerator\VHDLRangeGenerator.cs" />
+    <Compile Include="Dictionaries\VHDLTypeDictionary.cs" />
+    <Compile Include="VHDLCompilerInterface.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VHDLObserver\ArchitectureObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VHDLObserver\BlockDeclarationObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VHDLObserver\ConcurrentStatementsObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VHDLObserver\SignalDeclarationObserver.cs" />
+    <Compile Include="VHDLObserver\PackageDeclarationObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VHDLObserver\ProcessDeclarationObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VHDLObserver\ProcessObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VHDLObserver\SequentialStatementObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VHDLObserver\Type\BuiltInTypesDictionary.cs" />
+    <Compile Include="VHDLObserver\Type\SubTypeObserver.cs" />
+    <Compile Include="VHDLObserver\Type\TypeObserver.cs" />
+    <Compile Include="VHDLObserver\VariableDeclarationObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VHDLObserver\VHDLObserverBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VHDLRuntime\VHDLRuntime.csproj">
+      <Project>{9591F671-2578-4B75-9A4B-FF96F823135A}</Project>
+      <Name>VHDLRuntime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VHDL\VHDL.csproj">
+      <Project>{BC4213CF-B989-47AA-A3F9-39269FB2CE01}</Project>
+      <Name>VHDL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VHDL_ANTLR4\VHDL_ANTLR4.csproj">
+      <Project>{6D59ABA1-C75B-4B44-BAAC-0FA6B2F05B5F}</Project>
+      <Name>VHDL_ANTLR4</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CodeTemplates\ArchitectureTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ArchitectureTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Declarations\SignalDeclarationTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SignalDeclarationTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Statements\RegisterDutyCycleDelayEvent.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RegisterDutyCycleDelayEvent.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Statements\RegisterInertialDelayEvent.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RegisterInertialDelayEvent.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Statements\RegisterTransportDelayEvent.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RegisterTransportDelayEvent.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Statements\WhileTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>WhileTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\VariableAssignTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>VariableAssignTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\ProcessTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ProcessTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Declarations\VariableDeclarationTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>VariableDeclarationTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Helpers\FunctionCallTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>FunctionCallTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Helpers\NewStatementTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>NewStatementTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Statements\ForTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ForTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Statements\ForRangeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ForRangeTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Statements\IfTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IfTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Types\PhysicalTypeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PhysicalTypeTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Types\EnumTypeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EnumTypeTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Types\FloatPointSubTypeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>FloatPointSubTypeTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Types\FloatPointTypeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>FloatPointTypeTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Types\IntegerSubTypeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IntegerSubTypeTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="CodeTemplates\Types\IntegerTypeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IntegerTypeTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

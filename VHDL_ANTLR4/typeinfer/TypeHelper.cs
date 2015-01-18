@@ -1,7 +1,7 @@
 ﻿using VHDL.type;
 using VHDL.declaration;
 
-namespace VHDLParser.typeinfer
+namespace VHDL.parser.typeinfer
 {
     class TypeHelper : ISubtypeIndicationVisitor
     {

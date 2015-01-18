@@ -215,14 +215,14 @@ namespace VHDL.parser.antlr
 
         public virtual VHDL.expression.FunctionCall ResolveFunctionCall(List<AssociationElement> arguments, VHDL.type.ISubtypeIndication currentAssignTarget, List<VHDL.declaration.FunctionDeclaration> candidates)
         {
-            VHDL.declaration.FunctionDeclaration declaration = VHDLParser.typeinfer.TypeInference.ResolveOverloadFunction(currentScore, candidates, arguments, currentAssignTarget);
+            VHDL.declaration.FunctionDeclaration declaration = VHDL.parser.typeinfer.TypeInference.ResolveOverloadFunction(currentScore, candidates, arguments, currentAssignTarget);
             VHDL.expression.FunctionCall call = new VHDL.expression.FunctionCall(declaration, arguments);
             return call;
         }
 
         public virtual VHDL.statement.ProcedureCall ResolveProcedureCall(List<AssociationElement> arguments, List<VHDL.declaration.ProcedureDeclaration> candidates)
         {
-            VHDL.declaration.ProcedureDeclaration declaration = VHDLParser.typeinfer.TypeInference.ResolveOverloadProcedure(currentScore, candidates, arguments);
+            VHDL.declaration.ProcedureDeclaration declaration = VHDL.parser.typeinfer.TypeInference.ResolveOverloadProcedure(currentScore, candidates, arguments);
             VHDL.statement.ProcedureCall call = new VHDL.statement.ProcedureCall(declaration, arguments);
             return call;
         }

@@ -25,7 +25,6 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using VHDL.parser;
 using VHDL.parser.util;
-using VHDLParser;
 using VHDL.libraryunit;
 
 namespace VHDL.parser

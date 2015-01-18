@@ -1,0 +1,49 @@
+﻿<#@ template language="C#" #>
+using System;
+using System.Collections.Generic;
+using VHDLRuntime;
+using VHDLRuntime.Range;
+using VHDLRuntime.Values;
+using VHDLRuntime.Values.BuiltIn;
+using VHDLRuntime.Objects;
+
+namespace <#= NameSpaceName#>
+{
+    [Serializable]
+    public class <#= Name #> : ArchitectureBase
+    {
+		public  <#= Name #>()
+			: this("<#= Name #>")
+        {
+        }
+        
+        public <#= Name #>(string name)
+			:base (name)
+        {
+			<# foreach (var signal in SignalNameList) 
+			{ #>
+				RegisterSignal(<#= signal #>);
+			<# } // end of foreach #>
+
+			<# foreach (var pi in ProcessList) 
+			{ #>
+				RegisterProcess(<#= pi.Name#>, new List<Signal>() {<#for(int i=0; i<pi.SensitivityList.Count; i++){#><#= pi.SensitivityList[i] #><#if(i != (pi.SensitivityList.Count - 1) ){#>, <#}#><# } // end of foreach #>});
+			<# } // end of foreach #>
+        }
+
+		<# foreach (var item in DeclarationList) 
+		{ #>
+			<#= item #>
+		<# } // end of foreach #>
+
+		<# foreach (var item in ProcessList) 
+		{ #>
+			<#= item.Routine #>
+		<# } // end of foreach #>
+
+		public override void MainFunction()
+		{
+			base.MainFunction();
+		}
+    }
+}

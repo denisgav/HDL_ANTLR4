@@ -1,0 +1,2 @@
+﻿<#@ template language="C#" #>
+<#if( ObjectName != null ){#><#= ObjectName#>.<#}#><#= FunctionName#>(<# for(int i=0; i<Parameters.Length; i++){#><#= Parameters[i] #><#if(i != (Parameters.Length - 1) ){#>, <#}#><# } // end of foreach #>)

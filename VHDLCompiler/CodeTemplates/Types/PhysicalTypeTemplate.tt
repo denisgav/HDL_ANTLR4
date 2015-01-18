@@ -1,0 +1,91 @@
+﻿<#@ template language="C#" #>
+using System;
+using VHDLRuntime;
+using VHDLRuntime.Types;
+using VHDLRuntime.Range;
+using VHDLRuntime.Values;
+
+namespace <#= NameSpaceName#>
+{
+    [Serializable]
+    public class <#= Name #>_PhysicalValue : PhysicalUnitBaseType<<#= Name #>_PhysicalValue>
+    {
+		<# foreach (var item in dict) 
+		// Items that declared in type definition
+		{ #>
+			public static <#= Name #>_PhysicalValue <#= item.UnitName #>;
+		<# } // end of foreach #>
+
+
+        static <#= Name #>_PhysicalValue()
+        {
+            TIME_PhysicalValue.Init();
+        }
+
+        public <#= Name #>_PhysicalValue(long multiplier, string unitName)
+            : base(multiplier, unitName)
+        {
+        }
+
+        public <#= Name #>_PhysicalValue(long multiplier, string unitName, string baseUnitName)
+            : base(multiplier, unitName, baseUnitName)
+        {
+        }
+
+        public static void Init()
+        {
+			<# foreach (var item in dict) 
+			// Items that declared in type definition
+			{ #>
+				if (<#= item.UnitName #> == null)
+				{
+					<#= item.UnitName #> = new TIME_PhysicalValue(<#= item.Multiplier.ToString() #>, "<#= item.UnitName #>", "<#= item.BaseUnitName #>");
+				}
+			<# } // end of foreach #>            
+        }
+    }
+
+
+
+    public class <#= Name #> : VHDLPhysicalValue<<#= Name #>_PhysicalValue>
+    {
+        private static VHDLPhysicalType<<#= Name #>_PhysicalValue> physType;
+
+        public static VHDLPhysicalType<<#= Name #>_PhysicalValue> PhysType
+        {
+            get
+            {
+                if (physType == null)
+                {
+                    physType = new VHDLPhysicalType<<#= Name #>_PhysicalValue>(<#= RangeLeft#>, <#= RangeRight#>, <#= Direction#>);
+                }
+                return physType;
+            }
+        }
+
+        static <#= Name #>()
+        {
+            <#= Name #>_PhysicalValue.Init();
+        }
+
+        public <#= Name #>(long value, string unitName)
+            : base(PhysType, value, unitName)
+        {
+        }
+
+        public <#= Name #>()
+            : base(PhysType)
+        {
+        }
+
+        public <#= Name #>(long value)
+            : base(PhysType, value)
+        {
+        }
+
+        public <#= Name #>(VHDLPhysicalValue<<#= Name #>_PhysicalValue> value)
+            : base(PhysType, value)
+        {
+        }
+    }
+}

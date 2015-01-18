@@ -1,0 +1,26 @@
+﻿<#@ template language="C#" #>
+
+if(<#= Condition#>)
+{
+	<# foreach (var item in Statements) 
+	{ #>
+		<#= item#>;
+	<# } // end of foreach #>
+}
+<# foreach (var elsIf in ElsifParts) 
+{ #>
+	else if(<#= elsIf.Condition#>)
+	{
+	<# foreach (var item in elsIf.Statements) 
+	{ #>
+		<#= item#>;
+	<# } // end of foreach #>
+	}
+<# } // end of foreach #>
+else
+{
+	<# foreach (var item in ElseStatements) 
+	{ #>
+		<#= item#>;
+	<# } // end of foreach #>
+}

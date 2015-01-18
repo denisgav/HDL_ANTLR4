@@ -8,7 +8,7 @@ using VHDL.util;
 using VHDL.Object;
 using VHDL;
 
-namespace VHDLParser.typeinfer
+namespace VHDL.parser.typeinfer
 {
     public class TypeInference
     {

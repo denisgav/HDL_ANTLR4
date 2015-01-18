@@ -1,0 +1,2 @@
+﻿<#@ template language="C#" #>
+<#= SchedulerName#>.RegisterInertialDelayEvent(<#= SignalName#>, <#if(Regection != "None"){#>Regection, <#}#> <# for(int i=0; i<Events.Count; i++){#><#= Events[i] #><#if(i != (Events.Count - 1) ){#>, <#}#><# } // end of foreach #>);

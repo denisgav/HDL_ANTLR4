@@ -4,7 +4,7 @@ using VHDL.type;
 using VHDL;
 using VHDL.declaration;
 
-namespace VHDLParser.typeinfer
+namespace VHDL.parser.typeinfer
 {
     class ExpressionInference : ExpressionVisitor
     {

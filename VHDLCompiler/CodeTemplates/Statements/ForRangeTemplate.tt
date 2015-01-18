@@ -1,0 +1,10 @@
+﻿<#@ template language="C#" #>
+{
+    foreach (var <#= IndexName#> in new <#= RangeType#>(<#= RangeLeft#>, <#= RangeRight#>, <#= RangeDirection#>))
+    {
+        <# foreach (var item in Statements) 
+		{ #>
+			<#= item#>;
+		<# } // end of foreach #>
+    }
+}

@@ -1,7 +1,7 @@
 ﻿using VHDL.literal;
 using VHDL.type;
 
-namespace VHDLParser.typeinfer
+namespace VHDL.parser.typeinfer
 {
     class LiteralInference : ILiteralVisitor
     {

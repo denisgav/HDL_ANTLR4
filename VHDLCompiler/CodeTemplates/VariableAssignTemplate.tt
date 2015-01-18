@@ -1,0 +1,2 @@
+﻿<#@ template language="C#" #>
+<#= Target#>.Assign(new <#= TargetType#>(<#= Value#>));

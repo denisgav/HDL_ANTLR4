@@ -1,0 +1,10 @@
+﻿<#@ template language="C#" #>
+{
+    foreach (var <#= IndexName#> in new <#= RangeType#>(<# for(int i=0; i<Parameters.Count; i++){#><#= Parameters[i] #><#if(i != (Parameters.Count - 1) ){#>, <#}#><# } // end of foreach #>))
+    {
+        <# foreach (var item in Statements) 
+		{ #>
+			<#= item#>;
+		<# } // end of foreach #>
+    }
+}
