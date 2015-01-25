@@ -83,31 +83,18 @@ namespace ModelingSystemTest
                     }
                 }
             }
-            /*
-        catch (SyntaxExceptionScope ex)
-        {
-            Console.WriteLine(ex.Message);
-            foreach (RecognitionException err in ex.Errors)
+            catch (InvalidOperationException ex)
             {
-                Console.WriteLine(VhdlParser.errorToMessage(err));
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Source);
+                Console.WriteLine(ex.StackTrace);
             }
-        }
-        catch (SemanticExceptionScope ex)
-        {
-            Console.WriteLine(ex.Message);
-            foreach (ParseError err in ex.Errors)
+            catch (Exception ex)
             {
-                Console.WriteLine(VhdlParser.errorToMessage(err));
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Source);
+                Console.WriteLine(ex.StackTrace);
             }
-        }
-                
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine(ex.Source);
-            Console.WriteLine(ex.StackTrace);
-        }
-            */
             catch { }
             Console.ReadKey();
         }

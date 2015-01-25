@@ -128,7 +128,7 @@ namespace VHDLCompiler
 
             // Reference to System.Drawing library
             parameters.ReferencedAssemblies.Add("VHDLRuntime.dll");
-            parameters.ReferencedAssemblies.Add("VHDLParser.dll");
+            parameters.ReferencedAssemblies.Add("VHDL_ANTLR4.dll");
             // True - memory generation, false - external file generation
             parameters.GenerateInMemory = false;
             // True - exe file generation, false - dll file generation

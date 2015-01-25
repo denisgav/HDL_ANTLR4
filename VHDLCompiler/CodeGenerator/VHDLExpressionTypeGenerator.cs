@@ -158,6 +158,21 @@ namespace VHDLCompiler.CodeGenerator
                 return GetIdentifierEnumerationLiteralExpresstionType(expression as VHDL.type.EnumerationType.IdentifierEnumerationLiteral, compiler);
             }
 
+            if (expression is Signal)
+            {
+                return compiler.TypeDictionary[(expression as Signal).Type];
+            }
+
+            if (expression is Variable)
+            {
+                return compiler.TypeDictionary[(expression as Variable).Type];
+            }
+
+            if (expression is Constant)
+            {
+                return compiler.TypeDictionary[(expression as Constant).Type];
+            }
+
             throw new NotImplementedException();
         }
 

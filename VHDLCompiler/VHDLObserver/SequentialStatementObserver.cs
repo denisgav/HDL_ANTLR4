@@ -137,7 +137,7 @@ namespace VHDLCompiler.VHDLObserver
             if (interpretedTarget is Expression)
             {
                 string target = VHDLOperandGenerator.GetOperand(interpretedTarget as Expression, compiler, false);
-                if (statement.DelayMechanism == VHDL.DelayMechanism.DUTY_CYCLE)
+                if ((statement.Waveform.Count == 1) && (statement.Waveform[0].After == null))
                 {
                     string value = VHDLOperandGenerator.GetOperand(statement.Waveform[0].Value, compiler);
                     RegisterDutyCycleDelayEvent template = new RegisterDutyCycleDelayEvent(target, value);
@@ -161,7 +161,7 @@ namespace VHDLCompiler.VHDLObserver
                         else
                         {
                             string Rejection = VHDLOperandGenerator.GetOperand(statement.DelayMechanism.PulseRejectionLimit, compiler);
-                            template = new RegisterInertialDelayEvent(target, events);                            
+                            template = new RegisterInertialDelayEvent(target, events, Rejection);                            
                         }
                         code = template.TransformText();
                     }
