@@ -132,7 +132,6 @@
       <Visitor>True</Visitor>
       <Listener>True</Listener>
       <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Antlr4>
   </ItemGroup>
   <ItemGroup>

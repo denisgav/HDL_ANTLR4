@@ -82,10 +82,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Antlr4.Runtime\Antlr4.Runtime.net40-client.csproj">
-      <Project>{423978DF-85A4-409E-A16C-453683FE3969}</Project>
-      <Name>Antlr4.Runtime.net40-client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VHDLCompiler\VHDLCompiler.csproj">
       <Project>{1B9E7B24-C8C3-47FA-8AC5-2278B08C8571}</Project>
       <Name>VHDLCompiler</Name>
