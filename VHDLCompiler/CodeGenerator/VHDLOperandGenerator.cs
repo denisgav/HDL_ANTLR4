@@ -148,6 +148,15 @@ namespace VHDLCompiler.CodeGenerator
             if (expression is CharacterLiteral)
                 throw new NotImplementedException();
 
+            if (expression is VHDL.type.EnumerationType.CharacterEnumerationLiteral)
+            {
+                VHDL.type.EnumerationType.CharacterEnumerationLiteral character_literal = expression as VHDL.type.EnumerationType.CharacterEnumerationLiteral;
+                string exp_type = compiler.TypeDictionary[expression.Type];
+                string value = string.Format("{0}_Enum.item_{1}", exp_type, character_literal.getLiteral());
+                NewStatementTemplate template = new NewStatementTemplate(exp_type, value);
+                return template.TransformText();
+            }
+
             if (expression is PhysicalLiteral)
             {
                 return GetPhysicalLiteralOperand(expression as PhysicalLiteral, compiler);

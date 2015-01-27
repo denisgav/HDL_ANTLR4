@@ -151,7 +151,12 @@ namespace VHDLCompiler.VHDLObserver
                         events.Add(GetScheduledEvent(compiler, wfe));
                     }
 
-                    if (statement.DelayMechanism == VHDL.DelayMechanism.INERTIAL)
+                    if (statement.DelayMechanism == VHDL.DelayMechanism.TRANSPORT)
+                    {
+                        RegisterTransportDelayEvent template = new RegisterTransportDelayEvent(target, events);
+                        code = template.TransformText();
+                    }
+                    else
                     {
                         RegisterInertialDelayEvent template;
                         if (statement.DelayMechanism.PulseRejectionLimit == null)
@@ -161,13 +166,8 @@ namespace VHDLCompiler.VHDLObserver
                         else
                         {
                             string Rejection = VHDLOperandGenerator.GetOperand(statement.DelayMechanism.PulseRejectionLimit, compiler);
-                            template = new RegisterInertialDelayEvent(target, events, Rejection);                            
+                            template = new RegisterInertialDelayEvent(target, events, Rejection);
                         }
-                        code = template.TransformText();
-                    }
-                    else
-                    {
-                        RegisterTransportDelayEvent template = new RegisterTransportDelayEvent(target, events);
                         code = template.TransformText();
                     }
                 }

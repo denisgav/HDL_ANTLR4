@@ -134,7 +134,7 @@ namespace VHDLRuntime.Values.BuiltIn
 
         public BIT Not()
         {
-            if (typedValue == BIT_Enum.item_0)
+            if (typedValue.Equals(BIT_Enum.item_0))
                 return new BIT(BIT_Enum.item_1);
             else
                 return new BIT(BIT_Enum.item_0);
