@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <Import Project="..\packages\Antlr4.4.4.1-alpha001\build\Antlr4.props" Condition="Exists('..\packages\Antlr4.4.4.1-alpha001\build\Antlr4.props')" />
-  <Import Project="..\packages\Antlr4.4.3.0\build\Antlr4.props" Condition="Exists('..\packages\Antlr4.4.3.0\build\Antlr4.props')" />
   <PropertyGroup>
     <ProjectGuid>{6D59ABA1-C75B-4B44-BAAC-0FA6B2F05B5F}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -131,6 +130,8 @@
       <Visitor>True</Visitor>
       <Listener>True</Listener>
       <Generator>MSBuild:Compile</Generator>
+      <TargetLanguage>CSharp</TargetLanguage>
+      <ForceAtn>False</ForceAtn>
     </Antlr4>
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +141,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Antlr4.4.3.0\build\Antlr4.targets" Condition="Exists('..\packages\Antlr4.4.3.0\build\Antlr4.targets')" />
   <Import Project="..\packages\Antlr4.4.4.1-alpha001\build\Antlr4.targets" Condition="Exists('..\packages\Antlr4.4.4.1-alpha001\build\Antlr4.targets')" />
 </Project>
