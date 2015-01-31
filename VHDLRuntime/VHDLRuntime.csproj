@@ -117,12 +117,6 @@
     <Compile Include="Values\VHDLScalarValue.cs" />
     <Compile Include="Values\VHDL_Values_Interface\IVHDLPhysicalValue.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.csproj">
-      <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
-      <Name>Antlr3.Runtime</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
