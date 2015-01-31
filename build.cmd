@@ -14,7 +14,7 @@ if not defined VS100COMNTOOLS (
 )
 
 :: Enforce package restore to avoid build issues. See http://go.microsoft.com/fwlink/?LinkID=317568 for more details
-nuget restore %SOLUTION_NAME%
+.nuget\NuGet.exe restore %SOLUTION_NAME%
 
 set config=%1
 if "%config%" == "" (
