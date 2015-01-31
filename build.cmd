@@ -8,13 +8,14 @@ if not defined VS100COMNTOOLS (
     if not defined VS120COMNTOOLS (
         if not defined VS140COMNTOOLS (
             echo "Error: build.cmd should be run from a Visual Studio (2010 or above) Command Prompt."
+            echo "It's located in Microsoft Visual Studio XX.X\VC\vcvarsall.bat"
             exit /b 1
         )
     )
 )
 
 :: Enforce package restore to avoid build issues. See http://go.microsoft.com/fwlink/?LinkID=317568 for more details
-.nuget\NuGet.exe restore %SOLUTION_NAME%
+tools\NuGet.exe restore %SOLUTION_NAME%
 
 set config=%1
 if "%config%" == "" (
