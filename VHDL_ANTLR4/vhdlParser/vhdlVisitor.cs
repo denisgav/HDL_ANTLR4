@@ -42,7 +42,6 @@ namespace VHDL_ANTLR4
     using VhdlElement = VHDL.VhdlElement;
     using DeclarativeItemMarker = VHDL.declaration.IDeclarativeItemMarker;
     using VhdlParserSettings = VHDL.parser.VhdlParserSettings;
-    using ParseError = VHDL.parser.ParseError;
     using PositionInformation = VHDL.annotation.PositionInformation;
     using SourcePosition = VHDL.annotation.SourcePosition;
     using Comments = VHDL.util.Comments;

@@ -19,6 +19,7 @@ using Verilog_ANTLR4;
 using VHDL_ANTLR4;
 using VHDL.parser;
 using VHDL;
+using VHDL.ParseError;
 
 namespace ParserSample
 {
@@ -68,9 +69,33 @@ namespace ParserSample
             rootScope.Libraries.Add(currentLibrary);
             rootScope.Libraries.Add(libraryManager.GetLibrary("STD"));
 
-            Console.WriteLine("Parsing code");
-            VhdlFile file = VhdlParserWrapper.parseFile("sample.vhdl", settings, rootScope, currentLibrary, libraryManager);
-            Console.WriteLine("Parsing complete");
+            bool success = true;
+            try
+            {
+                Console.WriteLine("Parsing code");
+                VhdlFile file = VhdlParserWrapper.parseFile("sample.vhdl", settings, rootScope, currentLibrary, libraryManager);
+            }
+            catch (vhdlParseException ex)
+            {
+                Console.WriteLine(string.Format("{0} {1}:{2} {3} {4} {5}", ex.FilePath, ex.Line, ex.CharPositionInLine, ex.OffendingSymbol.Text, ex.Message, ex.InnerException));
+                Console.WriteLine("Parsing failed");
+                success = false;
+            }
+            catch (vhdlSemanticException ex)
+            {
+                Console.WriteLine(ex.GetConsoleMessageTest());
+                Console.WriteLine("Parsing failed");
+                success = false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(string.Format("{0} {1} {2} \n {3}", ex.Message, ex.InnerException, ex.Source, ex.StackTrace));
+                Console.WriteLine("Parsing failed");
+                success = false;
+            }
+            if(success)
+                Console.WriteLine("Parsing complete");
+            
 
 
             Console.Write("Press any key to continue . . . ");

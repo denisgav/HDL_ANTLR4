@@ -47,10 +47,18 @@ namespace VHDL.parser
         private static VhdlFile parse(VhdlParserSettings settings, ICharStream stream, RootDeclarativeRegion rootScope, LibraryDeclarativeRegion libraryScope, VHDL_Library_Manager libraryManager)
         {
             vhdlLexer lexer = new vhdlLexer(stream);
+
             CommonTokenStream tokens = new CommonTokenStream(lexer);
-            vhdlListener listener = new vhdlListener();
             vhdlParser parser = new vhdlParser(tokens);
-            parser.AddParseListener(listener);
+
+            //--------------------------------------------
+            //Optional - add listener
+            //vhdlListener listener = new vhdlListener();
+            //parser.AddParseListener(listener);
+            //--------------------------------------------
+            vhdlSemanticErrorListener vhdlSemanticErrorListener = new vhdlSemanticErrorListener(stream.SourceName);
+            parser.AddErrorListener(vhdlSemanticErrorListener);
+
             IParseTree tree = parser.design_file();
             //Console.WriteLine(tree.ToStringTree(parser));
             vhdlVisitor visitor = new vhdlVisitor(settings, rootScope, libraryScope, libraryManager) { FileName = stream.SourceName };
@@ -110,124 +118,6 @@ namespace VHDL.parser
         public static VhdlFile parseStream(Stream stream, VhdlParserSettings settings, RootDeclarativeRegion rootScope, LibraryDeclarativeRegion libray, VHDL_Library_Manager libraryManager)
         {
             return parse(settings, new CaseInsensitiveInputStream(stream), rootScope, libray, libraryManager);
-        }
-
-        public static bool hasParseErrors(VhdlFile file)
-        {
-            return Annotations.getAnnotation<ParseErrors>(file) != null;
-        }
-
-        public static List<ParseError> getParseErrors(VhdlFile file)
-        {
-            ParseErrors errors = Annotations.getAnnotation<ParseErrors>(file);
-            if (errors == null)
-            {
-                return new List<ParseError>();
-            }
-            else
-            {
-                return errors.Errors;
-            }
-        }
-
-        public static string errorToMessage(Exception ex)
-        {
-            return "";
-        }
-
-        private static string FormatExceptionText(string error_string)
-        {
-            Dictionary<string, string> tokens = new Dictionary<string, string>();
-            tokens.Add("DOUBLESTAR", "**");
-            tokens.Add("LE", "<=");
-            tokens.Add("GE", ">=");
-            tokens.Add("ARROW", "=>");
-            tokens.Add("NEQ", "/=");
-            tokens.Add("VARASGN", ":=");
-            tokens.Add("BOX", "<>");
-            tokens.Add("DBLQUOTE", "\"");
-            tokens.Add("SEMI", ";");
-            tokens.Add("COMMA", ",");
-            tokens.Add("AMPERSAND", "&");
-            tokens.Add("LPAREN", "(");
-            tokens.Add("RPAREN", ")");
-            tokens.Add("LBRACKET", "[");
-            tokens.Add("RBRACKET", "]");
-            tokens.Add("COLON", ":");
-            tokens.Add("MUL", "*");
-            tokens.Add("DIV", "/");
-            tokens.Add("PLUS", "+");
-            tokens.Add("MINUS", "-");
-            tokens.Add("LT", "<");
-            tokens.Add("GT", ">");
-            tokens.Add("EQ", "=");
-            tokens.Add("BAR", "|");
-            tokens.Add("EXCLAMATION", "!");
-            tokens.Add("DOT", ".");
-            tokens.Add("BACKSLASH", "\\");
-            tokens.Add("EOF", "end of file");
-
-            foreach (KeyValuePair<string, string> pair in tokens)
-            {
-                error_string = Regex.Replace(error_string, pair.Key, pair.Value);
-            }
-            return error_string;
-        }
-
-        public static string errorToMessage(ParseError error)
-        {
-            switch (error.Type)
-            {
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_COMPONENT:
-                    return string.Format("Line: {0}, {1} - unknown component: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_CONFIGURATION:
-                    return string.Format("Line: {0}, {1} - unknown configuration: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_CONSTANT:
-                    return string.Format("Line: {0}, {1} - unknown constant: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_ENTITY:
-                    return string.Format("Line: {0}, {1} - unknown entity: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_FILE:
-                    return string.Format("Line: {0}, {1} - unknown file: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_LOOP:
-                    return string.Format("Line: {0}, {1} - unknown loop: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_CASE:
-                    return string.Format("Line: {0}, {1} - unknown case: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_IF:
-                    return string.Format("Line: {0}, {1} - unknown if: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_OTHER:
-                    return string.Format("Line: {0}, {1} - unknown identifier: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_PROCESS:
-                    return string.Format("Line: {0}, {1} - unknown process: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_PACKAGE:
-                    return string.Format("Line: {0}, {1} - unknown pacakge: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_SIGNAL:
-                    return string.Format("Line: {0}, {1} - unknown signal: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_SIGNAL_ASSIGNMENT_TARGET:
-                    return string.Format("Line: {0}, {1} - unknown signal assignment target: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_TYPE:
-                    return string.Format("Line: {0}, {1} - unknown type: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_VARIABLE:
-                    return string.Format("Line: {0}, {1} - unknown variable: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_VARIABLE_ASSIGNMENT_TARGET:
-                    return string.Format("Line: {0}, {1} - unknown variable assignment target: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.PROCESS_TYPE_ERROR:
-                    return string.Format("Line: {0}, {1} - process type error: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_ARCHITECTURE:
-                    return string.Format("Line: {0}, {1} - unknown architecture: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                case ParseError.ParseErrorTypeEnum.UNKNOWN_GENERATE_STATEMENT:
-                    return string.Format("Line: {0}, {1} - unknown generate statement: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-                default:
-                    return string.Format("Line: {0}, {1} - unknown error: {2}", error.Position.Begin.Line, error.Position.Begin.Column, error.Message);
-            }
-        }
-
-        private static void reportErrors(List<ParseError> errors)
-        {
-            foreach (ParseError error in errors)
-            {
-                Console.Error.WriteLine("line " + error.Position.Begin.Line + ": " + errorToMessage(error));
-            }
-
         }
     }
 }
