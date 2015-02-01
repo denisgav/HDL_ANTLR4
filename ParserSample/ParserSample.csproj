@@ -10,6 +10,7 @@
     <AssemblyName>ParserSample</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
   </PropertyGroup>
@@ -33,6 +34,9 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr4.Runtime">
+      <HintPath>..\packages\Antlr4.Runtime.4.4.1-alpha001\lib\net40-client\Antlr4.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -58,15 +62,12 @@
     <None Include="mux_using_assign.v">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="sample.vhdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Antlr4.Runtime\Antlr4.Runtime.net40-client.csproj">
-      <Project>{423978DF-85A4-409E-A16C-453683FE3969}</Project>
-      <Name>Antlr4.Runtime.net40-client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Verilog_ANTLR4\Verilog_ANTLR4.csproj">
       <Project>{B9810DF6-0706-4ADE-A714-F22D13ED6934}</Project>
       <Name>Verilog_ANTLR4</Name>
