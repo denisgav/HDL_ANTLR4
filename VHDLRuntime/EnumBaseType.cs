@@ -44,6 +44,22 @@ namespace VHDLRuntime.Range
             this.key = key;
             this.value = value;
         }
+
+        
+        public override bool Equals(object obj)
+        {
+            if ((obj != null) && (obj is EnumBaseContainer))
+            {
+                EnumBaseContainer els = obj as EnumBaseContainer;
+                if (key != els.key)
+                    return false;
+                if (value.Equals(els.value, StringComparison.InvariantCulture) == false)
+                    return false;
+
+                return true;
+            }
+            return false;
+        }
     }
 
     [Serializable]

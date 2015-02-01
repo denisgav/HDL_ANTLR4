@@ -91,20 +91,7 @@ namespace VHDL.parser.antlr
             }
             else
             {
-                string identifier = Identifier;
-                visitor.resolveError(context, ParseError.ParseErrorTypeEnum.UNKNOWN_ENTITY, identifier);
-
-                if (visitor.Settings.CreateDummyObjects)
-                {
-                    VHDL.libraryunit.Entity dummy = new VHDL.libraryunit.Entity(identifier);
-                    //set parent to allow resolving of names in architectures
-                    dummy.Parent = currentScore;
-                    return dummy;
-                }
-                else
-                {
-                    return null;
-                }
+                throw new VHDL.ParseError.vhdlUnknownEntityException(context, visitor.FileName, Identifier);
             }
         }
 
@@ -117,17 +104,7 @@ namespace VHDL.parser.antlr
             }
             else
             {
-                string identifier = Identifier;
-                visitor.resolveError(context, ParseError.ParseErrorTypeEnum.UNKNOWN_CONFIGURATION, identifier);
-
-                if (visitor.Settings.CreateDummyObjects)
-                {
-                    return new VHDL.libraryunit.Configuration(identifier, null, null);
-                }
-                else
-                {
-                    return null;
-                }
+                throw new VHDL.ParseError.vhdlUnknownIdentifierException(context, visitor.FileName, Identifier);
             }
         }
 
@@ -141,17 +118,7 @@ namespace VHDL.parser.antlr
             }
             else
             {
-                string identifier = Identifier;
-                visitor.resolveError(context, ParseError.ParseErrorTypeEnum.UNKNOWN_TYPE, identifier);
-
-                if (visitor.Settings.CreateDummyObjects)
-                {
-                    return new VHDL.type.EnumerationType(identifier);
-                }
-                else
-                {
-                    return null;
-                }
+                throw new VHDL.ParseError.vhdlUnknownTypeException(context, visitor.FileName, Identifier);
             }
         }
 
@@ -164,17 +131,7 @@ namespace VHDL.parser.antlr
             }
             else
             {
-                string identifier = Identifier;
-                visitor.resolveError(context, ParseError.ParseErrorTypeEnum.UNKNOWN_COMPONENT, identifier);
-
-                if (visitor.Settings.CreateDummyObjects)
-                {
-                    return new VHDL.declaration.Component(identifier);
-                }
-                else
-                {
-                    return null;
-                }
+                throw new VHDL.ParseError.vhdlUnknownComponentException(context, visitor.FileName, Identifier);
             }
         }
 
@@ -187,7 +144,7 @@ namespace VHDL.parser.antlr
             if (element is VHDL.type.ISubtypeIndication)
                 return new VHDL.Object.TypedName(element as VHDL.type.ISubtypeIndication);
 
-            return null;
+            throw new VHDL.ParseError.vhdlUnknownIdentifierException(context, visitor.FileName, Identifier);
         }
 
         public virtual VHDL.Object.Signal GetSignal()
@@ -199,17 +156,7 @@ namespace VHDL.parser.antlr
             }
             else
             {
-                string identifier = Identifier;
-                visitor.resolveError(context, ParseError.ParseErrorTypeEnum.UNKNOWN_SIGNAL, identifier);
-
-                if (visitor.Settings.CreateDummyObjects)
-                {
-                    return new VHDL.Object.Signal(identifier, null);
-                }
-                else
-                {
-                    return null;
-                }
+                throw new VHDL.ParseError.vhdlUnknownSignalException(context, visitor.FileName, Identifier);
             }
         }
 

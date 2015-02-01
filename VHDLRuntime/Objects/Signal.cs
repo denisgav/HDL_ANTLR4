@@ -51,6 +51,10 @@ namespace VHDLRuntime.Objects
             : base(type, value_, name, direction)
         {
             dump = new NewSortedDictionary<TimeStampInfo<VHDLBaseValue>>();
+            if (value_ != null)
+            {
+                dump.Append(0, new TimeStampInfo<VHDLBaseValue>(value_));
+            }
         }
 
         public void RegisterDutyCycleDelayEvent(int CurrentDutyCycle, VHDLBaseValue value)

@@ -90,26 +90,21 @@ namespace VHDL.parser
             string LibraryName = Path.GetFileNameWithoutExtension(path);
             if (Directory.Exists(path) == true)
             {
-                try
-                {
-                    string[] dirs = Directory.GetDirectories(path);
-                    foreach (string dir in dirs)
-                        AnalyzeFolder(dir);
+                string[] dirs = Directory.GetDirectories(path);
+                foreach (string dir in dirs)
+                    AnalyzeFolder(dir);
 
-                    string[] files = Directory.GetFiles(path);
-                    foreach (string file in files)
+                string[] files = Directory.GetFiles(path);
+                foreach (string file in files)
+                {
+                    if (isVHDLCodeFile(file) == true)
                     {
-                        if (isVHDLCodeFile(file) == true)
-                        {
-                            logger.WriteLineFormat("Added file for analyze {0}", file);
-                            LibraryFileInfo inf = LibraryFileInfo.AnalyzeFile(file, LibraryName);
-                            if (inf != null)
-                                libraryFiles.Add(inf);
-                        }
+                        logger.WriteLineFormat("Added file for analyze {0}", file);
+                        LibraryFileInfo inf = LibraryFileInfo.AnalyzeFile(file, LibraryName);
+                        if (inf != null)
+                            libraryFiles.Add(inf);
                     }
                 }
-                catch (Exception ex)
-                { }
             }
         }
 

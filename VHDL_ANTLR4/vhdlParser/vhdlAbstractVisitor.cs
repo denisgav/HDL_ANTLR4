@@ -54,16 +54,6 @@ namespace VHDL_ANTLR4
             this.fileName = fileName;
         }
 
-        protected internal virtual void resolveError(ParserRuleContext context, ParseError.ParseErrorTypeEnum type, string identifier)
-        {
-            if (settings.EmitResolveErrors)
-            {
-                PositionInformation pos = contextToPosition(context);
-                errors.Add(new ParseError(pos, type, identifier));
-            }
-        }
-
-        private readonly List<ParseError> errors = new List<ParseError>();
         protected internal IDeclarativeRegion currentScope = null;
         protected List<LibraryUnit> contextItems = new List<LibraryUnit>();
         protected internal readonly VhdlParserSettings settings;
@@ -100,21 +90,16 @@ namespace VHDL_ANTLR4
             throw new Exception(string.Format("Could not find item with name {0} and type {1}", identifier, typeof(T).FullName));
         }
 
-        private SourcePosition tokenToPosition(IToken token, bool start)
+        private SourcePosition TokenToPosition(IToken token, bool start)
         {
             CommonToken t = (CommonToken)token;
             int index = start ? t.StartIndex : t.StopIndex;
             return new SourcePosition(t.Line, t.Column, index);
         }
 
-        public virtual List<ParseError> getErrors()
+        private PositionInformation ContextToPosition(ParserRuleContext context)
         {
-            return errors;
-        }
-
-        private PositionInformation contextToPosition(ParserRuleContext context)
-        {
-            return new PositionInformation(fileName, tokenToPosition(context.Start, true), tokenToPosition(context.Stop, false));
+            return new PositionInformation(fileName, TokenToPosition(context.Start, true), TokenToPosition(context.Stop, false));
         }
 
         protected LibraryDeclarativeRegion LoadLibrary(string library)
@@ -143,16 +128,14 @@ namespace VHDL_ANTLR4
             { // no wait statement
                 if (WaitCount > 0)
                 {
-                    resolveError(tree, ParseError.ParseErrorTypeEnum.PROCESS_TYPE_ERROR, "wait statement not allowed");
-                    return false;
+                    throw new VHDL.ParseError.vhdlIllegalWaitInProcessException(tree, FileName);
                 }
             }
             else
             { // at least one wait statement
                 if (WaitCount == 0)
                 {
-                    resolveError(tree, ParseError.ParseErrorTypeEnum.PROCESS_TYPE_ERROR, "wait statement required");
-                    return false;
+                    throw new VHDL.ParseError.vhdlWaitStatementRequiredException(tree, FileName);
                 }
             }
             return true;
@@ -209,24 +192,23 @@ namespace VHDL_ANTLR4
                                             }
                                             else
                                             {
-                                                resolveError(tree, ParseError.ParseErrorTypeEnum.UNKNOWN_OTHER, "Incorrect use clause (item )");
+                                                throw new VHDL.ParseError.vhdlUnknownUseClauseItemException(tree, FileName, elemName);
                                                 return false;
                                             }
                                         }
                                     }
                                 }
                             }
-                            resolveError(tree, ParseError.ParseErrorTypeEnum.UNKNOWN_OTHER, "Incorrect use clause (primary unit name )");
+                            throw new VHDL.ParseError.vhdlUnknownUseClausePrimaryUnitException(tree, FileName, packageName);
                             return false;
                         }
                     }
-                    resolveError(tree, ParseError.ParseErrorTypeEnum.UNKNOWN_OTHER, "Incorrect use clause (library name)");
+                    throw new VHDL.ParseError.vhdlUnknownLibraryException(tree, FileName, libraryName);
                     return false;
                 }
                 else
                 {
-                    resolveError(tree, ParseError.ParseErrorTypeEnum.UNKNOWN_PACKAGE, "Incorrect use clause");
-                    return false;
+                    throw new VHDL.ParseError.vhdlIllegalUseClauseException(tree, FileName);
                 }
             }
             return true;
@@ -243,7 +225,7 @@ namespace VHDL_ANTLR4
             {
                 if (libraryManager.ContainsLibrary(lib) == false)
                 {
-                    resolveError(tree, ParseError.ParseErrorTypeEnum.UNKNOWN_OTHER, string.Format("Incorrect library clause, unknown library {0})", lib));
+                    throw new VHDL.ParseError.vhdlUnknownLibraryException(tree, FileName, lib);
                     return false;
                 }
                 else
@@ -269,7 +251,7 @@ namespace VHDL_ANTLR4
 
         private void AddPositionAnnotation(VhdlElement element, ParserRuleContext context)
         {
-            PositionInformation info = contextToPosition(context);
+            PositionInformation info = ContextToPosition(context);
             Annotations.putAnnotation(element, info);
         }
 

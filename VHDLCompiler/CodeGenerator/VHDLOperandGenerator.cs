@@ -148,6 +148,15 @@ namespace VHDLCompiler.CodeGenerator
             if (expression is CharacterLiteral)
                 throw new NotImplementedException();
 
+            if (expression is VHDL.type.EnumerationType.CharacterEnumerationLiteral)
+            {
+                VHDL.type.EnumerationType.CharacterEnumerationLiteral character_literal = expression as VHDL.type.EnumerationType.CharacterEnumerationLiteral;
+                string exp_type = compiler.TypeDictionary[expression.Type];
+                string value = string.Format("{0}_Enum.item_{1}", exp_type, character_literal.getLiteral());
+                NewStatementTemplate template = new NewStatementTemplate(exp_type, value);
+                return template.TransformText();
+            }
+
             if (expression is PhysicalLiteral)
             {
                 return GetPhysicalLiteralOperand(expression as PhysicalLiteral, compiler);
@@ -158,12 +167,44 @@ namespace VHDLCompiler.CodeGenerator
                 return GetIdentifierEnumerationLiteralOperand(expression as VHDL.type.EnumerationType.IdentifierEnumerationLiteral, compiler);
             }
 
+            if (expression is VhdlObject)
+            {
+                return GetObjectOperand(expression as VhdlObject, compiler, GenerateGetOperandFunction);
+            }
+
             throw new NotImplementedException();
         }
 
         public static string GetIdentifierEnumerationLiteralOperand(VHDL.type.EnumerationType.IdentifierEnumerationLiteral expression, VHDLCompilerInterface compiler)
         {
             return compiler.LiteralDictionary[expression.getLiteral()];
+        }
+
+        public static string GetObjectOperand(VHDL.Object.VhdlObject expression, VHDLCompilerInterface compiler, bool GenerateGetOperandFunction = true)
+        {
+            string valueProviderName = compiler.ObjectDictionary[expression];
+            if (string.IsNullOrEmpty(valueProviderName))
+            {
+                return expression.Identifier;
+            }
+            else
+            {
+                if (GenerateGetOperandFunction)
+                {
+                    valueProviderName = GetValueFunctionCall(valueProviderName);
+                }
+                return valueProviderName;
+            }
+        }
+
+        public static string GetVariableOperand(VHDL.Object.Variable expression, VHDLCompilerInterface compiler)
+        {
+            return compiler.ObjectDictionary[expression];
+        }
+
+        public static string GetConstantOperand(VHDL.Object.Constant expression, VHDLCompilerInterface compiler)
+        {
+            return compiler.ObjectDictionary[expression];
         }
 
         public static string GetRecordOperand(RecordElement expression, VHDLCompilerInterface compiler, bool GenerateGetOperandFunction = true)
