@@ -150,7 +150,7 @@ namespace VHDL.declaration
         {
             foreach(Attribute a in predefinedAttributes)
             {
-                if(a.identifier.VHDLIdentifierEquals(name))
+                if(a.identifier.EqualsIdentifier(name))
                     return a;
             }
             return null;

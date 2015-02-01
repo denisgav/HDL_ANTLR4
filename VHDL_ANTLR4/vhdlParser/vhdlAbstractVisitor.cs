@@ -104,10 +104,7 @@ namespace VHDL_ANTLR4
 
         protected LibraryDeclarativeRegion LoadLibrary(string library)
         {
-            //if (library.Equals("IEEE", StringComparison.CurrentCultureIgnoreCase))
-            //    return builtin.Libraries.IEEE;
-            //return null;
-            if (libraryScope.Identifier.VHDLIdentifierEquals(library))
+            if (libraryScope.Identifier.EqualsIdentifier(library))
                 return libraryScope;
             return libraryManager.GetLibrary(library);
         }
@@ -159,7 +156,7 @@ namespace VHDL_ANTLR4
                     IList<LibraryDeclarativeRegion> libraries = rootScope.Libraries;
                     foreach (LibraryDeclarativeRegion library in libraries)
                     {
-                        if ((library != null) && (library.Identifier.VHDLIdentifierEquals(libraryName)))
+                        if ((library != null) && (library.Identifier.EqualsIdentifier(libraryName)))
                         {
                             //Нашли необходимую библиотеку
                             //Ищем пакет
@@ -171,12 +168,12 @@ namespace VHDL_ANTLR4
                                     if (unit is PackageDeclaration)
                                     {
                                         PackageDeclaration packege = unit as PackageDeclaration;
-                                        if (packege.Identifier.VHDLIdentifierEquals(packageName))
+                                        if (packege.Identifier.EqualsIdentifier(packageName))
                                         {
                                             //Нашли необходимый пакет
                                             //Ищем нужный элемент
                                             string elemName = elems[2];
-                                            if (elemName.VHDLIdentifierEquals("all"))
+                                            if (elemName.EqualsIdentifier("all"))
                                             {
                                                 if (useClause.LinkedElements.Contains(packege) == false)
                                                     useClause.LinkedElements.Add(packege);

@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
+using VHDL.util;
 
 namespace VHDL.parser
 {
@@ -159,19 +160,19 @@ namespace VHDL.parser
             foreach (UseClauseInfo use in useClauses)
             {
                 foreach (string package in otherLibraryFile.packageDeclarations)
-                    if (use.Package.Equals(package, StringComparison.CurrentCultureIgnoreCase))
+                    if (use.Package.EqualsIgnoreCase(package))
                         return true;
                 foreach (string package in otherLibraryFile.packageBodies)
-                    if (use.Package.Equals(package, StringComparison.CurrentCultureIgnoreCase))
+                    if (use.Package.EqualsIgnoreCase(package))
                         return true;
             }
             foreach (string body in packageBodies)
                 foreach (string decl in otherLibraryFile.packageDeclarations)
-                    if (decl.Equals(body, StringComparison.CurrentCultureIgnoreCase))
+                    if (decl.EqualsIgnoreCase(body))
                         return true;
             foreach (ArchitectureInfo arch in architectures)
                 foreach (string entity in otherLibraryFile.entities)
-                    if (arch.EntityName.VHDLIdentifierEquals(entity))
+                    if (arch.EntityName.EqualsIdentifier(entity))
                         return true;
             return false;
         }

@@ -204,7 +204,7 @@ namespace VHDL
                     {
                         var named = obj as INamedEntity;
                         if (named != null)
-                            if (named.Identifier.VHDLIdentifierEquals(name))
+                            if (named.Identifier.EqualsIdentifier(name))
                                 result.Add(named);
                     }
                 }

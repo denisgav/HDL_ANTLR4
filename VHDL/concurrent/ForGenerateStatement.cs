@@ -92,7 +92,7 @@ namespace VHDL.concurrent
             }
             public virtual object Resolve(string identifier)
             {
-                if (identifier.VHDLIdentifierEquals(parent.loopParameter.Identifier))
+                if (identifier.EqualsIdentifier(parent.loopParameter.Identifier))
                 {
                     return parent.loopParameter;
                 }

@@ -23,6 +23,7 @@ using System.IO;
 using VHDL.parser;
 using VHDL;
 using VHDL.libraryunit;
+using VHDL.util;
 
 namespace VHDL.parser
 {
@@ -207,7 +208,7 @@ namespace VHDL.parser
         {
             LibraryInfo currentLibrary = null;
             foreach (LibraryInfo inf in parsedLibraries)
-                if (inf.Name.Equals(file.LibraryName, StringComparison.CurrentCultureIgnoreCase) == true)
+                if (inf.Name.EqualsIgnoreCase(file.LibraryName))
                 {
                     currentLibrary = inf;
                     break;
@@ -231,7 +232,7 @@ namespace VHDL.parser
                         bool foundPackage = false;
                         foreach (PackageInfo inf in currentLibrary.Packages)
                         {
-                            if (inf.Name.VHDLIdentifierEquals(pd.Identifier))
+                            if (inf.Name.EqualsIdentifier(pd.Identifier))
                             {
                                 inf.DeclarationPath = file.Path;
                                 string path = FormCompilePath(file.Path, "decl");
@@ -259,7 +260,7 @@ namespace VHDL.parser
                         bool foundPackage = false;
                         foreach (PackageInfo inf in currentLibrary.Packages)
                         {
-                            if (inf.Name.VHDLIdentifierEquals(pb.Package.Identifier))
+                            if (inf.Name.EqualsIdentifier(pb.Package.Identifier))
                             {
                                 inf.BodyPath = file.Path;
                                 string path = FormCompilePath(file.Path, "body");

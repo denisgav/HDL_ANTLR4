@@ -2,6 +2,7 @@ using DeclarativeRegion = VHDL.IDeclarativeRegion;
 using VhdlElement = VHDL.VhdlElement;
 using System;
 using System.Collections.Generic;
+using VHDL.util;
 
 namespace VHDL.libraryunit
 {
@@ -64,7 +65,7 @@ namespace VHDL.libraryunit
                         }
                         else
                             if (unit is INamedEntity)
-                                if ((unit as INamedEntity).Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                                if ((unit as INamedEntity).Identifier.EqualsIdentifier(identifier))
                                     return unit;
                 }
                 return null;

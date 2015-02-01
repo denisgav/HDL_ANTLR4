@@ -8,6 +8,7 @@ using PackageDeclarativeItem = VHDL.declaration.IPackageDeclarativeItem;
 using ProcessDeclarativeItem = VHDL.declaration.IProcessDeclarativeItem;
 using SubprogramDeclarativeItem = VHDL.declaration.ISubprogramDeclarativeItem;
 using System;
+using VHDL.util;
 
 namespace VHDL.libraryunit
 {
@@ -90,7 +91,7 @@ namespace VHDL.libraryunit
             {
                 foreach (INamedEntity el in parent.LinkedElements)
                 {
-                    if (el.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                    if (el.Identifier.EqualsIdentifier(identifier))
                         return el;
                     if (el is IDeclarativeRegion)
                     {

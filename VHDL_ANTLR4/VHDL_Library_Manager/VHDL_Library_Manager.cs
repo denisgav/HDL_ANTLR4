@@ -26,6 +26,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using VHDL.parser;
 using VHDL.parser.util;
 using VHDL.libraryunit;
+using VHDL.util;
 
 namespace VHDL.parser
 {
@@ -118,18 +119,18 @@ namespace VHDL.parser
         /// <returns></returns>
         public bool ContainsLibrary(string libraryName)
         {
-            if (libraryName.VHDLIdentifierEquals("work"))
+            if (libraryName.EqualsIdentifier("work"))
                 return true;
             if (IsLibraryCompiled == false)
             {
                 foreach (LibraryInfo inf in compiler.ParsedLibraries)
-                    if (inf.Name.VHDLIdentifierEquals(libraryName))
+                    if (inf.Name.EqualsIdentifier(libraryName))
                         return true;
             }
             else
             {
                 foreach (LibraryInfo inf in parsedLibraries)
-                    if (inf.Name.VHDLIdentifierEquals(libraryName))
+                    if (inf.Name.EqualsIdentifier(libraryName))
                         return true;
             }
             return false;
@@ -145,13 +146,13 @@ namespace VHDL.parser
             if (IsLibraryCompiled == false)
             {
                 foreach (LibraryInfo inf in compiler.ParsedLibraries)
-                    if (inf.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
+                    if (inf.Name.EqualsIgnoreCase(name))
                         return inf.LibraryScope;
             }
             else
             {
                 foreach (LibraryInfo inf in parsedLibraries)
-                    if (inf.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
+                    if (inf.Name.EqualsIgnoreCase(name))
                         return inf.LibraryScope;
             }
             return null;
@@ -172,7 +173,7 @@ namespace VHDL.parser
                 {
                     if (unit is PackageBody)
                     {
-                        if ((unit as PackageBody).Package.Identifier.VHDLIdentifierEquals(PackageName))
+                        if ((unit as PackageBody).Package.Identifier.EqualsIdentifier(PackageName))
                         {
                             return (unit as PackageBody);
                         }

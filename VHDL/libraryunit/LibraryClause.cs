@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Scope = VHDL.IScope;
 using System;
 using VHDL.declaration;
+using VHDL.util;
 
 namespace VHDL.libraryunit
 {
@@ -83,7 +84,7 @@ namespace VHDL.libraryunit
             public object Resolve(string identifier)
             {
                 foreach(LibraryDeclarativeRegion lib in parent.libraryDeclarativeRegion)
-                    if(lib.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                    if(lib.Identifier.EqualsIgnoreCase(identifier))
                         return lib;
                 return null;
             }

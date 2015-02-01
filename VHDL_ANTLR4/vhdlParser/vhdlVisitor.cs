@@ -268,7 +268,7 @@ namespace VHDL_ANTLR4
             {
                 //end identifier shouls be the same as start identifier
                 string architecture_name_end = identifiers_in[2].GetText();
-                if (architecture_name_end.VHDLIdentifierEquals(architecture_name) == false)
+                if (architecture_name_end.EqualsIdentifier(architecture_name) == false)
                 {
                     throw new System.ArgumentException(string.Format("Architecture end identifier mismatch. Architecture name is {0}, end identifier is {1}", architecture_name, architecture_name_end));
                 }
@@ -430,7 +430,7 @@ namespace VHDL_ANTLR4
             if (identifier_in != null)
             {
                 string end_identifier = identifier_in.GetText();
-                if (end_identifier.VHDLIdentifierEquals(process.Label))
+                if (end_identifier.EqualsIdentifier(process.Label))
                 {
                     throw new System.ArgumentException(string.Format("Identifier mismatch in process. End identifier is '{0}', process label is '{1}'", end_identifier, process.Label));
                 }
@@ -601,7 +601,7 @@ namespace VHDL_ANTLR4
             if (designator_in != null)
             {
                 string end_name = designator_in.GetText();
-                if (end_name.VHDLIdentifierEquals(declaration.Identifier) == false)
+                if (end_name.EqualsIdentifier(declaration.Identifier) == false)
                 {
                     throw new System.ArgumentException(string.Format("End name And name in declaration mismatch. End name is '{0}', name in declaration is '{1}'", end_name, declaration.Identifier));
                 }
@@ -704,7 +704,7 @@ namespace VHDL_ANTLR4
                 pb.Declarations.Add(item);
             }
 
-            if (identifier_begin.VHDLCheckBeginEndIdentifierForEquals(identifier_end) == false)
+            if (identifier_begin.EqualsLabel(identifier_end) == false)
             {
                 throw new System.ArgumentException(string.Format("Package begin & end name mismatch. Identifier is '{0}', end name is '{1}'", identifier_begin, identifier_end));
             }
@@ -1111,7 +1111,7 @@ namespace VHDL_ANTLR4
             //3. Check that end identifier is the same as label at the beginning
             case_statement.Label = label_begin;
 
-            if (label_begin.VHDLCheckBeginEndIdentifierForEquals(label_end) == false)
+            if (label_begin.EqualsLabel(label_end) == false)
             {
                 throw new System.ArgumentException(string.Format("If statement begin & ennd identifier mismatch. Label at the begin is '{0}', albel at the end is '{1}'", label_begin, label_end));
             }
@@ -1661,7 +1661,7 @@ namespace VHDL_ANTLR4
                 pd.Declarations.Add(item);
             }
 
-            if (identifier_begin.VHDLCheckBeginEndIdentifierForEquals(identifier_end) == false)
+            if (identifier_begin.EqualsLabel(identifier_end) == false)
             {
                 throw new System.ArgumentException(string.Format("Package begin & end name mismatch. Identifier is '{0}', end name is '{1}'", identifier_begin, identifier_end));
             }
@@ -1857,7 +1857,7 @@ namespace VHDL_ANTLR4
             {
                 string begin_identifier = identifiers[0].GetText();
                 string end_identifier = identifiers[1].GetText();
-                if (begin_identifier.VHDLCheckBeginEndIdentifierForEquals(end_identifier) == false)
+                if (begin_identifier.EqualsLabel(end_identifier) == false)
                     throw new System.Exception(string.Format("Self check failure. Entity declaration identifier is {0}, End identifier is {1}.", begin_identifier, end_identifier));
             }
 
@@ -2389,12 +2389,12 @@ namespace VHDL_ANTLR4
                     if (name is AttributeExpression)
                     {
                         AttributeExpression ae = name as AttributeExpression;
-                        if (ae.Attribute.Identifier.VHDLIdentifierEquals("RANGE"))
+                        if (ae.Attribute.Identifier.EqualsIdentifier("RANGE"))
                         {
                             res = new RangeAttributeName(name, RangeAttributeName.RangeAttributeNameType.RANGE);
                             return res;
                         }
-                        if (ae.Attribute.Identifier.VHDLIdentifierEquals("REVERSE_RANGE"))
+                        if (ae.Attribute.Identifier.EqualsIdentifier("REVERSE_RANGE"))
                         {
                             res = new RangeAttributeName(name, RangeAttributeName.RangeAttributeNameType.REVERSE_RANGE);
                             return res;
@@ -2421,7 +2421,7 @@ namespace VHDL_ANTLR4
                 var expression_left_in = simple_expressions_in[0];
                 var expression_right_in = simple_expressions_in[1];
 
-                Range.RangeDirection direction = (direction_in.GetText().VHDLIdentifierEquals("To")) ? Range.RangeDirection.TO : Range.RangeDirection.DOWNTO;
+                Range.RangeDirection direction = (direction_in.GetText().EqualsIdentifier("To")) ? Range.RangeDirection.TO : Range.RangeDirection.DOWNTO;
                 Expression expression_left = ParseExtention.Parse<vhdlParser.Simple_expressionContext, Expression>(expression_left_in, VisitSimple_expression);
                 Expression expression_right = ParseExtention.Parse<vhdlParser.Simple_expressionContext, Expression>(expression_right_in, VisitSimple_expression);
 
@@ -2509,7 +2509,7 @@ namespace VHDL_ANTLR4
             //4. Check that end identifier is the same as label at the beginning
             if_statement.Label = label_begin;
 
-            if (label_begin.VHDLCheckBeginEndIdentifierForEquals(label_end) == false)
+            if (label_begin.EqualsLabel(label_end) == false)
             {
                 throw new System.ArgumentException(string.Format("If statement begin & ennd identifier mismatch. Label at the begin is '{0}', albel at the end is '{1}'", label_begin, label_end));
             }
@@ -3446,7 +3446,7 @@ namespace VHDL_ANTLR4
             AddAnnotations(loop, context);
             //-------------------------------------------------------------
 
-            if (label_begin.VHDLCheckBeginEndIdentifierForEquals(label_end) == false)
+            if (label_begin.EqualsLabel(label_end) == false)
             {
                 throw new System.ArgumentException(string.Format("Loop identifiers mismatch. Loop begin identifier is '{0}' and end identifier is '{1}'", label_begin, label_end));
             }
@@ -3686,11 +3686,10 @@ namespace VHDL_ANTLR4
 
             VHDL.parser.antlr.TemporaryName tn = ParseExtention.Parse<vhdlParser.Selected_nameContext, VHDL.parser.antlr.TemporaryName>(selected_name_in, VisitSelected_name);
 
-            // TODO: Add procedure call resolution code here !!!!!!!!!!!
-            //ProcedureCall procedureCall = tn.GetProcedureCall(parameters);
+            ProcedureCall procedureCall = tn.GetProcedureCall(parameters);
 
             ProcedureDeclaration procedureDeclaration = tn.GetProcedure();
-            ProcedureCall procedureCall = new ProcedureCall(procedureDeclaration, parameters);
+            //ProcedureCall procedureCall = new ProcedureCall(procedureDeclaration, parameters);
 
             return procedureCall;
         }

@@ -47,7 +47,7 @@ namespace VHDL.parser.typeinfer
             if (enumType != null)
             {
                 // Special case: not all literals present in this type
-                if (enumType.Identifier.ToLower() == "character")
+                if (enumType.Identifier.EqualsIgnoreCase("character"))
                     return true;
 
                 foreach (var enumLiteral in enumType.Literals)

@@ -94,7 +94,7 @@ namespace VHDL.util
                     //by the surrounding if statement
                     T tmp = element as T;
 
-                    if (identifier.Equals(tmp.Identifier, StringComparison.InvariantCultureIgnoreCase))
+                    if (identifier.EqualsIdentifier(tmp.Identifier))
                     {
                         return tmp;
                     }
@@ -217,7 +217,7 @@ namespace VHDL.util
                     if (declaration is EnumerationType)
                     {
                         EnumerationType type = declaration as EnumerationType;
-                        if (identifier.Equals(type.Identifier, StringComparison.InvariantCultureIgnoreCase))
+                        if (identifier.EqualsIdentifier(type.Identifier))
                         {
                             return type;
                         }
@@ -225,7 +225,7 @@ namespace VHDL.util
                         //TODO: support overloading
                         foreach (EnumerationLiteral literal in type.Literals)
                         {
-                            if (identifier.Equals(literal.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                            if (identifier.EqualsIdentifier(literal.ToString()))
                             {
                                 return literal;
                             }
@@ -234,13 +234,13 @@ namespace VHDL.util
                     else if (declaration is RecordType)
                     {
                         RecordType type = declaration as RecordType;
-                        if (identifier.Equals(type.Identifier, StringComparison.InvariantCultureIgnoreCase))
+                        if (identifier.EqualsIdentifier(type.Identifier))
                             return type;
                         foreach (VHDL.type.RecordType.ElementDeclaration el in type.Elements)
                         {
                             foreach (string name in el.Identifiers)
                             {
-                                if (identifier.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                                if (identifier.EqualsIdentifier(name))
                                 {
                                     return new Variable(name, el.Type);
                                 }
@@ -250,20 +250,20 @@ namespace VHDL.util
                     else if (declaration is PhysicalType)
                     {
                         PhysicalType type = declaration as PhysicalType;
-                        if (identifier.Equals(type.Identifier, StringComparison.InvariantCultureIgnoreCase))
+                        if (identifier.EqualsIdentifier(type.Identifier))
                         {
                             return type;
                         }
 
                         //TODO: don't use strings for the physical literals
-                        if (identifier.Equals(type.PrimaryUnit, StringComparison.InvariantCultureIgnoreCase))
+                        if (identifier.EqualsIdentifier(type.PrimaryUnit))
                         {
                             return new PhysicalLiteral(null, type.PrimaryUnit, declaration as PhysicalType);
                         }
 
                         foreach (PhysicalType.Unit unit in type.Units)
                         {
-                            if (identifier.Equals(unit.Identifier, StringComparison.InvariantCultureIgnoreCase))
+                            if (identifier.EqualsIdentifier(unit.Identifier))
                             {
                                 return new PhysicalLiteral(null, unit.Identifier, declaration as PhysicalType);
                             }
@@ -272,7 +272,7 @@ namespace VHDL.util
                     else if (declaration is NamedEntity)
                     {
                         INamedEntity identElement = (NamedEntity)declaration;
-                        if (identifier.Equals(identElement.Identifier, StringComparison.InvariantCultureIgnoreCase))
+                        if (identifier.EqualsIdentifier(identElement.Identifier))
                         {
                             return declaration;
                         }
@@ -282,7 +282,7 @@ namespace VHDL.util
                         SignalDeclaration objDecl = declaration as SignalDeclaration;
                         foreach (var o in objDecl.Objects)
                         {
-                            if (o.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                            if (o.Identifier.EqualsIdentifier(identifier))
                             {
                                 return o;
                             }
@@ -293,7 +293,7 @@ namespace VHDL.util
                         ConstantDeclaration objDecl = declaration as ConstantDeclaration;
                         foreach (var o in objDecl.Objects)
                         {
-                            if (o.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                            if (o.Identifier.EqualsIdentifier(identifier))
                             {
                                 return o;
                             }
@@ -304,7 +304,7 @@ namespace VHDL.util
                         VariableDeclaration objDecl = declaration as VariableDeclaration;
                         foreach (var o in objDecl.Objects)
                         {
-                            if (o.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                            if (o.Identifier.EqualsIdentifier(identifier))
                             {
                                 return o;
                             }
@@ -315,7 +315,7 @@ namespace VHDL.util
                         FileDeclaration objDecl = declaration as FileDeclaration;
                         foreach (var o in objDecl.Objects)
                         {
-                            if (o.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                            if (o.Identifier.EqualsIdentifier(identifier))
                             {
                                 return o;
                             }
@@ -324,7 +324,7 @@ namespace VHDL.util
                     else if (declaration is Alias)
                     {
                         Alias objDecl = declaration as Alias;
-                        if (objDecl.Designator.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                        if (objDecl.Designator.EqualsIdentifier(identifier))
                         {
                             return objDecl.Aliased;//new Variable(objDecl.Aliased, objDecl.SubtypeIndication);
                         }
@@ -332,7 +332,7 @@ namespace VHDL.util
                     else if (declaration is Subtype)
                     {
                         Subtype objDecl = declaration as Subtype;
-                        if (objDecl.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                        if (objDecl.Identifier.EqualsIdentifier(identifier))
                         {
                             return objDecl;
                         }
@@ -349,7 +349,7 @@ namespace VHDL.util
                         ObjectDeclaration<VhdlObject> objDecl = declaration as ObjectDeclaration<VhdlObject>;
                         foreach (VhdlObject o in objDecl.Objects)
                         {
-                            if (o.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                            if (o.Identifier.EqualsIdentifier(identifier))
                             {
                                 return o;
                             }
@@ -589,7 +589,7 @@ namespace VHDL.util
                 {
                     foreach (VhdlObject o in provider.VhdlObjects)
                     {
-                        if (o.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                        if (o.Identifier.EqualsIdentifier(identifier))
                         {
                             return o;
                         }
@@ -682,7 +682,7 @@ namespace VHDL.util
                     if (element is NamedEntity)
                     {
                         INamedEntity namedEntity = (NamedEntity)element;
-                        if (namedEntity.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                        if (namedEntity.Identifier.EqualsIdentifier(identifier))
                         {
                             return element;
                         }

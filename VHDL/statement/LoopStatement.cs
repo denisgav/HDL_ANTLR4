@@ -85,7 +85,7 @@ namespace VHDL.statement
 
             public object Resolve(string identifier)
             {
-                if (identifier.Equals(parent.Label, System.StringComparison.InvariantCultureIgnoreCase))
+                if (identifier.EqualsIdentifier(parent.Label))
                 {
                     return parent;
                 }
@@ -94,7 +94,7 @@ namespace VHDL.statement
                 if (parent is ForStatement)
                 {
                     ForStatement forStatement = parent as ForStatement;
-                    if (identifier.Equals(forStatement.Parameter.Identifier, System.StringComparison.InvariantCultureIgnoreCase))
+                    if (identifier.EqualsIdentifier(forStatement.Parameter.Identifier))
                     {
                         return forStatement.Parameter;
                     }

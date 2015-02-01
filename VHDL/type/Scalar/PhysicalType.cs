@@ -126,7 +126,7 @@ namespace VHDL.type
         {
             foreach (Unit u in units)
             {
-                if (u.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase))
+                if (u.Identifier.EqualsIdentifier(identifier))
                     return u.getInBaseUnits();
             }
             throw new Exception(string.Format("Could not find unit {0} in type {1}", identifier, GetType().FullName));

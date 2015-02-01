@@ -289,7 +289,7 @@
     <Compile Include="statement\WaitStatement.cs" />
     <Compile Include="statement\WhileStatement.cs" />
     <Compile Include="range\SubtypeDiscreteRange.cs" />
-    <Compile Include="StringExtension.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="type\AccessType.cs" />
     <Compile Include="type\Composite\ArrayType.cs" />
     <Compile Include="type\Composite\ConstrainedArray.cs" />
