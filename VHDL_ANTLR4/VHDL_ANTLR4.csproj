@@ -79,6 +79,7 @@
     <Compile Include="ParseError\vhdlUnknownGenerateStatementException.cs" />
     <Compile Include="ParseError\vhdlSemanticException.cs" />
     <Compile Include="ParseError\vhdlUnknownConfigurationException.cs" />
+    <Compile Include="typeinfer\NameInference.cs" />
     <Compile Include="util\ExpressionTypeCreator.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="util\ObjectSearcher.cs" />
