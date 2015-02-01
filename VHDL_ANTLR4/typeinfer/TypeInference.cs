@@ -125,9 +125,14 @@ namespace VHDL.parser.typeinfer
         public static bool AreTypesCompatible(ISubtypeIndication left, ISubtypeIndication right)
         {
             // TODO: some types can be converted to other
+            return AreTypesEqual(TypeHelper.GetBaseType(left), TypeHelper.GetBaseType(right));
+        }
+
+        public static bool AreTypesEqual(ISubtypeIndication left, ISubtypeIndication right)
+        {
             string leftTypeName = TypeHelper.GetTypeName(TypeHelper.GetBaseType(left));
             string rightTypeName = TypeHelper.GetTypeName(TypeHelper.GetBaseType(right));
-            return leftTypeName != "" && leftTypeName == rightTypeName;
+            return leftTypeName != "" && leftTypeName.EqualsIgnoreCase(rightTypeName);
         }
 
         private static bool CheckAssociationList(IDeclarativeRegion scope, IList<IVhdlObjectProvider> formals,
