@@ -36,5 +36,10 @@ namespace VHDL.Object
                 return type;
             }
         }
+
+        public override void accept(INameVisitor visitor)
+        {
+            visitor.visit(this);
+        }
     }
 }

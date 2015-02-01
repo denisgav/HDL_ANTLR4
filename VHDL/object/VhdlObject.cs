@@ -84,5 +84,10 @@ namespace VHDL.Object
         }
 
         #endregion
+
+        public override void accept(INameVisitor visitor)
+        {
+            visitor.visit(this);
+        }
     }
 }

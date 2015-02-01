@@ -90,6 +90,11 @@ namespace VHDL.expression
 			visitor.visitFunctionCall(this);
 		}
 
+        public override void accept(INameVisitor visitor)
+        {
+            visitor.visit(this);
+        }
+
         public override Choice copy()
 		{
 			FunctionCall call = new FunctionCall(function);

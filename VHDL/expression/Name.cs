@@ -129,6 +129,8 @@ namespace VHDL.expression
             visitor.visitName(this);
         }
 
+        public abstract void accept(INameVisitor visitor);
+
         public override Choice copy()
         {
             return this;

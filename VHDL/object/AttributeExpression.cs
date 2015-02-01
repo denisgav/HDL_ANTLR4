@@ -92,6 +92,11 @@ namespace VHDL.Object
                 return prefix.Type;
             }
 		}
+
+        public override void accept(VHDL.expression.INameVisitor visitor)
+        {
+            visitor.visit(this);
+        }
 	}
 
 }

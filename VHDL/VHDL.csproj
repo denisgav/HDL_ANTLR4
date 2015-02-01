@@ -148,6 +148,8 @@
     <Compile Include="declaration\VariableDeclaration.cs" />
     <Compile Include="DeclarativeRegion.cs" />
     <Compile Include="DelayMechanism.cs" />
+    <Compile Include="expression\INameVisitor.cs" />
+    <Compile Include="expression\NameVisitor.cs" />
     <Compile Include="literal\ILiteralVisitor.cs" />
     <Compile Include="object\TypedName.cs" />
     <Compile Include="range\DiscreteRange.cs" />
