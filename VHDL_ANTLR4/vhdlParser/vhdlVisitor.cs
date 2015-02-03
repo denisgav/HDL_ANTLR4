@@ -1533,15 +1533,13 @@ namespace VHDL_ANTLR4
         {
             List<VHDL.parser.antlr.Part> parts = TemporaryNameSelectedPart(name_part_in);
             VHDL.parser.antlr.TemporaryName tm = new VHDL.parser.antlr.TemporaryName(parts, this, name_part_in);
-            FunctionDeclaration FD = tm.GetFunction();
-            if (FD != null)
+            IFunction functionDecl = tm.GetFunction();
+            if (functionDecl != null)
             {
                 List<AssociationElement> arguments = ParseExtention.ParseList<vhdlParser.Association_elementContext, AssociationElement>(name_part_in.name_function_call_or_indexed_part().actual_parameter_part().association_list().association_element(), VisitAssociation_element);
 
-                //TODO::IMPLEMENT FUNCTION CALL RESO:UTION FUNCTION IN THE FUTURE!!!!!!!!
-
-                //FunctionCall functionCall = tm.GetFunctionCall(arguments, VHDL.parser.antlr.TemporaryName.CurrentAssignTarget.Type);
-                FunctionCall functionCall = new FunctionCall(FD, arguments);
+                FunctionCall functionCall = tm.GetFunctionCall(arguments, VHDL.parser.antlr.TemporaryName.CurrentAssignTarget.Type);
+                //FunctionCall functionCall = new FunctionCall(FD, arguments);
                 VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = functionCall;
                 Name res = functionCall;
                 return res;
@@ -3687,9 +3685,6 @@ namespace VHDL_ANTLR4
             VHDL.parser.antlr.TemporaryName tn = ParseExtention.Parse<vhdlParser.Selected_nameContext, VHDL.parser.antlr.TemporaryName>(selected_name_in, VisitSelected_name);
 
             ProcedureCall procedureCall = tn.GetProcedureCall(parameters);
-
-            ProcedureDeclaration procedureDeclaration = tn.GetProcedure();
-            //ProcedureCall procedureCall = new ProcedureCall(procedureDeclaration, parameters);
 
             return procedureCall;
         }

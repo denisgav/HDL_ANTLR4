@@ -189,9 +189,9 @@ namespace VHDL.parser.antlr
             return ResolveProcedureCall(arguments, procedure_candidates);
         }
 
-        public virtual VHDL.declaration.FunctionDeclaration GetFunction()
+        public virtual VHDL.declaration.IFunction GetFunction()
         {
-            VHDL.declaration.FunctionDeclaration function = resolve<VHDL.declaration.FunctionDeclaration>(currentScore);            
+            VHDL.declaration.IFunction function = resolve<VHDL.declaration.IFunction>(currentScore);
             return function;            
         }
 
