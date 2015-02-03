@@ -29,7 +29,9 @@ namespace VHDL.declaration
     /// Alias declaration.
     /// </summary>
     [Serializable]
-	public class Alias : DeclarativeItem, IBlockDeclarativeItem, IEntityDeclarativeItem, IPackageBodyDeclarativeItem, IPackageDeclarativeItem, IProcessDeclarativeItem, ISubprogramDeclarativeItem
+	public class Alias : DeclarativeItem, IBlockDeclarativeItem, IEntityDeclarativeItem,
+        IPackageBodyDeclarativeItem, IPackageDeclarativeItem, IProcessDeclarativeItem, ISubprogramDeclarativeItem,
+        INamedEntity
 	{
 		private string designator;
 		private SubtypeIndication subtypeIndication;
@@ -89,6 +91,11 @@ namespace VHDL.declaration
             set { designator = value; }
 		}
 
+        string INamedEntity.Identifier
+        {
+            get { return designator; }
+        }
+
         /// <summary>
         /// Returns/Sets the subtype indication.
         /// </summary>
@@ -111,5 +118,5 @@ namespace VHDL.declaration
 		{
 			visitor.visitAliasDeclaration(this);
 		}
-	}
+    }
 }
