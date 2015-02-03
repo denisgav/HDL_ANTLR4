@@ -7,6 +7,7 @@ using Exception = System.Exception;
 using VHDL.util;
 using VHDL.Object;
 using VHDL;
+using VHDL.ParseError;
 
 namespace VHDL.parser.typeinfer
 {
@@ -23,6 +24,7 @@ namespace VHDL.parser.typeinfer
         public static ProcedureDeclaration ResolveOverloadProcedure(IDeclarativeRegion scope, List<ProcedureDeclaration> overloads,
             List<AssociationElement> arguments)
         {
+            string id = "";
             List<ProcedureDeclaration> candidates = new List<ProcedureDeclaration>(overloads);
             switch (candidates.Count)
             {
@@ -31,6 +33,7 @@ namespace VHDL.parser.typeinfer
                 case 1:
                     return candidates[0];
                 default:
+                    id = candidates[0].Identifier;
                     for (int i = 0; i < candidates.Count; )
                     {
                         var decl = candidates[i];
@@ -50,11 +53,11 @@ namespace VHDL.parser.typeinfer
                     switch (candidates.Count)
                     {
                         case 0:
-                            throw new Exception("None of overloads matches procedure call");
+                            throw new vhdlNoMatchSubprogramException(id, "procedure");
                         case 1:
                             return candidates[0];
                         default:
-                            throw new Exception("Ambiguous call");
+                            throw new vhdlAmbiguousCallException(id, "procedure");
                     }
             }
         }
@@ -62,6 +65,7 @@ namespace VHDL.parser.typeinfer
         public static FunctionDeclaration ResolveOverloadFunction(IDeclarativeRegion scope, List<FunctionDeclaration> overloads,
             List<AssociationElement> arguments, ISubtypeIndication returnType)
         {
+            string id = "";
             List<FunctionDeclaration> candidates = new List<FunctionDeclaration>(overloads);
             switch (candidates.Count)
             {
@@ -70,6 +74,7 @@ namespace VHDL.parser.typeinfer
                 case 1:
                     return candidates[0];
                 default:
+                    id = candidates[0].Identifier;
                     for (int i = 0; i < candidates.Count;)
                     {
                         var decl = candidates[i];
@@ -104,11 +109,11 @@ namespace VHDL.parser.typeinfer
                     switch (candidates.Count)
                     {
                         case 0:
-                            throw new Exception("None of overloads matches function call");
+                            throw new vhdlNoMatchSubprogramException(id, "function");
                         case 1:
                             return candidates[0];
                         default:
-                            throw new Exception("Ambiguous call");
+                            throw new vhdlAmbiguousCallException(id, "function");
                     }
             }
         }

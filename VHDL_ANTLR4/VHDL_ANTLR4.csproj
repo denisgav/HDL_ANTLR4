@@ -54,7 +54,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ParseError\vhdlAmbiguousCallException.cs" />
     <Compile Include="ParseError\vhdlIllegalUseClauseException.cs" />
+    <Compile Include="ParseError\vhdlNoMatchSubprogramException.cs" />
     <Compile Include="ParseError\vhdlUnknownLibraryException.cs" />
     <Compile Include="ParseError\vhdlUnknownUseClausePrimaryUnitException.cs" />
     <Compile Include="ParseError\vhdlUnknownUseClauseItemException.cs" />
