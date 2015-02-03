@@ -104,7 +104,9 @@ namespace ParserSample
 
         static void Logger_OnWriteEvent(VHDL.parser.LoggerMessageVerbosity verbosity, string message)
         {
+            Console.ForegroundColor = VHDL.parser.Logger.ConvertToConsoleColor(verbosity);
             Console.WriteLine(String.Format("[{0}] {1}", verbosity, message));
+            Console.ResetColor();
         }
     }
 }

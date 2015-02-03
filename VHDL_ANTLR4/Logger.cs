@@ -52,6 +52,21 @@ namespace VHDL.parser
             get { return writer; }
         }
 
+        public static System.ConsoleColor ConvertToConsoleColor(LoggerMessageVerbosity verbosity)
+        {
+            switch (verbosity)
+            {
+                case LoggerMessageVerbosity.Warning:
+                    return ConsoleColor.Yellow;
+                case LoggerMessageVerbosity.Error:
+                    return ConsoleColor.Red;
+                case LoggerMessageVerbosity.Failue:
+                    return ConsoleColor.DarkRed;
+                default:
+                    return ConsoleColor.Gray;
+            }
+        }
+        
         public Logger(string filePath)
         {
             stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Read);
