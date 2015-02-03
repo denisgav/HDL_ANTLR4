@@ -20,63 +20,63 @@ namespace VHDL.parser.typeinfer
             this.ExpectedType = type;
         }
 
-        public static VHDL.declaration.ProcedureDeclaration ResolveOverloadProcedure(IDeclarativeRegion scope, List<VHDL.declaration.ProcedureDeclaration> overloads_in,
+        public static ProcedureDeclaration ResolveOverloadProcedure(IDeclarativeRegion scope, List<ProcedureDeclaration> overloads,
             List<AssociationElement> arguments)
         {
-            List<VHDL.declaration.ProcedureDeclaration> overloads = new List<VHDL.declaration.ProcedureDeclaration>(overloads_in);
-            switch (overloads.Count)
+            List<ProcedureDeclaration> candidates = new List<ProcedureDeclaration>(overloads);
+            switch (candidates.Count)
             {
                 case 0:
                     throw new Exception("Object is not declared");
                 case 1:
-                    return overloads[0];
+                    return candidates[0];
                 default:
-                    for (int i = 0; i < overloads.Count; )
+                    for (int i = 0; i < candidates.Count; )
                     {
-                        var decl = overloads[i];
+                        var decl = candidates[i];
                         // check by arguments count
                         if (decl.Parameters.Count != arguments.Count)
                         {
-                            overloads.RemoveAt(i);
+                            candidates.RemoveAt(i);
                             continue;
                         }                        
                         if (!CheckAssociationList(scope, decl.Parameters, arguments))
                         {
-                            overloads.RemoveAt(i);
+                            candidates.RemoveAt(i);
                             continue;
                         }
                         ++i;
                     }
-                    switch (overloads.Count)
+                    switch (candidates.Count)
                     {
                         case 0:
                             throw new Exception("None of overloads matches procedure call");
                         case 1:
-                            return overloads[0];
+                            return candidates[0];
                         default:
                             throw new Exception("Ambiguous call");
                     }
             }
         }
 
-        public static VHDL.declaration.FunctionDeclaration ResolveOverloadFunction(IDeclarativeRegion scope, List<VHDL.declaration.FunctionDeclaration> overloads_in,
+        public static FunctionDeclaration ResolveOverloadFunction(IDeclarativeRegion scope, List<FunctionDeclaration> overloads,
             List<AssociationElement> arguments, ISubtypeIndication returnType)
         {
-            List<VHDL.declaration.FunctionDeclaration> overloads = new List<VHDL.declaration.FunctionDeclaration>(overloads_in);
-            switch (overloads.Count)
+            List<FunctionDeclaration> candidates = new List<FunctionDeclaration>(overloads);
+            switch (candidates.Count)
             {
                 case 0:
                     throw new Exception("Object is not declared");
                 case 1:
-                    return overloads[0];
+                    return candidates[0];
                 default:
-                    for (int i = 0; i < overloads.Count;)
+                    for (int i = 0; i < candidates.Count;)
                     {
-                        var decl = overloads[i];
+                        var decl = candidates[i];
                         // check by arguments count
                         if (decl.Parameters.Count != arguments.Count)
                         {
-                            overloads.RemoveAt(i);
+                            candidates.RemoveAt(i);
                             continue;
                         }
                         // check return type if so
@@ -85,28 +85,28 @@ namespace VHDL.parser.typeinfer
                             var funcDecl = decl as IFunction;
                             if (funcDecl == null)
                             {
-                                overloads.RemoveAt(i);
+                                candidates.RemoveAt(i);
                                 continue;
                             }
                             else if (!AreTypesCompatible(funcDecl.ReturnType, returnType))
                             {
-                                overloads.RemoveAt(i);
+                                candidates.RemoveAt(i);
                                 continue;
                             }
                         }
                         if (!CheckAssociationList(scope, decl.Parameters, arguments))
                         {
-                            overloads.RemoveAt(i);
+                            candidates.RemoveAt(i);
                             continue;
                         }
                         ++i;
                     }
-                    switch (overloads.Count)
+                    switch (candidates.Count)
                     {
                         case 0:
                             throw new Exception("None of overloads matches function call");
                         case 1:
-                            return overloads[0];
+                            return candidates[0];
                         default:
                             throw new Exception("Ambiguous call");
                     }
