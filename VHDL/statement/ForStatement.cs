@@ -98,12 +98,12 @@ namespace VHDL.statement
 
             public virtual object Resolve(string identifier)
             {
-                if (identifier.EqualsIdentifier(parent.Label))
+                if (identifier.EqualsIgnoreCase(parent.Label))
                 {
                     return parent;
                 }
 
-                if (identifier.EqualsIdentifier(parent.Parameter.Identifier))
+                if (identifier.EqualsIgnoreCase(parent.Parameter.Identifier))
                 {
                     return parent.Parameter;
                 }
