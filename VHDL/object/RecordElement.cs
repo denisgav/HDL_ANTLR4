@@ -6,7 +6,6 @@ namespace VHDL.Object
 {
 ///
 // * Record element.
-// * @param <T> the object type
 // 
 //TODO: check if record element is a valid signal assignment or variable assignment target
     [Serializable]

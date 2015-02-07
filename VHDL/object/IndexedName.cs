@@ -26,10 +26,10 @@ namespace VHDL.Object
 
     //TODO: check if array element is a valid signal assignment or variable assignment target
     /// <summary>
-    /// Array element of a VhdlObject.
+    /// Denotes an element of an array.
     /// </summary>
     [Serializable]
-    public class ArrayElement : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
+    public class IndexedName : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
     {
         private readonly Name prefix;
         private readonly List<Expression> indices;
@@ -39,7 +39,7 @@ namespace VHDL.Object
         /// </summary>
         /// <param name="prefix">the prefix of this array element</param>
         /// <param name="index">the array index</param>
-        public ArrayElement(Name prefix, Expression index)
+        public IndexedName(Name prefix, Expression index)
         {
             this.prefix = prefix;
             this.indices = new List<Expression>();
@@ -51,7 +51,7 @@ namespace VHDL.Object
         /// </summary>
         /// <param name="prefix">the prefix of this array element</param>
         /// <param name="index">the array index</param>
-        public ArrayElement(Name prefix, int index)
+        public IndexedName(Name prefix, int index)
             : this(prefix, new DecimalLiteral(index))
         {
         }
@@ -61,7 +61,7 @@ namespace VHDL.Object
         /// </summary>
         /// <param name="prefix">the prefix of this array element</param>
         /// <param name="indices">the array indices</param>
-        public ArrayElement(Name prefix, List<Expression> indices)
+        public IndexedName(Name prefix, List<Expression> indices)
         {
             this.prefix = prefix;
             this.indices = new List<Expression>();
@@ -73,7 +73,7 @@ namespace VHDL.Object
         /// </summary>
         /// <param name="prefix">the prefix of this array element</param>
         /// <param name="indices">the array indices</param>
-        public ArrayElement(Name prefix, params Expression[] indices)
+        public IndexedName(Name prefix, params Expression[] indices)
             : this(prefix, new List<Expression>(indices))
         {
         }

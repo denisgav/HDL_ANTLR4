@@ -151,7 +151,6 @@
     <Compile Include="expression\INameVisitor.cs" />
     <Compile Include="expression\NameVisitor.cs" />
     <Compile Include="literal\ILiteralVisitor.cs" />
-    <Compile Include="object\Alias.cs" />
     <Compile Include="object\TypedName.cs" />
     <Compile Include="range\DiscreteRange.cs" />
     <Compile Include="EntityAspect.cs" />
@@ -246,7 +245,7 @@
     <Compile Include="literal\RealLiteral.cs" />
     <Compile Include="literal\StringLiterals\StringLiteral.cs" />
     <Compile Include="INamedEntity.cs" />
-    <Compile Include="object\ArrayElement.cs" />
+    <Compile Include="object\IndexedName.cs" />
     <Compile Include="object\AttributeExpression.cs" />
     <Compile Include="object\Constant.cs" />
     <Compile Include="object\ConstantGroup.cs" />

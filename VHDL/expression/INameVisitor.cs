@@ -6,7 +6,7 @@
     {
          void visit(FunctionCall name);
 
-         void visit(ArrayElement name);
+         void visit(IndexedName name);
 
          void visit(AttributeExpression name);
 

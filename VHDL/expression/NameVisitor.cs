@@ -8,7 +8,7 @@
         {
         }
 
-        public virtual void visit(ArrayElement name)
+        public virtual void visit(IndexedName name)
         {
         }
 

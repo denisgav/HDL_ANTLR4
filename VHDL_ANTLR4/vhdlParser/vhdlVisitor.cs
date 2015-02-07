@@ -1548,7 +1548,7 @@ namespace VHDL_ANTLR4
             {
                 List<Expression> expressions = TemporaryIndiciesNamePartExpressions(name_part_in.name_function_call_or_indexed_part().actual_parameter_part());
                 Name base_name = tm.GetName();
-                ArrayElement ae = new ArrayElement(base_name, expressions);
+                IndexedName ae = new IndexedName(base_name, expressions);
                 VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = ae;
                 Name res = ae;
                 return res;
@@ -1559,7 +1559,7 @@ namespace VHDL_ANTLR4
         {
             Name res = previousName;
             List<Expression> expressions = TemporaryIndiciesNamePartExpressions(name_part_in.name_function_call_or_indexed_part().actual_parameter_part());
-            res = new ArrayElement(res, expressions);
+            res = new IndexedName(res, expressions);
             VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = res;
             return res;
         }

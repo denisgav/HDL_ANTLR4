@@ -18,18 +18,8 @@
 namespace VHDL.output
 {
 
-    using Expression = VHDL.expression.Expression;
-    using FunctionCall = VHDL.expression.FunctionCall;
-    using Name = VHDL.expression.Name;
-    using ArrayElement = VHDL.Object.ArrayElement;
-    using AttributeExpression = VHDL.Object.AttributeExpression;
-    using Constant = VHDL.Object.Constant;
-    using FileObject = VHDL.Object.FileObject;
-    using RecordElement = VHDL.Object.RecordElement;
-    using Signal = VHDL.Object.Signal;
-    using Slice = VHDL.Object.Slice;
-    using Variable = VHDL.Object.Variable;
-    using VhdlObject = VHDL.Object.VhdlObject;
+    using VHDL.expression;
+    using VHDL.Object;
     using System;
 
     /// <summary>
@@ -48,9 +38,9 @@ namespace VHDL.output
             {
                 recordElement((RecordElement)name, writer, output);
             }
-            else if (name is ArrayElement)
+            else if (name is IndexedName)
             {
-                arrayElement((ArrayElement)name, writer, output);
+                arrayElement((IndexedName)name, writer, output);
             }
             else if (name is Slice)
             {
@@ -155,7 +145,7 @@ namespace VHDL.output
             writer.Append(')');
         }
 
-        public static void arrayElement(ArrayElement arrayElement, VhdlWriter writer, OutputModule output)
+        public static void arrayElement(IndexedName arrayElement, VhdlWriter writer, OutputModule output)
         {
             output.writeExpression(arrayElement.Prefix);
             writer.Append('(');

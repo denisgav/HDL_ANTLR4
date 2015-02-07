@@ -43,7 +43,7 @@ namespace VHDL.output
     using LibraryUnit = VHDL.libraryunit.LibraryUnit;
     using LibraryUnitVisitor = VHDL.libraryunit.LibraryUnitVisitor;
     using UseClause = VHDL.libraryunit.UseClause;
-    using ArrayElement = VHDL.Object.ArrayElement;
+    using ArrayElement = VHDL.Object.IndexedName;
     using RecordElement = VHDL.Object.RecordElement;
     using Signal = VHDL.Object.Signal;
     using SignalAssignmentTarget = VHDL.Object.ISignalAssignmentTarget;

@@ -51,10 +51,10 @@ namespace VHDL.expression
         /// </summary>
         /// <param name="index">the index of the array element</param>
         /// <returns>the array element</returns>
-        public virtual ArrayElement getArrayElement(Expression index)
+        public virtual IndexedName getArrayElement(Expression index)
         {
             //safe if T extends VhdlObject<T>
-            return new ArrayElement(this, index);
+            return new IndexedName(this, index);
         }
 
         /// <summary>
@@ -62,10 +62,10 @@ namespace VHDL.expression
         /// </summary>
         /// <param name="index">the index of the array element</param>
         /// <returns>the array element</returns>
-        public virtual ArrayElement getArrayElement(int index)
+        public virtual IndexedName getArrayElement(int index)
         {
             //safe if T extends VhdlObject<T>
-            return new ArrayElement(this, index);
+            return new IndexedName(this, index);
         }
 
         /// <summary>
@@ -73,10 +73,10 @@ namespace VHDL.expression
         /// </summary>
         /// <param name="indices">the indices of the array element</param>
         /// <returns>the array element</returns>
-        public virtual ArrayElement getArrayElement(List<Expression> indices)
+        public virtual IndexedName getArrayElement(List<Expression> indices)
         {
             //safe if T extends VhdlObject<T>
-            return new ArrayElement(this, indices);
+            return new IndexedName(this, indices);
         }
 
         /// <summary>
@@ -84,10 +84,10 @@ namespace VHDL.expression
         /// </summary>
         /// <param name="indices">the indices of the array element</param>
         /// <returns>array element</returns>
-        public virtual ArrayElement getArrayElement(params Expression[] indices)
+        public virtual IndexedName getArrayElement(params Expression[] indices)
         {
             //safe if T extends VhdlObject<T>
-            return new ArrayElement(this, indices);
+            return new IndexedName(this, indices);
         }
 
         /// <summary>
