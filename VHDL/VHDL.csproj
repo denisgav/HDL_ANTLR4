@@ -252,7 +252,7 @@
     <Compile Include="object\DefaultVhdlObject.cs" />
     <Compile Include="object\FileGroup.cs" />
     <Compile Include="object\FileObject.cs" />
-    <Compile Include="object\RecordElement.cs" />
+    <Compile Include="object\SelectedName.cs" />
     <Compile Include="object\Signal.cs" />
     <Compile Include="object\ISignalAssignmentTarget.cs" />
     <Compile Include="object\SignalGroup.cs" />

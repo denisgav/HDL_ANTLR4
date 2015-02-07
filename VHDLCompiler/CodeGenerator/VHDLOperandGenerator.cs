@@ -136,8 +136,8 @@ namespace VHDLCompiler.CodeGenerator
             if (expression is LessThan)
                 return GetLessThanOperand(expression as LessThan, compiler);
 
-            if (expression is RecordElement)
-                return GetRecordOperand(expression as RecordElement, compiler, GenerateGetOperandFunction);
+            if (expression is SelectedName)
+                return GetRecordOperand(expression as SelectedName, compiler, GenerateGetOperandFunction);
 
             if (expression is IntegerLiteral)
                 return GetDecimalLiteralOperand(expression as IntegerLiteral, compiler);
@@ -207,7 +207,7 @@ namespace VHDLCompiler.CodeGenerator
             return compiler.ObjectDictionary[expression];
         }
 
-        public static string GetRecordOperand(RecordElement expression, VHDLCompilerInterface compiler, bool GenerateGetOperandFunction = true)
+        public static string GetRecordOperand(SelectedName expression, VHDLCompilerInterface compiler, bool GenerateGetOperandFunction = true)
         {
             Name prefix = expression.getPrefix();
             if (prefix is VHDL.Object.VhdlObject)

@@ -16,7 +16,7 @@
         {
         }
 
-        public virtual void visit(RecordElement name)
+        public virtual void visit(SelectedName name)
         {
         }
 

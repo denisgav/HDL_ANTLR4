@@ -1495,7 +1495,7 @@ namespace VHDL_ANTLR4
             for (int i = 1; i < parts.Count; i++)
             {
                 VHDL.parser.antlr.Part p = parts[i];
-                res = new RecordElement(res, (p as VHDL.parser.antlr.Part.SelectedPart).Suffix);
+                res = new SelectedName(res, (p as VHDL.parser.antlr.Part.SelectedPart).Suffix);
             }
 
             if (name_part_in.name_function_call_or_indexed_part() != null)
@@ -1515,7 +1515,7 @@ namespace VHDL_ANTLR4
             Name res = previousName;
             foreach (VHDL.parser.antlr.Part p in parts)
             {
-                res = new RecordElement(res, (p as VHDL.parser.antlr.Part.SelectedPart).Suffix);
+                res = new SelectedName(res, (p as VHDL.parser.antlr.Part.SelectedPart).Suffix);
             }
 
             string attributeName = name_part_in.name_attribute_part().attribute_designator().GetText();

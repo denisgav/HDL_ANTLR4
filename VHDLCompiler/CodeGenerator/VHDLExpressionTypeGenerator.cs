@@ -136,8 +136,8 @@ namespace VHDLCompiler.CodeGenerator
             if (expression is LessThan)
                 return GetLessThanExpresstionType(expression as LessThan, compiler);
 
-            if (expression is RecordElement)
-                return GetRecordExpresstionType(expression as RecordElement, compiler);
+            if (expression is SelectedName)
+                return GetRecordExpresstionType(expression as SelectedName, compiler);
 
             if (expression is IntegerLiteral)
                 return GetDecimalLiteralExpressionType(expression as IntegerLiteral, compiler);
@@ -181,7 +181,7 @@ namespace VHDLCompiler.CodeGenerator
             return compiler.TypeDictionary[expression.Type];
         }
 
-        public static string GetRecordExpresstionType(RecordElement expression, VHDLCompilerInterface compiler)
+        public static string GetRecordExpresstionType(SelectedName expression, VHDLCompilerInterface compiler)
         {           
             return compiler.TypeDictionary[expression.Type];            
         }

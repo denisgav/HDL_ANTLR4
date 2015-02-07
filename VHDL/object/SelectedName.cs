@@ -4,12 +4,13 @@ using System;
 
 namespace VHDL.Object
 {
-///
-// * Record element.
-// 
-//TODO: check if record element is a valid signal assignment or variable assignment target
+    //TODO: check if record element is a valid signal assignment or variable assignment target
+    /// <summary>
+    /// A selected name is used to denote a named entity whose declaration appears either
+    /// within the declaration of another named entity or within a design library.
+    /// </summary>
     [Serializable]
-	public class RecordElement : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
+	public class SelectedName : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
 	{
         private readonly Name prefix;
 		private readonly string element;
@@ -19,7 +20,7 @@ namespace VHDL.Object
 //     * @param prefix the prefix of this record element
 //     * @param element the identifier of the element
 //     
-        public RecordElement(Name prefix, string element)
+        public SelectedName(Name prefix, string element)
 		{
 			this.prefix = prefix;
 			this.element = element;

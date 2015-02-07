@@ -95,10 +95,10 @@ namespace VHDL.expression
         /// </summary>
         /// <param name="element">the identifier of the record element</param>
         /// <returns>record element</returns>
-        public virtual RecordElement getRecordElement(string element)
+        public virtual SelectedName getRecordElement(string element)
         {
             //safe if T extends VhdlObject<T>			
-            return new RecordElement(this, element);
+            return new SelectedName(this, element);
         }
 
         /// <summary>

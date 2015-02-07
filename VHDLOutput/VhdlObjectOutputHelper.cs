@@ -34,9 +34,9 @@ namespace VHDL.output
 
         public static void name(Name name, VhdlWriter writer, OutputModule output)
         {
-            if (name is RecordElement)
+            if (name is SelectedName)
             {
-                recordElement((RecordElement)name, writer, output);
+                recordElement((SelectedName)name, writer, output);
             }
             else if (name is IndexedName)
             {
@@ -165,7 +165,7 @@ namespace VHDL.output
             writer.Append(')');
         }
 
-        public static void recordElement(RecordElement recordElement, VhdlWriter writer, OutputModule output)
+        public static void recordElement(SelectedName recordElement, VhdlWriter writer, OutputModule output)
         {
             output.writeExpression(recordElement.getPrefix());
             writer.Append('.');

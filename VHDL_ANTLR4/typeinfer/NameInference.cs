@@ -15,7 +15,7 @@ namespace VHDL.parser.typeinfer
             this.scope = scope;
         }
 
-        public override void visit(RecordElement name)
+        public override void visit(SelectedName name)
         {
             if (TypeInference.AreTypesEqual(inferer.ExpectedType, name.Type))
                 inferer.ResultType = name.Type;

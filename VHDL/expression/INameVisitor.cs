@@ -10,7 +10,7 @@
 
          void visit(AttributeExpression name);
 
-         void visit(RecordElement name);
+         void visit(SelectedName name);
 
          void visit(Slice name);
 
