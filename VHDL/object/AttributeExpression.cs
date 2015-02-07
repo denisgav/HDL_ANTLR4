@@ -89,7 +89,7 @@ namespace VHDL.Object
             get
             {
                 //TODO: implement corrently
-                return prefix.Type;
+                return attribute.Type;
             }
 		}
 

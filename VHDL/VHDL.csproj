@@ -151,6 +151,7 @@
     <Compile Include="expression\INameVisitor.cs" />
     <Compile Include="expression\NameVisitor.cs" />
     <Compile Include="literal\ILiteralVisitor.cs" />
+    <Compile Include="object\Alias.cs" />
     <Compile Include="object\TypedName.cs" />
     <Compile Include="range\DiscreteRange.cs" />
     <Compile Include="EntityAspect.cs" />
