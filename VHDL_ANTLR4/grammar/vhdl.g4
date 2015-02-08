@@ -1070,12 +1070,12 @@ port_map_aspect
   ;
 
 primary
-  : literal
+  : name
   | qualified_expression
   | LPAREN expression RPAREN
   | allocator
   | aggregate
-  | name
+  | literal
   ;
 
 primary_unit
