@@ -65,5 +65,22 @@ namespace Tests
             Assert.AreEqual(architecture.Entity, entity);
             Assert.AreEqual(architecture.Identifier, "a");
         }
+
+        [TestMethod]
+        public void PackageDecl()
+        {
+            string code =
+                "package p is            \n" +
+                "end package;            \n";
+
+            var file = parseCode(code);
+
+            Assert.AreEqual(file.Elements.Count, 1);
+
+            var package = file.Elements[0] as VHDL.libraryunit.PackageDeclaration;
+            Assert.IsNotNull(package);
+            Assert.AreEqual(package.Identifier, "p");
+            Assert.IsNull(package.PackageBody);
+        }
     }
 }
