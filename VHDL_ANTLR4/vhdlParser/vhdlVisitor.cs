@@ -2421,7 +2421,7 @@ namespace VHDL_ANTLR4
                 var expression_left_in = simple_expressions_in[0];
                 var expression_right_in = simple_expressions_in[1];
 
-                Range.RangeDirection direction = (direction_in.GetText().EqualsIdentifier("To")) ? Range.RangeDirection.TO : Range.RangeDirection.DOWNTO;
+                Range.RangeDirection direction = (direction_in.GetText().EqualsIgnoreCase("To")) ? Range.RangeDirection.TO : Range.RangeDirection.DOWNTO;
                 Expression expression_left = ParseExtention.Parse<vhdlParser.Simple_expressionContext, Expression>(expression_left_in, VisitSimple_expression);
                 Expression expression_right = ParseExtention.Parse<vhdlParser.Simple_expressionContext, Expression>(expression_right_in, VisitSimple_expression);
 
