@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VHDL_ANTLR4", "VHDL_ANTLR4\VHDL_ANTLR4.csproj", "{6D59ABA1-C75B-4B44-BAAC-0FA6B2F05B5F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verilog_ANTLR4", "Verilog_ANTLR4\Verilog_ANTLR4.csproj", "{B9810DF6-0706-4ADE-A714-F22D13ED6934}"
@@ -18,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VHDLCompiler", "VHDLCompiler\VHDLCompiler.csproj", "{1B9E7B24-C8C3-47FA-8AC5-2278B08C8571}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelingSystemTest", "ModelingSystemTest\ModelingSystemTest.csproj", "{22E60363-5A3A-40BE-A57E-80EC9A1C1797}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{8207B6DC-F605-4200-B771-7AE297553AFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +125,16 @@ Global
 		{22E60363-5A3A-40BE-A57E-80EC9A1C1797}.Release|Mixed Platforms.Build.0 = Release|x86
 		{22E60363-5A3A-40BE-A57E-80EC9A1C1797}.Release|x86.ActiveCfg = Release|x86
 		{22E60363-5A3A-40BE-A57E-80EC9A1C1797}.Release|x86.Build.0 = Release|x86
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8207B6DC-F605-4200-B771-7AE297553AFB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
