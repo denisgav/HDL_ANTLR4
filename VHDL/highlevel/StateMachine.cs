@@ -16,29 +16,18 @@
 //
 
 using System.Collections.Generic;
+using System;
+using VHDL.util;
+using VHDL.statement;
+using VHDL.concurrent;
+using VHDL.expression;
+using VHDL.declaration;
+using VHDL.type;
+using VHDL.literal;
+using VHDL.Object;
 
 namespace VHDL.highlevel
 {
-
-    using Choice = VHDL.Choice;
-    using Choices = VHDL.Choices;
-    using WaveformElement = VHDL.WaveformElement;
-    using AbstractProcessStatement = VHDL.concurrent.AbstractProcessStatement;
-    using Signal = VHDL.Object.Signal;
-    using ConcurrentStatement = VHDL.concurrent.ConcurrentStatement;
-    using BlockDeclarativeItem = VHDL.declaration.IBlockDeclarativeItem;
-    using ProcessDeclarativeItem = VHDL.declaration.IProcessDeclarativeItem;
-    using SignalDeclaration = VHDL.declaration.SignalDeclaration;
-    using EnumerationLiteral = VHDL.literal.EnumerationLiteral;
-    using Expression = VHDL.expression.Expression;
-    using IfStatement = VHDL.statement.IfStatement;
-    using SequentialStatement = VHDL.statement.SequentialStatement;
-    using SignalAssignment = VHDL.statement.SignalAssignment;
-    using EnumerationType = VHDL.type.EnumerationType;
-    using CaseStatement = VHDL.statement.CaseStatement;
-    using System;
-    using VHDL.util;
-
     /// <summary>
     /// State machine.
     /// </summary>
@@ -51,7 +40,7 @@ namespace VHDL.highlevel
         private readonly List<SequentialStatement> combinatorialStatements = new List<SequentialStatement>();
         private readonly StateMachineProcess process;
         private readonly Register register;
-        private List<BlockDeclarativeItem> declarations;
+        private List<IBlockDeclarativeItem> declarations;
         private readonly List<ConcurrentStatement> statements;
         private EnumerationType enumerationType;
         private Signal nextStateSignal;
@@ -93,7 +82,7 @@ namespace VHDL.highlevel
 
             process.updateSignals();
 
-            declarations = new List<BlockDeclarativeItem>(new BlockDeclarativeItem[] { enumerationType, new SignalDeclaration(nextStateSignal, currentStateSignal) });
+            declarations = new List<IBlockDeclarativeItem>(new IBlockDeclarativeItem[] { enumerationType, new SignalDeclaration(nextStateSignal, currentStateSignal) });
 
             foreach (IState state in states)
             {
@@ -207,7 +196,7 @@ namespace VHDL.highlevel
         /// <summary>
         /// Returns the declaration.
         /// </summary>
-        public virtual List<BlockDeclarativeItem> Declarations
+        public virtual List<IBlockDeclarativeItem> Declarations
         {
             get { return declarations; }
         }
@@ -474,7 +463,7 @@ namespace VHDL.highlevel
             public StateMachineProcess(StateMachine fsm)
             {
                 this.fsm = fsm;
-                caseStatement = new CaseStatement(fsm.currentStateSignal);
+                caseStatement = new CaseStatement(Name.reference(fsm.currentStateSignal));
                 caseStatementList = new List<SequentialStatement>(new SequentialStatement[] { caseStatement });
                 statements = ParentSetList<SequentialStatement>.Create(this);
                 statements.AddRange(statementsBefore);
@@ -484,7 +473,7 @@ namespace VHDL.highlevel
 
             public virtual void updateSignals()
             {
-                caseStatement.Expression = fsm.getCurrentStateSignal();
+                caseStatement.Expression = Name.reference(fsm.getCurrentStateSignal());
             }
 
             public virtual void updateStates()
@@ -504,9 +493,9 @@ namespace VHDL.highlevel
                 get { return sensitivityList; }
             }
 
-            public override List<ProcessDeclarativeItem> Declarations
+            public override List<IProcessDeclarativeItem> Declarations
             {
-                get { return new List<ProcessDeclarativeItem>(); }
+                get { return new List<IProcessDeclarativeItem>(); }
             }
 
             public override ParentSetList<SequentialStatement> Statements

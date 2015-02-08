@@ -1,5 +1,6 @@
 ﻿using VHDL;
 using VHDL.expression;
+using VHDL.expression.name;
 using VHDL.Object;
 
 namespace VHDL.parser.typeinfer
@@ -21,13 +22,13 @@ namespace VHDL.parser.typeinfer
                 inferer.ResultType = name.Type;
         }
 
-        public override void visit(AttributeExpression name)
+        public override void visit(AttributeName name)
         {
             if (TypeInference.AreTypesEqual(inferer.ExpectedType, name.Type))
                 inferer.ResultType = name.Type;
         }
 
-        public override void visit(VhdlObject name)
+        public override void visit(SimpleName name)
         {
             if (TypeInference.AreTypesCompatible(inferer.ExpectedType, name.Type))
                 inferer.ResultType = name.Type;

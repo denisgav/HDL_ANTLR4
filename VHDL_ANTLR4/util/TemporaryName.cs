@@ -142,7 +142,7 @@ namespace VHDL.parser.antlr
             if (element is VHDL.expression.Name)
                 return element as VHDL.expression.Name;
             else if (element is VHDL.type.ISubtypeIndication)
-                return new VHDL.Object.TypedName(element as VHDL.type.ISubtypeIndication);
+                return new VHDL.expression.name.SimpleName(element as VHDL.INamedEntity);
             else if (element is VHDL.declaration.Alias)
                 return (element as VHDL.declaration.Alias).Aliased;
 

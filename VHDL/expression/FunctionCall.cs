@@ -21,7 +21,6 @@ using System.Collections.Generic;
 
 namespace VHDL.expression
 {
-    using AssociationElement = VHDL.AssociationElement;
     using Function = VHDL.declaration.IFunction;
     using SubtypeIndication = VHDL.type.ISubtypeIndication;
 
@@ -85,12 +84,17 @@ namespace VHDL.expression
             get { return function.ReturnType; }
 		}
 
+        public override VHDL.INamedEntity Referenced
+        {
+            get { return function; }
+        }
+
         public override void accept(ExpressionVisitor visitor)
 		{
 			visitor.visitFunctionCall(this);
 		}
 
-        public override void accept(INameVisitor visitor)
+        public override void accept(name.INameVisitor visitor)
         {
             visitor.visit(this);
         }

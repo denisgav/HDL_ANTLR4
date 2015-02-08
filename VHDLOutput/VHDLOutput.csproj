@@ -52,6 +52,7 @@
     <Compile Include="VhdlExpressionVisitor.cs" />
     <Compile Include="VhdlLibraryUnitVisitor.cs" />
     <Compile Include="VhdlMiscellaneousElementOutput.cs" />
+    <Compile Include="VhdlNameVisitor.cs" />
     <Compile Include="VhdlObjectOutputHelper.cs" />
     <Compile Include="VhdlOutput.cs" />
     <Compile Include="VhdlOutputHelper.cs" />

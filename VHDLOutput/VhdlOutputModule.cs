@@ -25,6 +25,7 @@ namespace VHDL.output
     using LibraryUnitVisitor = VHDL.libraryunit.LibraryUnitVisitor;
     using SequentialStatementVisitor = VHDL.statement.SequentialStatementVisitor;
     using TypeVisitor = VHDL.type.TypeVisitor;
+    using NameVisitor = VHDL.expression.name.INameVisitor;
 
     internal class VhdlOutputModule : OutputModule
     {
@@ -37,6 +38,7 @@ namespace VHDL.output
         private readonly ConfigurationVisitor configurationVisitor;
         private readonly TypeVisitor typeVisitor;
         private readonly IMiscellaneousElementOutput miscellaneousElementOutput;
+        private readonly NameVisitor nameVisitor;
 
         internal VhdlOutputModule(VhdlWriter writer)
         {
@@ -48,6 +50,7 @@ namespace VHDL.output
             configurationVisitor = new VhdlConfigurationVisitor(writer, this);
             typeVisitor = new VhdlTypeVisitor(writer, this);
             miscellaneousElementOutput = new VhdlMiscellaneousElementOutput(writer, this);
+            nameVisitor = new VhdlNameVisitor(writer, this);
         }
 
         protected internal override SequentialStatementVisitor getSequentialStatementVisitor()
@@ -88,6 +91,11 @@ namespace VHDL.output
         protected internal override IMiscellaneousElementOutput getMiscellaneousElementOutput()
         {
             return miscellaneousElementOutput;
+        }
+
+        protected internal override NameVisitor getNameVisitor()
+        {
+            return nameVisitor;
         }
     }
 

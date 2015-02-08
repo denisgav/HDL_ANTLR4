@@ -15,9 +15,10 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using VHDL.expression;
 using System.Collections.Generic;
 using System;
+using VHDL.expression;
+using VHDL.type;
 
 namespace VHDL.Object
 {
@@ -28,7 +29,7 @@ namespace VHDL.Object
     /// VHDL object.
     /// </summary>
     [Serializable]
-    public abstract class VhdlObject : Name, IVhdlObjectProvider, INamedEntity
+    public abstract class VhdlObject : VhdlElement, IVhdlObjectProvider, INamedEntity
     {
 
         /// <summary>
@@ -45,6 +46,8 @@ namespace VHDL.Object
         /// Returns the type of this VhdlObject.
         /// </summary>
         public abstract ObjectClassEnum ObjectClass { get; }
+
+        public abstract ISubtypeIndication Type { get; }
 
         /// <summary>
         /// Object class describes the type of VhdlObject.
@@ -84,10 +87,5 @@ namespace VHDL.Object
         }
 
         #endregion
-
-        public override void accept(INameVisitor visitor)
-        {
-            visitor.visit(this);
-        }
     }
 }

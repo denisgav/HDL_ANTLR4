@@ -16,20 +16,17 @@
 //
 
 using System;
-using VHDL.util;
 using System.Collections.Generic;
+using VHDL.util;
+using VHDL.expression;
 
 namespace VHDL.highlevel
 {
-
-    using StdLogic1164 = VHDL.builtin.StdLogic1164;
     using AbstractProcessStatement = VHDL.concurrent.AbstractProcessStatement;
-    using ProcessDeclarativeItem = VHDL.declaration.IProcessDeclarativeItem;
-    using Equals = VHDL.expression.Equals;
-    using Expression = VHDL.expression.Expression;
-    using Expressions = VHDL.expression.Expressions;
     using IfStatement = VHDL.statement.IfStatement;
+    using ProcessDeclarativeItem = VHDL.declaration.IProcessDeclarativeItem;
     using SequentialStatement = VHDL.statement.SequentialStatement;
+    using StdLogic1164 = VHDL.builtin.StdLogic1164;
 
     /// <summary>
     /// Abstract register or group.
@@ -87,7 +84,7 @@ namespace VHDL.highlevel
                     {
                         resetActive = StdLogic1164.STD_LOGIC_1;
                     }
-                    Expression resetCondition = new Equals(reg.Reset, resetActive);
+                    Expression resetCondition = new Equals(Name.reference(reg.Reset), resetActive);
 
                     if (reg.ResetType == Register.ResetTypeEnum.ASYNCHRONOUS)
                     {

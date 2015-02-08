@@ -187,7 +187,7 @@ namespace VHDL.output
 
         protected override void visitName(Name name)
         {
-            VhdlObjectOutputHelper.name(name, writer, output);
+            name.accept(output.getNameVisitor());
         }
     }
 

@@ -1,8 +1,8 @@
-using Name = VHDL.expression.Name;
-using SubtypeIndication = VHDL.type.ISubtypeIndication;
 using System;
+using VHDL.type;
+using VHDL.Object;
 
-namespace VHDL.Object
+namespace VHDL.expression.name
 {
     //TODO: check if record element is a valid signal assignment or variable assignment target
     /// <summary>
@@ -44,7 +44,7 @@ namespace VHDL.Object
 			return element;
 		}
 
-		public override SubtypeIndication Type
+		public override ISubtypeIndication Type
 		{
             get
             {
@@ -53,7 +53,13 @@ namespace VHDL.Object
             }
 		}
 
-        public override void accept(VHDL.expression.INameVisitor visitor)
+        public override INamedEntity Referenced
+        {
+            // TODO: should be the element
+            get { return prefix.Referenced; }
+        }
+
+        public override void accept(INameVisitor visitor)
         {
             visitor.visit(this);
         }

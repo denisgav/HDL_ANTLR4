@@ -17,9 +17,10 @@
 
 using System.Collections.Generic;
 using VHDL.expression;
+using VHDL.Object;
 using System;
 
-namespace VHDL.Object
+namespace VHDL.expression.name
 {
     using DecimalLiteral = VHDL.literal.DecBasedInteger;
     using SubtypeIndication = VHDL.type.ISubtypeIndication;
@@ -101,6 +102,12 @@ namespace VHDL.Object
                 //TODO: implement corrently
                 return prefix.Type;
             }
+        }
+
+        public override INamedEntity Referenced
+        {
+            // TODO: should be corresponding element of an array
+            get { return prefix.Referenced; }
         }
 
         public override void accept(INameVisitor visitor)

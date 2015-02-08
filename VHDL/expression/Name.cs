@@ -15,9 +15,10 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using VHDL.Object;
 using System;
 using System.Collections.Generic;
+using VHDL.Object;
+using VHDL.expression.name;
 
 namespace VHDL.expression
 {
@@ -25,7 +26,15 @@ namespace VHDL.expression
     using SubtypeIndication = VHDL.type.ISubtypeIndication;
 
     /// <summary>
-    /// A name of a VHDL element or function call.
+    /// Names can denote declared entities, whether declared explicitly or implicitly.
+    /// Names can also denote the following:
+    ///   — Objects denoted by access values
+    ///   — Methods (see 5.6.2) of protected types
+    ///   — Subelements of composite objects
+    ///   — Subelements of composite values
+    ///   — Slices of composite objects
+    ///   — Slices of composite values
+    ///   — Attributes of any named entity
     /// </summary>
     [Serializable]
     public abstract class Name : Primary
@@ -34,6 +43,13 @@ namespace VHDL.expression
         /// Returns the type of this object.
         /// </summary>
         public override abstract SubtypeIndication Type { get; }
+
+        public abstract INamedEntity Referenced { get; }
+
+        public static SimpleName reference(VhdlObject obj)
+        {
+            return new SimpleName(obj);
+        }
 
         /// <summary>
         /// Returns a slice of this object.
@@ -106,10 +122,10 @@ namespace VHDL.expression
         /// </summary>
         /// <param name="attribute">the attribute</param>
         /// <returns>the record element</returns>
-        public virtual AttributeExpression getAttributeExpression(Attribute attribute)
+        public virtual AttributeName getAttributeExpression(Attribute attribute)
         {
             //safe if T extends VhdlObject<T>
-            return new AttributeExpression(this, attribute);
+            return new AttributeName(this, attribute);
         }
 
         /// <summary>
@@ -118,10 +134,10 @@ namespace VHDL.expression
         /// <param name="attribute">the attribute</param>
         /// <param name="parameter">the parameter</param>
         /// <returns>the record element</returns>
-        public virtual AttributeExpression getAttributeExpression(Attribute attribute, List<Expression> parameters)
+        public virtual AttributeName getAttributeExpression(Attribute attribute, List<Expression> parameters)
         {
             //safe if T extends VhdlObject<T>
-            return new AttributeExpression(this, attribute, parameters);
+            return new AttributeName(this, attribute, parameters);
         }
 
         public override void accept(ExpressionVisitor visitor)

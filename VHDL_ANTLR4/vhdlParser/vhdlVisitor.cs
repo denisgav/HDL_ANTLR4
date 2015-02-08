@@ -29,11 +29,13 @@ namespace VHDL_ANTLR4
     using VHDL.concurrent;
     using VHDL.statement;
     using VHDL.expression;
+    using VHDL.expression.name;
     using VHDL.parser;
     using VHDL.Object;
     using VHDL.annotation;
     using VHDL.declaration;
     using VHDL.literal;
+    using VHDL.type;
 
     using Annotations = VHDL.Annotations;
     using DeclarativeRegion = VHDL.IDeclarativeRegion;
@@ -1523,7 +1525,7 @@ namespace VHDL_ANTLR4
             Attribute attribute = (standard_attribute == null) ? resolve<Attribute>(attributeName) : standard_attribute;
 
             List<Expression> expressions = ParseExtention.ParseList<vhdlParser.ExpressionContext, Expression>(name_part_in.name_attribute_part().expression(), VisitExpression);
-            res = new AttributeExpression(res, attribute, expressions);
+            res = new AttributeName(res, attribute, expressions);
             VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = res;
             return res;
         }
@@ -2378,15 +2380,15 @@ namespace VHDL_ANTLR4
             if (name_in != null)
             {
                 Name name = ParseExtention.Parse<vhdlParser.NameContext, Name>(name_in, VisitName);
-                if (name is TypedName)
+                if (name.Referenced is Type)
                 {
                     res = new RangeAttributeName(name, RangeAttributeName.RangeAttributeNameType.RANGE);
                 }
                 else
                 {
-                    if (name is AttributeExpression)
+                    if (name is AttributeName)
                     {
-                        AttributeExpression ae = name as AttributeExpression;
+                        AttributeName ae = name as AttributeName;
                         if (ae.Attribute.Identifier.EqualsIdentifier("RANGE"))
                         {
                             res = new RangeAttributeName(name, RangeAttributeName.RangeAttributeNameType.RANGE);

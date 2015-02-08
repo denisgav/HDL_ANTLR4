@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VHDL.expression;
+using VHDL.expression.name;
 using VHDL.Object;
 using VHDL.literal;
 using System.Globalization;
@@ -158,21 +159,6 @@ namespace VHDLCompiler.CodeGenerator
                 return GetIdentifierEnumerationLiteralExpresstionType(expression as VHDL.type.EnumerationType.IdentifierEnumerationLiteral, compiler);
             }
 
-            if (expression is Signal)
-            {
-                return compiler.TypeDictionary[(expression as Signal).Type];
-            }
-
-            if (expression is Variable)
-            {
-                return compiler.TypeDictionary[(expression as Variable).Type];
-            }
-
-            if (expression is Constant)
-            {
-                return compiler.TypeDictionary[(expression as Constant).Type];
-            }
-
             throw new NotImplementedException();
         }
 
@@ -181,7 +167,7 @@ namespace VHDLCompiler.CodeGenerator
             return compiler.TypeDictionary[expression.Type];
         }
 
-        public static string GetRecordExpresstionType(SelectedName expression, VHDLCompilerInterface compiler)
+        public static string GetRecordExpresstionType(VHDL.expression.name.SelectedName expression, VHDLCompilerInterface compiler)
         {           
             return compiler.TypeDictionary[expression.Type];            
         }

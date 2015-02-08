@@ -1,9 +1,11 @@
-﻿namespace VHDL.expression
+﻿namespace VHDL.expression.name
 {
-    using VHDL.Object;
-
     public class NameVisitor : INameVisitor
     {
+        public virtual void visit(SimpleName name)
+        {
+        }
+
         public virtual void visit(FunctionCall name)
         {
         }
@@ -12,7 +14,7 @@
         {
         }
 
-        public virtual void visit(AttributeExpression name)
+        public virtual void visit(AttributeName name)
         {
         }
 
@@ -21,14 +23,6 @@
         }
 
         public virtual void visit(Slice name)
-        {
-        }
-
-        public virtual void visit(TypedName name)
-        {
-        }
-
-        public virtual void visit(VhdlObject name)
         {
         }
     }

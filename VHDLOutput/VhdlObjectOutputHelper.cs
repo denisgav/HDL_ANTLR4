@@ -15,13 +15,13 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using System;
+using VHDL.expression;
+using VHDL.expression.name;
+using VHDL.Object;
+
 namespace VHDL.output
 {
-
-    using VHDL.expression;
-    using VHDL.Object;
-    using System;
-
     /// <summary>
     /// VHDL output helper class.
     /// </summary>
@@ -30,34 +30,6 @@ namespace VHDL.output
 
         private VhdlObjectOutputHelper()
         {
-        }
-
-        public static void name(Name name, VhdlWriter writer, OutputModule output)
-        {
-            if (name is SelectedName)
-            {
-                recordElement((SelectedName)name, writer, output);
-            }
-            else if (name is IndexedName)
-            {
-                arrayElement((IndexedName)name, writer, output);
-            }
-            else if (name is Slice)
-            {
-                slice((Slice)name, writer, output);
-            }
-            else if (name is AttributeExpression)
-            {
-                attributeExpression((AttributeExpression)name, writer, output);
-            }
-            else if (name is VhdlObject)
-            {
-                writer.AppendIdentifier((VhdlObject)name);
-            }
-            else if (name is FunctionCall)
-            {
-                output.getExpressionVisitor().visit((FunctionCall)name);
-            }
         }
 
         public static void interfaceSuffix(VhdlObject @object, VhdlWriter writer, OutputModule output)
@@ -129,68 +101,6 @@ namespace VHDL.output
         public static void fileInterfaceSuffix(FileObject file, VhdlWriter writer, OutputModule output)
         {
             output.writeSubtypeIndication(file.Type);
-        }
-
-        public static void slice(Slice slice, VhdlWriter writer, OutputModule output)
-        {
-            output.writeExpression(slice.Prefix);
-            writer.Append('(');
-            for (int i = 0; i < slice.Ranges.Count; i++)
-            {
-                DiscreteRange r = slice.Ranges[i];
-                output.writeDiscreteRange(r);
-                if(i < slice.Ranges.Count - 1)
-                    writer.Append(", ");
-            }
-            writer.Append(')');
-        }
-
-        public static void arrayElement(IndexedName arrayElement, VhdlWriter writer, OutputModule output)
-        {
-            output.writeExpression(arrayElement.Prefix);
-            writer.Append('(');
-            bool first = true;
-            foreach (Expression index in arrayElement.Indices)
-            {
-                if (first)
-                {
-                    first = false;
-                }
-                else
-                {
-                    writer.Append(", ");
-                }
-                output.writeExpression(index);
-            }
-            writer.Append(')');
-        }
-
-        public static void recordElement(SelectedName recordElement, VhdlWriter writer, OutputModule output)
-        {
-            output.writeExpression(recordElement.getPrefix());
-            writer.Append('.');
-            writer.Append(recordElement.getElement());
-        }
-
-        public static void attributeExpression(AttributeExpression expression, VhdlWriter writer, OutputModule output)
-        {
-            output.writeExpression(expression.Prefix);
-            writer.Append('\'');
-            writer.AppendIdentifier(expression.Attribute);
-            if (expression.Parameters.Count != 0)
-            {
-                writer.Append('(');
-                for(int i=0; i<expression.Parameters.Count; i++)
-                {
-                    Expression p = expression.Parameters[i];
-                    output.writeExpression(p);
-                    if (i != expression.Parameters.Count - 1)
-                    {
-                        writer.Append(", ");
-                    }
-                }
-                writer.Append(')');
-            }
         }
     }
 

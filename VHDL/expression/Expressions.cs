@@ -22,8 +22,8 @@ namespace VHDL.expression
     using SignalAttributes = VHDL.builtin.SignalAttributes;
     using StdLogic1164 = VHDL.builtin.StdLogic1164;
     using CharacterLiteral = VHDL.literal.CharacterLiteral;
-    using AttributeExpression = VHDL.Object.AttributeExpression;
     using Signal = VHDL.Object.Signal;
+    using expression.name;
 
     /// <summary>
     /// Methods for expression creation.
@@ -48,14 +48,14 @@ namespace VHDL.expression
                 {
                     call = new FunctionCall(StdLogic1164.FALLING_EDGE);
                 }
-                call.Parameters.Add(new AssociationElement(clock));
+                call.Parameters.Add(new AssociationElement(Name.reference(clock)));
                 return call;
             }
             else
             {
-                Expression condition1 = new AttributeExpression(clock, SignalAttributes.EVENT);
+                Expression condition1 = new AttributeName(Name.reference(clock), SignalAttributes.EVENT);
                 Expression state = rising ? StdLogic1164.STD_LOGIC_1 : StdLogic1164.STD_LOGIC_0;
-                Expression condition2 = new Equals(clock, state);
+                Expression condition2 = new Equals(Name.reference(clock), state);
 
                 return new And(condition1, condition2);
             }
@@ -157,10 +157,11 @@ namespace VHDL.expression
                     if (call.Parameters.Count == 1)
                     {
                         AssociationElement ae = call.Parameters[0];
-                        if (ae.Actual is Signal)
+                        if (ae.Actual is Name)
                         {
-                            Signal s = (Signal)ae.Actual;
-                            return s;
+                            var obj = (ae.Actual as Name).Referenced;
+                            if (obj is Signal)
+                                return obj as Signal;
                         }
                     }
                 }
@@ -206,10 +207,11 @@ namespace VHDL.expression
                     return null;
                 }
 
-                if (binExpr.Left is Signal)
+                if (binExpr.Left is Name)
                 {
-                    Signal clock = (Signal)binExpr.Left;
-                    return clock;
+                    var obj = (binExpr.Left as Name).Referenced;
+                    if (obj is Signal)
+                        return obj as Signal;
                 }
             }
 
@@ -218,9 +220,9 @@ namespace VHDL.expression
 
         private static bool isEventExpression(Expression expression, Signal clock)
         {
-            if (expression is AttributeExpression)
+            if (expression is AttributeName)
             {
-                AttributeExpression ae = (AttributeExpression)expression;
+                AttributeName ae = (AttributeName)expression;
                 if (!ae.Attribute.Identifier.EqualsIdentifier("event"))
                 {
                     return false;
@@ -231,9 +233,9 @@ namespace VHDL.expression
             else if (expression is Not)
             {
                 Not not = (Not)expression;
-                if (not.Expression is AttributeExpression)
+                if (not.Expression is AttributeName)
                 {
-                    AttributeExpression ae = (AttributeExpression)not.Expression;
+                    AttributeName ae = (AttributeName)not.Expression;
                     if (!ae.Attribute.Identifier.EqualsIdentifier("stable"))
                     {
                         return false;

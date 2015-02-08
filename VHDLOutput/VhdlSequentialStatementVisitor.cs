@@ -188,7 +188,7 @@ namespace VHDL.output
         {
             appendLabel(statement);
             writer.Append(KeywordEnum.FOR.ToString()).Append(' ');
-            output.writeExpression(statement.Parameter);
+            writer.Append(statement.Parameter.Identifier);
             writer.Append(' ').Append(KeywordEnum.IN.ToString()).Append(' ');
             output.writeDiscreteRange(statement.Range);
             writer.Append(' ');

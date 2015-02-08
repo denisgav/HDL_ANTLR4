@@ -16,20 +16,18 @@
 //
 
 using System;
+using System.Collections.Generic;
+using VHDL.type;
 
-namespace VHDL.Object
+namespace VHDL.expression.name
 {
-	using Attribute = VHDL.declaration.Attribute;
-	using Expression = VHDL.expression.Expression;
-	using Name = VHDL.expression.Name;
-	using SubtypeIndication = VHDL.type.ISubtypeIndication;
-    using System.Collections.Generic;
-   
+    using Attribute = VHDL.declaration.Attribute;
     /// <summary>
-    /// Attribute expression.
+    /// An attribute name denotes a value, function, type, range, signal,
+    /// or constant associated with a named entity.
     /// </summary>
     [Serializable]
-	public class AttributeExpression : Name
+	public class AttributeName : Name
 	{
         private readonly Name prefix;
 		private readonly Attribute attribute;
@@ -40,7 +38,7 @@ namespace VHDL.Object
         /// </summary>
         /// <param name="prefix">the prefix of this attribute expression</param>
         /// <param name="attribute">the attribute</param>
-        public AttributeExpression(Name prefix, Attribute attribute)
+        public AttributeName(Name prefix, Attribute attribute)
 		{
 			this.prefix = prefix;
 			this.attribute = attribute;
@@ -53,7 +51,7 @@ namespace VHDL.Object
         /// <param name="prefix">the prefix of this attribute expression</param>
         /// <param name="attribute">the attribute</param>
         /// <param name="parameter">the parameter</param>
-        public AttributeExpression(Name prefix, Attribute attribute, List<Expression> parameters)
+        public AttributeName(Name prefix, Attribute attribute, List<Expression> parameters)
 		{
 			this.prefix = prefix;
 			this.attribute = attribute;
@@ -84,7 +82,7 @@ namespace VHDL.Object
             get { return parameters; }
 		}
 
-		public override SubtypeIndication Type
+		public override ISubtypeIndication Type
 		{
             get
             {
@@ -93,7 +91,12 @@ namespace VHDL.Object
             }
 		}
 
-        public override void accept(VHDL.expression.INameVisitor visitor)
+        public override VHDL.INamedEntity Referenced
+        {
+            get { return attribute; }
+        }
+
+        public override void accept(INameVisitor visitor)
         {
             visitor.visit(this);
         }

@@ -17,19 +17,16 @@
 
 using System;
 using System.Collections.Generic;
+using VHDL.expression;
 
 namespace VHDL.highlevel
 {
-
-    using Aggregate = VHDL.expression.Aggregate;
-    using StdLogic1164 = VHDL.builtin.StdLogic1164;
-    using Signal = VHDL.Object.Signal;
-    using Equals = VHDL.expression.Equals;
-    using Expression = VHDL.expression.Expression;
     using IfStatement = VHDL.statement.IfStatement;
-    using SequentialStatement = VHDL.statement.SequentialStatement;
-    using SignalAssignment = VHDL.statement.SignalAssignment;
     using IndexSubtypeIndication = VHDL.type.IndexSubtypeIndication;
+    using SequentialStatement = VHDL.statement.SequentialStatement;
+    using Signal = VHDL.Object.Signal;
+    using SignalAssignment = VHDL.statement.SignalAssignment;
+    using StdLogic1164 = VHDL.builtin.StdLogic1164;
 
     /// <summary>
     /// Register.
@@ -203,11 +200,11 @@ namespace VHDL.highlevel
 
         internal override void addClockAssignments(List<SequentialStatement> statements)
         {
-            SequentialStatement signalAssignment = new SignalAssignment(output, input);
+            SequentialStatement signalAssignment = new SignalAssignment(output, Name.reference(input));
 
             if (writeEnable != null)
             {
-                Expression writeEnableCondition = new Equals(writeEnable, StdLogic1164.STD_LOGIC_1);
+                Expression writeEnableCondition = new Equals(Name.reference(writeEnable), StdLogic1164.STD_LOGIC_1);
                 IfStatement writeEnableIf = new IfStatement(writeEnableCondition);
                 writeEnableIf.Statements.Add(signalAssignment);
                 statements.Add(writeEnableIf);

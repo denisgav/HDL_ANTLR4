@@ -16,13 +16,11 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using VHDL.expression;
-using VHDL.Object;
-using VHDL.literal;
 using System.Globalization;
+using VHDL.expression;
+using VHDL.expression.name;
+using VHDL.literal;
+using VHDL.Object;
 using VHDLCompiler.CodeTemplates.Helpers;
 
 namespace VHDLCompiler.CodeGenerator
@@ -167,9 +165,11 @@ namespace VHDLCompiler.CodeGenerator
                 return GetIdentifierEnumerationLiteralOperand(expression as VHDL.type.EnumerationType.IdentifierEnumerationLiteral, compiler);
             }
 
-            if (expression is VhdlObject)
+            if (expression is Name)
             {
-                return GetObjectOperand(expression as VhdlObject, compiler, GenerateGetOperandFunction);
+                var refObj = ((expression as Name).Referenced as VhdlObject);
+                if (refObj != null)
+                return GetObjectOperand(refObj, compiler, GenerateGetOperandFunction);
             }
 
             throw new NotImplementedException();
@@ -210,9 +210,9 @@ namespace VHDLCompiler.CodeGenerator
         public static string GetRecordOperand(SelectedName expression, VHDLCompilerInterface compiler, bool GenerateGetOperandFunction = true)
         {
             Name prefix = expression.getPrefix();
-            if (prefix is VHDL.Object.VhdlObject)
+            if (prefix.Referenced is VHDL.Object.VhdlObject)
             {
-                string valueProviderName = compiler.ObjectDictionary[prefix as VHDL.Object.VhdlObject];
+                string valueProviderName = compiler.ObjectDictionary[prefix.Referenced as VHDL.Object.VhdlObject];
                 if (string.IsNullOrEmpty(valueProviderName))
                 {
                     return expression.getElement();

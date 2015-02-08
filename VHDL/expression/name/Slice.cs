@@ -16,16 +16,17 @@
 //
 
 using System;
+using System.Collections.Generic;
+using VHDL.expression;
+using VHDL.Object;
+using VHDL.type;
 
-namespace VHDL.Object
+namespace VHDL.expression.name
 {
-    using VHDL.expression;
-    using SubtypeIndication = VHDL.type.ISubtypeIndication;
-    using System.Collections.Generic;
-
     //TODO: check if slice is a valid signal assignment or variable assignment target
     /// <summary>
-    /// Slice of a VhdlObject.
+    /// A slice name denotes a one-dimensional array composed of a sequence of
+    /// consecutive elements of another one-dimensional array.
     /// </summary>
     [Serializable]
     public class Slice : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
@@ -60,13 +61,18 @@ namespace VHDL.Object
             get { return ranges; }
         }
 
-        public override SubtypeIndication Type
+        public override ISubtypeIndication Type
         {
             get
             {
                 //TODO: implement correctly
                 return prefix.Type;
             }
+        }
+
+        public override INamedEntity Referenced
+        {
+            get { return prefix.Referenced; }
         }
 
         public override void accept(INameVisitor visitor)

@@ -15,51 +15,22 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using System;
 using System.Collections.Generic;
+using VHDL;
+using VHDL.configuration;
+using VHDL.declaration;
+using VHDL.expression;
+using VHDL.expression.name;
+using VHDL.statement;
+using VHDL.concurrent;
+using VHDL.type;
+using VHDL.libraryunit;
+using VHDL.Object;
 
 namespace VHDL.output
 {
-
-    using Choice = VHDL.Choice;
-    using Choices = VHDL.Choices;
-    using ComponentSpecification = VHDL.ComponentSpecification;
-    using DiscreteRange = VHDL.DiscreteRange;
-    using Range = VHDL.Range;
-    using RangeAttributeName = VHDL.RangeAttributeName;
-    using SubtypeDiscreteRange = VHDL.SubtypeDiscreteRange;
-    using VhdlElement = VHDL.VhdlElement;
-    using VhdlFile = VHDL.VhdlFile;
-    using ConcurrentStatement = VHDL.concurrent.ConcurrentStatement;
-    using ConcurrentStatementVisitor = VHDL.concurrent.ConcurrentStatementVisitor;
-    using ConfigurationItem = VHDL.configuration.ConfigurationItem;
-    using ConfigurationVisitor = VHDL.configuration.ConfigurationVisitor;
-    using DeclarationVisitor = VHDL.declaration.DeclarationVisitor;
-    using DeclarativeItem = VHDL.declaration.DeclarativeItem;
-    using DeclarativeItemMarker = VHDL.declaration.IDeclarativeItemMarker;
-    using Subtype = VHDL.declaration.Subtype;
-    using Aggregate = VHDL.expression.Aggregate;
-    using Expression = VHDL.expression.Expression;
-    using ExpressionVisitor = VHDL.expression.ExpressionVisitor;
-    using LibraryUnit = VHDL.libraryunit.LibraryUnit;
-    using LibraryUnitVisitor = VHDL.libraryunit.LibraryUnitVisitor;
-    using UseClause = VHDL.libraryunit.UseClause;
-    using ArrayElement = VHDL.Object.IndexedName;
-    using RecordElement = VHDL.Object.SelectedName;
-    using Signal = VHDL.Object.Signal;
-    using SignalAssignmentTarget = VHDL.Object.ISignalAssignmentTarget;
-    using Slice = VHDL.Object.Slice;
-    using Variable = VHDL.Object.Variable;
-    using VariableAssignmentTarget = VHDL.Object.IVariableAssignmentTarget;
-    using SequentialStatement = VHDL.statement.SequentialStatement;
-    using SequentialStatementVisitor = VHDL.statement.SequentialStatementVisitor;
-    using IndexSubtypeIndication = VHDL.type.IndexSubtypeIndication;
-    using RangeSubtypeIndication = VHDL.type.RangeSubtypeIndication;
-    using ResolvedSubtypeIndication = VHDL.type.ResolvedSubtypeIndication;
-    using SubtypeIndication = VHDL.type.ISubtypeIndication;
     using Type = VHDL.type.Type;
-    using TypeVisitor = VHDL.type.TypeVisitor;
-    using UnresolvedType = VHDL.type.UnresolvedType;
-    using System;
 
     /// <summary>
     /// Output module.
@@ -149,7 +120,7 @@ namespace VHDL.output
         /// Writes a declaration.
         /// </summary>
         /// <param name="declaration">the declaration</param>
-        public virtual void writeDeclarationMarker(DeclarativeItemMarker declaration)
+        public virtual void writeDeclarationMarker(IDeclarativeItemMarker declaration)
         {
             if (declaration is DeclarativeItem)
             {
@@ -179,11 +150,11 @@ namespace VHDL.output
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="declarations">the list of declarations</param>
-        public virtual void writeDeclarationMarkers<T>(IList<T> declarations) where T : DeclarativeItemMarker
+        public virtual void writeDeclarationMarkers<T>(IList<T> declarations) where T : IDeclarativeItemMarker
         {
-            foreach (DeclarativeItemMarker declarativeItemMarker in declarations)
+            foreach (IDeclarativeItemMarker IDeclarativeItemMarker in declarations)
             {
-                writeDeclarationMarker(declarativeItemMarker);
+                writeDeclarationMarker(IDeclarativeItemMarker);
             }
         }
 
@@ -219,27 +190,15 @@ namespace VHDL.output
         /// Writes a signal assignment target.
         /// </summary>
         /// <param name="target">the target</param>
-        public virtual void writeSignalAssignmentTarget(SignalAssignmentTarget target)
+        public virtual void writeSignalAssignmentTarget(ISignalAssignmentTarget target)
         {
             if (target is Aggregate)
             {
                 writeExpression((Aggregate)target);
             }
-            else if (target is RecordElement)
+            else if (target is Expression)
             {
-                writeExpression((RecordElement)target);
-            }
-            else if (target is ArrayElement)
-            {
-                writeExpression((ArrayElement)target);
-            }
-            else if (target is Slice)
-            {
-                writeExpression((Slice)target);
-            }
-            else if (target is Signal)
-            {
-                writeExpression((Signal)target);
+                writeExpression((Expression)target);
             }
             else if (target == null)
             {
@@ -255,31 +214,15 @@ namespace VHDL.output
         /// Writes a variable assignment target.
         /// </summary>
         /// <param name="target">the target</param>
-        public virtual void writeVariableAssignmentTarget(VariableAssignmentTarget target)
+        public virtual void writeVariableAssignmentTarget(IVariableAssignmentTarget target)
         {
             if (target is Aggregate)
             {
                 writeExpression((Aggregate)target);
             }
-            else if (target is RecordElement)
+            else if (target is Expression)
             {
-                writeExpression((RecordElement)target);
-            }
-            else if (target is ArrayElement)
-            {
-                writeExpression((ArrayElement)target);
-            }
-            else if (target is Slice)
-            {
-                writeExpression((Slice)target);
-            }
-            else if (target is Variable)
-            {
-                writeExpression((Variable)target);
-            }
-            else if (target is Signal)
-            {
-                writeExpression((Signal)target);
+                writeExpression((Expression)target);
             }
             else if (target == null)
             {
@@ -295,7 +238,7 @@ namespace VHDL.output
         /// Writes a subtype indication.
         /// </summary>
         /// <param name="indication">the subtype indication</param>
-        public virtual void writeSubtypeIndication(SubtypeIndication indication)
+        public virtual void writeSubtypeIndication(ISubtypeIndication indication)
         {
             if (indication is IndexSubtypeIndication)
             {
@@ -505,6 +448,8 @@ namespace VHDL.output
         /// </summary>
         /// <returns>the miscellaneous element output</returns>
         protected internal abstract IMiscellaneousElementOutput getMiscellaneousElementOutput();
+
+        protected internal abstract INameVisitor getNameVisitor();
 
         internal void writeExpression(long p)
         {
