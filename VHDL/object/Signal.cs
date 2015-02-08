@@ -27,7 +27,7 @@ namespace VHDL.Object
     /// Signal.
     /// </summary>
     [Serializable]
-    public class Signal : DefaultVhdlObject, ISignalAssignmentTarget
+    public class Signal : DefaultVhdlObject
     {
         private KindEnum kind;
         private Expression defaultValue;

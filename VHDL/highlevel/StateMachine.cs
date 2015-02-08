@@ -355,7 +355,7 @@ namespace VHDL.highlevel
                     literal = fsm.enumerationType.createLiteral(value);
                     if (stateChange == null)
                     {
-                        stateChange = new SignalAssignment(fsm.getNextStateSignal(), Literal);
+                        stateChange = new SignalAssignment(Name.reference(fsm.getNextStateSignal()), Literal);
                     }
                     else
                     {
@@ -389,7 +389,7 @@ namespace VHDL.highlevel
 
             internal void updateStateChange()
             {
-                stateChange.Target = fsm.nextStateSignal;
+                stateChange.Target = Name.reference(fsm.nextStateSignal);
 
                 //TODO: simplify
                 stateChange.Waveform.Clear();

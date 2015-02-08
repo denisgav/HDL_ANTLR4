@@ -200,7 +200,7 @@ namespace VHDL.highlevel
 
         internal override void addClockAssignments(List<SequentialStatement> statements)
         {
-            SequentialStatement signalAssignment = new SignalAssignment(output, Name.reference(input));
+            SequentialStatement signalAssignment = new SignalAssignment(Name.reference(output), Name.reference(input));
 
             if (writeEnable != null)
             {
@@ -229,11 +229,11 @@ namespace VHDL.highlevel
                 {
                     tmpReset = StdLogic1164.STD_LOGIC_0;
                 }
-                statements.Add(new SignalAssignment(output, tmpReset));
+                statements.Add(new SignalAssignment(Name.reference(output), tmpReset));
             }
             else
             {
-                statements.Add(new SignalAssignment(output, resetExpression));
+                statements.Add(new SignalAssignment(Name.reference(output), resetExpression));
             }
         }
 

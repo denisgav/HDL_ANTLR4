@@ -1,4 +1,5 @@
 ﻿using System;
+using VHDL.Object;
 
 namespace VHDL.expression.name
 {
@@ -7,7 +8,7 @@ namespace VHDL.expression.name
     /// its declaration or another identifier associated with the entity by an alias declaration.
     /// </summary>
     [Serializable]
-    public class SimpleName : Name
+    public class SimpleName : Name, ISignalAssignmentTarget
     {
         private INamedEntity referenced;
 
