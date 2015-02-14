@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Schematix.ProjectExplorer.FSM_File" Collapsed="true">
+    <Position X="3.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAICAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAEAAAA=</HashCode>
+      <FileName>ProjectExplorer\Items\Project_Items\FSM_File.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.Project" Collapsed="true">
+    <Position X="14.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBAwoCAQAJSAAAAAABFQCAAIAAgAAIAGKCAAAEAEAA=</HashCode>
+      <FileName>ProjectExplorer\Items\Project_Items\Project.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.ProjectElement" Collapsed="true">
+    <Position X="8.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAwgAAQABCAAAAIARBRAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>ProjectExplorer\Items\Project_Items\ProjectElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.ProjectElementBase" Collapsed="true">
+    <Position X="9.25" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIKCAAAAgIAJAAABGRAAAAAAAAQAACwEAAAkACAA=</HashCode>
+      <FileName>ProjectExplorer\Items\ProjectElementBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.ProjectFolder" Collapsed="true">
+    <Position X="6" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAICAAAAAAAQAAABEBBAAAAAAAIIAAACAAAEAAAA=</HashCode>
+      <FileName>ProjectExplorer\Items\Project_Items\ProjectFolder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.SolutionElementBase" Collapsed="true">
+    <Position X="17.5" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProjectExplorer\Items\Solution_Items\SolutionElementBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.SolutionFolder" Collapsed="true">
+    <Position X="17" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABJAwoCAQAAAARAAAABFRAAAAAAAIIIAAICBAAECAQA=</HashCode>
+      <FileName>ProjectExplorer\Items\Solution_Items\SolutionFolder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.Verilog_Code_File" Collapsed="true">
+    <Position X="8.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAICAAAAAAAAAAAQAAAAAAAAAAAIAAAAAAAEAAAA=</HashCode>
+      <FileName>ProjectExplorer\Items\Project_Items\Verilog_Code_File.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.VHDL_Code_File" Collapsed="true">
+    <Position X="10.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAICAAAAAIAAAAAQAAAAAAAAAAAIAAAAAAAEAAAA=</HashCode>
+      <FileName>ProjectExplorer\Items\Project_Items\VHDL_Code_File.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.Waveform_File" Collapsed="true">
+    <Position X="12.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAICAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAEAAAA=</HashCode>
+      <FileName>ProjectExplorer\Items\Project_Items\Waveform_File.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.ProjectExplorer.Solution" Collapsed="true">
+    <Position X="19.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAwICAQAIAARAANABERCIAgBAgIIIACIAAAAEAEAA=</HashCode>
+      <FileName>ProjectExplorer\Items\Solution_Items\Solution.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

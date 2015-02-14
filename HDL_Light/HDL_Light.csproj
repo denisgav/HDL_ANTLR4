@@ -1,0 +1,635 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4F56A3C6-693C-4D4E-BD27-1A732070972F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Schematix</RootNamespace>
+    <AssemblyName>HDL_Light</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <NoWin32Manifest>False</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\chip_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework.Classic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Dialogs\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Compiler.cs" />
+    <Compile Include="DesignBrowser\DesignBrowserTree.xaml.cs">
+      <DependentUpon>DesignBrowserTree.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DesignBrowser\DesignChildProvider.cs" />
+    <Compile Include="Dialogs\NewFileDialogWizard\AddNewFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\NewFileDialogWizard\AddNewFile.Designer.cs">
+      <DependentUpon>AddNewFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\NewFileDialogWizard\CreateFileHelper.cs" />
+    <Compile Include="Dialogs\NewFileDialogWizard\Verilog\AddNewVerilog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\NewFileDialogWizard\Verilog\AddNewVerilog.Designer.cs">
+      <DependentUpon>AddNewVerilog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\NewFileDialogWizard\Verilog\AddNewVerilogHelpers.cs" />
+    <Compile Include="Dialogs\NewFileDialogWizard\VHDL\AddNewVHDL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\NewFileDialogWizard\VHDL\AddNewVHDL.Designer.cs">
+      <DependentUpon>AddNewVHDL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\NewFileDialogWizard\VHDL\AddNewVHDLHelpers.cs" />
+    <Compile Include="Dialogs\Search_Replace\Code\CustomSearcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Search_Replace\Code\SimpleSearcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Search_Replace\Code\TextSearcher.cs" />
+    <Compile Include="Panels\SearchReplace.xaml.cs">
+      <DependentUpon>SearchReplace.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Search_Replace\SearchReplaceUserControl.xaml.cs">
+      <DependentUpon>SearchReplaceUserControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Search_Replace\SearchTextBox\SearchTextBox.cs" />
+    <Compile Include="Panels\ConsolePanel.xaml.cs">
+      <DependentUpon>ConsolePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\DesignBrowserPanel.xaml.cs">
+      <DependentUpon>DesignBrowserPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\MessageWindowPanel.xaml.cs">
+      <DependentUpon>MessageWindowPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ProjectExplorerPanel.xaml.cs">
+      <DependentUpon>ProjectExplorerPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\SchematixPanelBase.cs" />
+    <Compile Include="Panels\StartPagePanel.xaml.cs">
+      <DependentUpon>StartPagePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ToolBoxPanel.xaml.cs">
+      <DependentUpon>ToolBoxPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectExplorer\Items\ClipboardBufferData.cs" />
+    <Compile Include="ProjectExplorer\Items\FileOperations.cs" />
+    <Compile Include="ProjectExplorer\Items\IDropable.cs" />
+    <Compile Include="ProjectExplorer\Items\IElementProvider.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\EDR_File.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\Schema_File.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\TextFile.cs" />
+    <Compile Include="ProjectExplorer\UserControls\ProjectExplorerContro.xaml.cs">
+      <DependentUpon>ProjectExplorerContro.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectExplorer\UserControls\TreeViewExtensions.cs" />
+    <Compile Include="SchematixCore.cs" />
+    <Compile Include="Windows\Code\Code.xaml.cs">
+      <DependentUpon>Code.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EntityDrawning\EntityDrawning.xaml.cs">
+      <DependentUpon>EntityDrawning.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EntityDrawning\EntityDrawningCommands.cs" />
+    <Compile Include="Windows\FSM\FSM.xaml.cs">
+      <DependentUpon>FSM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FSM\FSM_Utils.cs" />
+    <Compile Include="Windows\SchematixBaseWindow.cs" />
+    <Compile Include="Windows\Schema\Schema.xaml.cs">
+      <DependentUpon>Schema.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Waveform\Waveform.xaml.cs">
+      <DependentUpon>Waveform.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Dialogs\AboutWindow.xaml" />
+    <Page Include="DesignBrowser\DesignBrowserTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\NewProjectDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindowResources.xaml" />
+    <Page Include="Panels\SearchReplace.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\Search_Replace\SearchReplaceUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\Search_Replace\SearchTextBox\Resources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\NewProjectDialog.xaml.cs">
+      <DependentUpon>NewProjectDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Panels\ConsolePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\DesignBrowserPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\MessageWindowPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\ProjectExplorerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\StartPagePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\ToolBoxPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProjectExplorer\UserControls\ProjectExplorerContro.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Code\Code.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EntityDrawning\EntityDrawning.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FSM\FSM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Schema\Schema.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Waveform\Waveform.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MyCommands.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\FSM_File.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\Project.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\ProjectElement.cs" />
+    <Compile Include="ProjectExplorer\Items\ProjectElementBase.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\ProjectFolder.cs" />
+    <Compile Include="ProjectExplorer\Items\Solution_Items\Solution.cs" />
+    <Compile Include="ProjectExplorer\Items\Solution_Items\SolutionElementBase.cs" />
+    <Compile Include="ProjectExplorer\Items\Solution_Items\SolutionFolder.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\Verilog_Code_File.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\VHDL_Code_File.cs" />
+    <Compile Include="ProjectExplorer\Items\Project_Items\Waveform_File.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Dialogs\NewFileDialogWizard\AddNewFile.resx">
+      <DependentUpon>AddNewFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\NewFileDialogWizard\Verilog\AddNewVerilog.resx">
+      <DependentUpon>AddNewVerilog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\NewFileDialogWizard\VHDL\AddNewVHDL.resx">
+      <DependentUpon>AddNewVHDL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\ieee-obj87.cf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\numeric_bit-body.v87">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\numeric_bit.v87">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\numeric_std-body.v87">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\numeric_std.v87">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\std_logic_1164.v87">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\std_logic_1164_body.v87">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\vital_primitives.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\vital_primitives_body.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\vital_timing.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\ieee\vital_timing_body.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\std\std-obj87.cf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\std\textio.v87">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\std\textio_body.v87">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\synopsys\ieee-obj87.cf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\synopsys\std_logic_arith.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\synopsys\std_logic_misc-body.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\synopsys\std_logic_misc.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\synopsys\std_logic_signed.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\synopsys\std_logic_textio.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v87\synopsys\std_logic_unsigned.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\arith.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\ieee-obj93.cf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\memory_b.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\memory_p.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\numeric_bit-body.v93">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\numeric_bit.v93">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\numeric_std-body.v93">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\numeric_std.v93">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\prmtvs_b.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\prmtvs_p.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\signed.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\std_logic_1164.v93">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\std_logic_1164_body.v93">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\timing_b.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\timing_p.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\unsigned.vhd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\ieee\work-obj93.cf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\std\std-obj93.cf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\std\textio.v93">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\std\textio_body.v93">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Ghdl\lib\v93\synopsys\ieee-obj93.cf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ProjectExplorer\Items\ProjectExplorer.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\About.png" />
+    <Resource Include="Images\CloseProject.png" />
+    <Resource Include="Images\Copy.png" />
+    <Resource Include="Images\Cut.png" />
+    <Resource Include="Images\Delete.png" />
+    <Resource Include="Images\File.png" />
+    <Resource Include="Images\Folder.png" />
+    <Resource Include="Images\Help.png" />
+    <Resource Include="Images\NewProject.png" />
+    <Resource Include="Images\Open.png" />
+    <Resource Include="Images\OpenProject.png" />
+    <Resource Include="Images\Paste.png" />
+    <Resource Include="Images\Redo.png" />
+    <Resource Include="Images\Save.png" />
+    <Resource Include="Images\Search.png" />
+    <Resource Include="Images\Table.png" />
+    <Resource Include="Images\Undo.png" />
+    <Resource Include="Images\Zoom.png" />
+    <Resource Include="Images\ZoomIn.png" />
+    <Resource Include="Images\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SaveAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SelectAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Project.png" />
+    <Resource Include="Images\ToolBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Avalon\AvalonDock.Theme.VS2010\AvalonDock.Themes.VS2010.csproj">
+      <Project>{B3FC3E21-5F2D-4581-AEA2-59F671CFFC21}</Project>
+      <Name>AvalonDock.Themes.VS2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Avalon\AvalonDock.Themes.Aero\AvalonDock.Themes.Aero.csproj">
+      <Project>{BA72CCE0-A9FB-4995-B496-7FEC5C87B85B}</Project>
+      <Name>AvalonDock.Themes.Aero</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Avalon\AvalonDock.Themes.Expression\AvalonDock.Themes.Expression.csproj">
+      <Project>{488DD8F7-9D3C-4F53-BD1F-84A095D9BC10}</Project>
+      <Name>AvalonDock.Themes.Expression</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Avalon\AvalonDock.Themes.Metro\AvalonDock.Themes.Metro.csproj">
+      <Project>{89286EB4-B4A1-418C-839A-067B00F442D8}</Project>
+      <Name>AvalonDock.Themes.Metro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Avalon\AvalonDock\AvalonDock.csproj">
+      <Project>{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}</Project>
+      <Name>AvalonDock %28AvalonDock\AvalonDock%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{9581E8F6-EDD9-463E-BFB8-AFA1D8673884}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphic Editors\EntityDrawning\EntityDrawning.csproj">
+      <Project>{2546F94A-D239-46E7-934B-3FED568F98B9}</Project>
+      <Name>EntityDrawning</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphic Editors\FSM\FSM.csproj">
+      <Project>{74BDB369-74A9-4A67-AE58-4DE3D3F55A5F}</Project>
+      <Name>FSM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphic Editors\Schema\Schema.csproj">
+      <Project>{55456D2F-4CB7-483E-A57B-E36F4F8FD1B2}</Project>
+      <Name>Schema</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\log4net\log4net.csproj">
+      <Project>{181FE707-E161-4722-9F38-6AAAB6FAA106}</Project>
+      <Name>log4net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\My_Editor\My_Editor.csproj">
+      <Project>{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}</Project>
+      <Name>My_Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\CommonProperties\CommonProperties.csproj">
+      <Project>{F1DD26BF-235B-497C-8904-EC0F849E4623}</Project>
+      <Name>CommonProperties</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\ConsoleControl\ConsoleControl.csproj">
+      <Project>{737CC7F2-EC7C-4800-B7EB-72637E892C42}</Project>
+      <Name>ConsoleControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\MessageWindow\MessageWindow.csproj">
+      <Project>{7BA30B40-6603-48A3-8C49-C5A02C9BD2A8}</Project>
+      <Name>MessageWindow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\ProgressWindow\ProgressWindow.csproj">
+      <Project>{E60C682A-86E4-4DE8-B1F7-33055B08E8EF}</Project>
+      <Name>ProgressWindow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\StartPage\StartPage.csproj">
+      <Project>{EE5A02B9-B413-4310-89AF-F0EC5A850CF9}</Project>
+      <Name>StartPage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\ToolBoxWindow\ToolBoxWindow.csproj">
+      <Project>{F8D1408E-5DE8-4379-AB82-0B25971795BF}</Project>
+      <Name>ToolBoxWindow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Parser\Antlr3.Runtime\Antlr3.Runtime.csproj">
+      <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
+      <Name>Antlr3.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Parser\VHDL\VHDLParser\VHDLParser.csproj">
+      <Project>{CD766BB8-DA94-4975-B5FC-28F4CBCEF172}</Project>
+      <Name>VHDLParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VHDL\VHDL.csproj">
+      <Project>{BC4213CF-B989-47AA-A3F9-39269FB2CE01}</Project>
+      <Name>VHDL %28Parser\VHDL\VHDL%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Waveform\Waveform.csproj">
+      <Project>{888B17EF-FA19-4B46-B492-3B937FFED98A}</Project>
+      <Name>Waveform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Waveform\Waveform.csproj">
+      <Project>{888B17EF-FA19-4B46-B492-3B937FFED98A}</Project>
+      <Name>Waveform</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Message.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\StartPage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Solution.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\VHDL_Code.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\waveform.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CommentLines.png" />
+    <Resource Include="Images\IndentHS.png" />
+    <Resource Include="Images\OutdentHS.png" />
+    <Resource Include="Images\UncommentLines.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\WordWrap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\down.png" />
+    <Resource Include="Images\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\layer_number.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Ghdl\bin\ghdl.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\chip_icon.ico" />
+    <Resource Include="Images\performance.png" />
+    <Resource Include="Images\Console.ico" />
+    <Resource Include="Images\Design\process.png" />
+    <Resource Include="Images\Design\library.png" />
+    <Resource Include="Images\chip_icon.png" />
+    <Resource Include="Images\Chip.png" />
+    <Resource Include="Images\Design\architecture.png" />
+    <Resource Include="Images\Design\chip.png" />
+    <Resource Include="Images\Design\function.png" />
+    <Resource Include="Images\Design\package.png" />
+    <Resource Include="Images\Design\procedure.png" />
+    <Resource Include="Images\Files\EDRFile.png" />
+    <Resource Include="Images\Files\FSMFile.png" />
+    <Resource Include="Images\Files\SchemeFile.png" />
+    <Resource Include="Images\Files\TextFile.ico" />
+    <Resource Include="Images\Files\VerilogFile.ico" />
+    <Resource Include="Images\Files\VHDLFile.ico" />
+    <Resource Include="Images\Files\WaveformFile.png" />
+    <Resource Include="Images\compiler\build.png" />
+    <Resource Include="Images\compiler\check.png" />
+    <Resource Include="Images\compiler\clear.png" />
+    <Resource Include="Images\compiler\compile.png" />
+    <Resource Include="Images\Scheme\AddPort.bmp" />
+    <Resource Include="Images\Scheme\AddSignal.bmp" />
+    <Resource Include="Images\Scheme\CreateCode.bmp" />
+    <Resource Include="Images\Scheme\ImportElements.bmp" />
+    <Resource Include="Ghdl\COPYING.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Ghdl\ghdl.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ghdl\lib\v93\ghdl.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

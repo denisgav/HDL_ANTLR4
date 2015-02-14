@@ -1,0 +1,26 @@
+﻿<Window xmlns:my="clr-namespace:Schematix.Waveform.UserControls"
+        x:Class="Schematix.Waveform.UserControls.ResizeDiagram"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="ResizeDiagram"
+        Loaded="Window_Loaded"        
+        Height="125"
+        Width="250"
+        SizeToContent="WidthAndHeight" Icon="/Schematix.Waveform;component/icons/Resize.jpg">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <my:TimeUnitUserControl x:Name="TimeUnitEndTime" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Button Margin="4" Width="50" x:Name="ButtonOk" Click="ButtonOk_Click" IsDefault="True">Ok</Button>
+            <Button Margin="4" Width="50" x:Name="ButtonCancel" Click="ButtonCancel_Click" IsCancel="True">Cancel</Button>
+        </StackPanel>
+    </Grid>
+</Window>

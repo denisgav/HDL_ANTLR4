@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <ComponentGroup Id="AppShortcuts" Directory="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="{F882A1DB-0901-416C-A800-EA325911772F}">
+        <Shortcut Id="startmenuHDL_Light"
+             Name="HDL-Light"
+           Description="Start HDL-Light"
+                  WorkingDirectory='INSTALLFOLDER'
+            Target="[INSTALLFOLDER]HDL_Light.exe" />
+        <!-- Step 1: Add the uninstall shortcut to your installer package -->
+        <Shortcut Id="UninstallHDL_Light"
+                  Name="Uninstall HDL_Light"
+                  Description="Uninstalls HDL_Light"
+                  Target="[System64Folder]msiexec.exe"
+                  Arguments="/x [ProductCode]"/>
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+        <Condition>SHORTCUT_PROGRAMMENU</Condition>
+      </Component>
+    </ComponentGroup>
+    
+    <ComponentGroup Id="DesktopShortcuts" Directory="DesktopFolder">
+      <Component Id="DesktopShortcut" Guid="{3D86F921-E509-44AD-8AB3-52D00E2E07AF}">
+        <Shortcut Id="desktopSchematix" Directory="DesktopFolder" Name="HDL-Light"
+            WorkingDirectory='INSTALLFOLDER' Target="[INSTALLFOLDER]HDL_Light.exe" />
+        <RemoveFolder Id="DesktopFolder" On="uninstall"/>
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+        <Condition>SHORTCUT_DESKTOP</Condition>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

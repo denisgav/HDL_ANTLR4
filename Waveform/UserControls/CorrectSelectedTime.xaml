@@ -1,0 +1,30 @@
+﻿<Window x:Class="Schematix.Waveform.UserControls.CorrectSelectedTime"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:my="clr-namespace:Schematix.Waveform.UserControls"
+        Title="Correct Selected Time" Height="180" Width="220"
+        Loaded="Window_Loaded" Icon="/Schematix.Waveform;component/icons/CorrectTime.jpg">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4">Start Time:</TextBlock>
+        <my:TimeUnitUserControl Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="4" x:Name="timeUnitUserControlStart" />
+
+        <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4">End Time:</TextBlock>
+        <my:TimeUnitUserControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="4" x:Name="timeUnitUserControlEnd" />
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Right">
+            <Button x:Name="ButtonSelectAll" Margin="4" Width="50" Click="ButtonSelectAll_Click">Select All</Button>
+            <Button x:Name="ButtonCancel" Margin="4" Width="50" Click="ButtonCancel_Click" IsCancel="True">Cancel</Button>
+            <Button x:Name="ButtonOk" Margin="4" Width="50" Click="ButtonOk_Click" IsDefault="True">Ok</Button>
+        </StackPanel>
+    </Grid>
+</Window>

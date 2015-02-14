@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9581E8F6-EDD9-463E-BFB8-AFA1D8673884}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Schematix.Core</RootNamespace>
+    <AssemblyName>Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <NoWin32Manifest>False</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr4.Runtime">
+      <HintPath>..\packages\Antlr4.Runtime.4.4.1-alpha001\lib\net40-client\Antlr4.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Presentation" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Compiler\CombinedCompiler.cs" />
+    <Compile Include="Compiler\DiagnosticMessage.cs" />
+    <Compile Include="Compiler\AbstractCompiler.cs" />
+    <Compile Include="Compiler\GHDL\GHDLCompiler.cs" />
+    <Compile Include="Compiler\GHDL\GHDLErrorStringParser.cs" />
+    <Compile Include="Compiler\GHDL\LibraryParser\GHDLCompiledFile.cs" />
+    <Compile Include="Compiler\GHDL\LibraryParser\GHDLLibraryParser.cs" />
+    <Compile Include="Compiler\GHDL\LibraryParser\GHDLParsedArchitecture.cs" />
+    <Compile Include="Compiler\GHDL\LibraryParser\GHDLParsedHead.cs" />
+    <Compile Include="Compiler\VHDL\VHDLCompiler.cs" />
+    <Compile Include="csx\generic.cs" />
+    <Compile Include="ModelingLanguage.cs" />
+    <Compile Include="Model\CodeFile.cs" />
+    <Compile Include="Model\VHDL_CodeFile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Modules\Verilog_Module.cs" />
+    <Compile Include="csx\vhdEntity.cs" />
+    <Compile Include="Modules\VHDL_Module.cs" />
+    <Compile Include="csx\vhdPort.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\log4net\log4net.csproj">
+      <Project>{181FE707-E161-4722-9F38-6AAAB6FAA106}</Project>
+      <Name>log4net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\CommonProperties\CommonProperties.csproj">
+      <Project>{F1DD26BF-235B-497C-8904-EC0F849E4623}</Project>
+      <Name>CommonProperties</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\ConsoleControl\ConsoleControl.csproj">
+      <Project>{737CC7F2-EC7C-4800-B7EB-72637E892C42}</Project>
+      <Name>ConsoleControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\MessageWindow\MessageWindow.csproj">
+      <Project>{7BA30B40-6603-48A3-8C49-C5A02C9BD2A8}</Project>
+      <Name>MessageWindow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Panels\ProgressWindow\ProgressWindow.csproj">
+      <Project>{E60C682A-86E4-4DE8-B1F7-33055B08E8EF}</Project>
+      <Name>ProgressWindow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VHDL\VHDL.csproj">
+      <Project>{BC4213CF-B989-47AA-A3F9-39269FB2CE01}</Project>
+      <Name>VHDL %28Parser\VHDL\VHDL%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VHDL_ANTLR4\VHDL_ANTLR4.csproj">
+      <Project>{6D59ABA1-C75B-4B44-BAAC-0FA6B2F05B5F}</Project>
+      <Name>VHDL_ANTLR4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Waveform\Waveform.csproj">
+      <Project>{888B17EF-FA19-4B46-B492-3B937FFED98A}</Project>
+      <Name>Waveform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Waveform\Waveform.csproj">
+      <Project>{888B17EF-FA19-4B46-B492-3B937FFED98A}</Project>
+      <Name>Waveform</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Compiler\Compiler.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

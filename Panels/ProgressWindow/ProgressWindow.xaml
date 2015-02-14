@@ -1,0 +1,35 @@
+﻿<Window xmlns:my="clr-namespace:Schematix.Core.UserControls"  x:Class="Schematix.Core.UserControls.ProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ProgressWindow"  Topmost="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Width="272" Height="296" ShowInTaskbar="False" Loaded="Window_Loaded">
+    <Window.Resources>
+        <ResourceDictionary Source="ProgressIndicator.xaml"></ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <my:ProgressIndicator x:Name="ProgressIndicator1" Width="80" Height="80" Grid.Column="0" Grid.Row="0" />
+        <ProgressBar x:Name="ProgressBar1" Grid.Row="1" Height="50" Minimum="0" Maximum="100" Margin="4" BorderThickness="2" Orientation="Horizontal" Foreground="#FF0057F6" BorderBrush="Blue"></ProgressBar>
+        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">            
+            <TextBlock x:Name="TextBlockPercentCompleted" HorizontalAlignment="Left" VerticalAlignment="Center">Percent completed</TextBlock>
+            <TextBlock x:Name="TextBlockTimeElapsed" HorizontalAlignment="Left" VerticalAlignment="Center">Time elapsed</TextBlock>
+            <TextBlock x:Name="TextBlockTimeRequired" HorizontalAlignment="Left" VerticalAlignment="Center">Time required</TextBlock>
+            <GroupBox Header="Manipulation">
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="ButtonCancel" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 2" Click="ButtonCancel_Click">Cancel</Button>
+                    <Button x:Name="ButtonPause" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 2" Click="ButtonPause_Click">Pause</Button>
+                    <Button x:Name="ButtonResume" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 2" Click="ButtonResume_Click">Resume</Button>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</Window>

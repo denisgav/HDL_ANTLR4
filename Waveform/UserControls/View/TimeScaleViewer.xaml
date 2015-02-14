@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Schematix.Waveform.UserControls.TimeScaleViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             SizeChanged="UserControl_SizeChanged"
+             Loaded="UserControl_Loaded">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="TextBlockCurrentTime" Foreground="Red" Grid.Row="0"/>
+        
+        <Canvas x:Name="CanvasTimeScale" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True"></Canvas>
+        <ScrollBar x:Name="ScrollBarTimeScale" Focusable="True" Panel.ZIndex="10"  Grid.Row="1" SnapsToDevicePixels="True" ViewportSize="1" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ValueChanged="ScrollBarTimeScale_ValueChanged"></ScrollBar>
+    </Grid>
+</UserControl>

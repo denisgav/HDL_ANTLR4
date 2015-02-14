@@ -1,0 +1,150 @@
+﻿<src:SchematixBaseWindow x:Class="Schematix.Windows.FSM.FSM"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:fsm="clr-namespace:Schematix.FSM;assembly=FSM"
+        xmlns:my="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:src="clr-namespace:Schematix.Windows">
+    <DockPanel x:Name="DockPanelRoot">
+        <ToolBarTray DockPanel.Dock="Top" x:Name="MainToolBarTray">
+            <ToolBarTray.Resources>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+                            <Setter Property="Opacity" Value="0.30" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>               
+
+                <ControlTemplate x:Key="MyToggleButtonTemplate" TargetType="{x:Type ToggleButton}">
+                    <Border x:Name="MainBorder" BorderBrush="#707070" BorderThickness="1" CornerRadius="2" Background="#F5F5F5" TextBlock.Foreground="#909090" Margin="1 1 1 1">
+                        <ContentPresenter RecognizesAccessKey="True"></ContentPresenter>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="MainBorder" Property="Background" Value="#E0E0E0"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="MainBorder" Property="Background" Value="#A0A0A0"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MainBorder" Property="BorderBrush" Value="#252525"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ToolBarTray.Resources>
+            <ToolBarTray.ToolBars>
+                <ToolBar x:Name="ToolBarGenerateCode">
+                    <Button x:Name ="ButtonGenerateCode" Click="ButtonGenerateCode_Click" >
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/HDL_Light;component/Images/Scheme/CreateCode.bmp" Width="16" Height="16" Margin="2"/>
+                            <TextBlock TextWrapping="WrapWithOverflow" Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Generate Code</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                </ToolBar>
+                <ToolBar x:Name="ToolBarShowPriority">
+                    <CheckBox  x:Name="CheckBoxShowPriorityOfTransitions" Checked="CheckBoxShowPriorityOfTransitions_Checked" Unchecked="CheckBoxShowPriorityOfTransitions_Unchecked" IsChecked="True" OverridesDefaultStyle="True">
+                        Show Priority Of Transitions
+                    </CheckBox>
+                </ToolBar>
+
+                <ToolBar x:Name="ToolBarComponents">
+                    <Button x:Name="ButtonComment" Click="ButtonComment_Click" ToolTip="Create Comment">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/text.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Comment</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonConstant" Click="ButtonConstant_Click" ToolTip="Create Constant">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/FSM/constant.png" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Constant</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonReset" Click="ButtonReset_Click" ToolTip="Create Reset">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/FSM/reset1.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Reset</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonSignal" Click="ButtonSignal_Click" ToolTip="Create Signal">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/FSM/signal.png" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Signal</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonState" Click="ButtonState_Click" ToolTip="Create State">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/FSM/state.png" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">State</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonTransition" Click="ButtonTransition_Click" ToolTip="Create Transition">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/FSM/transition.png" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Transition</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                </ToolBar>
+                <ToolBar x:Name="ToolBarPorts">
+                    <Button x:Name="ButtonBidirectional" Click="ButtonBidirectional_Click" ToolTip="Bidirectional Port">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/FSM/port1.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock TextWrapping="WrapWithOverflow"  Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Bidirectional Port</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonInput" Click="ButtonInput_Click" ToolTip="Input Port">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/FSM/port2.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock TextWrapping="WrapWithOverflow" Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Input Port</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonOutput" Click="ButtonOutput_Click" ToolTip="Output Port">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/FSM/port3.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock TextWrapping="WrapWithOverflow" Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Output Port</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonBuffer" Click="ButtonBuffer_Click" ToolTip="Buffer Port">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/FSM/port4.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock TextWrapping="WrapWithOverflow" Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Buffer Port</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                </ToolBar>
+            </ToolBarTray.ToolBars>
+        </ToolBarTray>
+
+        <Grid x:Name="GridContent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+                
+            
+
+            <my:WindowsFormsHost Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True">
+                <fsm:Constructor_UserControl x:Name="constructor1" MouseMove="constructor1_MouseMove" Load="constructor1_Load" Dock="Fill" AllowDrop="True"/>
+            </my:WindowsFormsHost>
+
+            <StatusBar Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" x:Name="StatusBarMain">
+                <StatusBarItem HorizontalContentAlignment="Right">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                        <TextBlock Width="50">Position:</TextBlock>
+                        <TextBlock x:Name="textblockPosition" Margin="4" Width="100"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <TextBlock Text="Min" Margin="4"/>
+                            <Slider x:Name="zoomSlider" SmallChange ="0.5" LargeChange="1" Width="100" Minimum="10" Maximum="400" IsSnapToTickEnabled="True" Orientation="Horizontal" TickFrequency ="0.5" TickPlacement="None" Value="100" ValueChanged="zoomSlider_ValueChanged" >
+                            </Slider>
+                            <TextBlock Text="Max"  Margin="4"/>
+                            <TextBlock Text="100%" Margin="4" x:Name="textBlockZoom"  Width="50"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+    </DockPanel>
+</src:SchematixBaseWindow>

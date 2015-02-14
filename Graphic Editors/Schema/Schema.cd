@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="csx.addExternPort">
+    <Position X="9.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAgIAKAACQEABQAAACAAAACEAA4AABAAHBAEAiIgCA=</HashCode>
+      <FileName>Windows\Schema\Add Item\addExternPort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.addSignal">
+    <Position X="12.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAGAAABAAQCCAAAACAAA4AAAAAHAAAACIgAA=</HashCode>
+      <FileName>Windows\Schema\Add Item\addSignal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.cnManager">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAEAABAAAAABAAAABEABAEAgAAAEAAEABA=</HashCode>
+      <FileName>Windows\Schema\Connection manager\cnManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.connectForm1">
+    <Position X="18" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABBAAACAAAACAAAYAAAAAGAAAAAAAgA=</HashCode>
+      <FileName>Windows\Schema\Connection manager\connectForm1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.connectFormPL">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABSAAGAAABBAAACAACRDANA7BgAEAHAPMQAEAAE=</HashCode>
+      <FileName>Windows\Schema\Connection manager\connectFormPL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.connectFormPP">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABSAAGAAABBAAACAACRDANA7BgAEAHAPMQAEAAE=</HashCode>
+      <FileName>Windows\Schema\Connection manager\connectFormPP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.redactorPL">
+    <Position X="16.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAQKECAAGBgAABAAYCMAAoDBKAAQAAQEkBgCQIAhgA=</HashCode>
+      <FileName>Windows\Schema\Connection manager\redactorPL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.redactorPP">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAECCBCBAAABAAYCMAAICAKAAwgAQAkBgAAIAggA=</HashCode>
+      <FileName>Windows\Schema\Connection manager\redactorPP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.ImportSelect">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACCAAACAAAYAQAAIGAAAAAIAAA=</HashCode>
+      <FileName>Windows\Schema\Import\ImportSelect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.vhdPort">
+    <Position X="12.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAACAAAAAAAAAAAAAAAAAAAFABAAAAAAEAAAAAA=</HashCode>
+      <FileName>Windows\Schema\Import\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.generic">
+    <Position X="18" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAIQAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Windows\Schema\Import\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.vhdEntity">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAEAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Windows\Schema\Import\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Parser">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAQQAAAAAAAQAAAAAARAAAAAA=</HashCode>
+      <FileName>Windows\Schema\Import\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Actions">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIABAABAEgAAEBgAAAAAAQAAAEIUIACABACBgFEAAA=</HashCode>
+      <FileName>Windows\Schema\Model\Actions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Common" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAgAMAghABAAAAABAAAAEBAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Windows\Schema\Model\Common.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Connect" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Windows\Schema\Model\Connect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Construct">
+    <Position X="20" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABgZBAAAEATjshBoCTIAMADAAQYCCDohCVBAKABAAAA=</HashCode>
+      <FileName>Windows\Schema\Model\Construct.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Element" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAEgAAAAAAAAAAAAAAAAAIAAAAAAAAAAI=</HashCode>
+      <FileName>Windows\Schema\Model\Element.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Events">
+    <Position X="21.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CgYJCACsigRoBGhAhEAMGiYyENCxQkoAiBACRAAggIA=</HashCode>
+      <FileName>Windows\Schema\Model\Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Line">
+    <Position X="5.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAiAAEmCAAAEAgAABAghABAQAAAUAACAEIggABACABA=</HashCode>
+      <FileName>Windows\Schema\Model\Line.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Port">
+    <Position X="14.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAEAQAACAAAgQABAAACAAAADAAAVIBCAAAAgAAACAAA=</HashCode>
+      <FileName>Windows\Schema\Model\Port.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="csx.Scale">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUAAAAAAAAACAABAAAAAAACCAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Windows\Schema\Model\Scale.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix_all.Schema">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gRyJTIQBGiQAIiAAQCWKOEwKQw0EYAAAlEINiAAIWAA=</HashCode>
+      <FileName>Windows\Schema\Schema.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="csx.ElementType">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAgAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Windows\Schema\Model\Element.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="csx.portInOut">
+    <Position X="2.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAQCA=</HashCode>
+      <FileName>Windows\Schema\Model\Port.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

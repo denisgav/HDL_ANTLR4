@@ -1,0 +1,9 @@
+﻿<src:SchematixPanelBase xmlns:my="clr-namespace:ToolBoxWindow;assembly=ToolBoxWindow"  x:Class="Schematix.Panels.ToolBoxPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:src="clr-namespace:Schematix.Panels"
+        Title="ToolBox">
+    <Grid>
+        <my:ToolBox x:Name="toolBox"/>
+    </Grid>
+</src:SchematixPanelBase>

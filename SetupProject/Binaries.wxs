@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+      <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+        <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+        <Component Id="HDL_Light">
+          <CreateFolder>
+            <Permission User="Everyone" GenericAll="yes" />
+          </CreateFolder>
+          <File Source="$(var.HDL_Light.TargetPath)"/>
+        </Component>
+
+        <!-- Parser -->
+        <Component Id="Antlr3.Runtime.dll">
+          <File Id="Antlr3.Runtime.dll" Source="$(var.HDL_Light.TargetDir)\Antlr3.Runtime.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="ELW.Library.Math.dll">
+          <File Id="ELW.Library.Math.dll" Source="$(var.HDL_Light.TargetDir)\ELW.Library.Math.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="Parser.dll">
+          <File Id="Parser.dll" Source="$(var.HDL_Light.TargetDir)\Parser.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="VHDL.dll">
+          <File Id="VHDL.dll" Source="$(var.HDL_Light.TargetDir)\VHDL.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="VHDLParser.dll">
+          <File Id="VHDLParser.dll" Source="$(var.HDL_Light.TargetDir)\VHDLParser.dll" KeyPath="yes"/>
+        </Component>
+        <!--*****************-->
+
+        <!--Avalon Dock-->
+        <Component Id="AvalonDock.dll">
+          <File Id="AvalonDock.dll" Source="$(var.HDL_Light.TargetDir)\AvalonDock.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="AvalonDock.Themes.Aero.dll">
+          <File Id="AvalonDock.Themes.Aero.dll" Source="$(var.HDL_Light.TargetDir)\AvalonDock.Themes.Aero.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="AvalonDock.Themes.Expression.dll">
+          <File Id="AvalonDock.Themes.Expression.dll" Source="$(var.HDL_Light.TargetDir)\AvalonDock.Themes.Expression.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="AvalonDock.Themes.Metro.dll">
+          <File Id="AvalonDock.Themes.Metro.dll" Source="$(var.HDL_Light.TargetDir)\AvalonDock.Themes.Metro.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="AvalonDock.Themes.VS2010.dll">
+          <File Id="AvalonDock.Themes.VS2010.dll" Source="$(var.HDL_Light.TargetDir)\AvalonDock.Themes.VS2010.dll" KeyPath="yes"/>
+        </Component>
+        <!--*******************************-->
+
+        <!--   Panels  -->
+        <Component Id="ConsoleControl.dll">
+          <File Id="ConsoleControl.dll" Source="$(var.HDL_Light.TargetDir)\ConsoleControl.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="MessageWindow.dll">
+          <File Id="MessageWindow.dll" Source="$(var.HDL_Light.TargetDir)\MessageWindow.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="ProgressWindow.dll">
+          <File Id="ProgressWindow.dll" Source="$(var.HDL_Light.TargetDir)\ProgressWindow.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="Schematix.CommonProperties.dll">
+          <File Id="Schematix.CommonProperties.dll" Source="$(var.HDL_Light.TargetDir)\CommonProperties.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="StartPage.dll">
+          <File Id="StartPage.dll" Source="$(var.HDL_Light.TargetDir)\StartPage.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="ToolBoxWindow.dll">
+          <File Id="ToolBoxWindow.dll" Source="$(var.HDL_Light.TargetDir)\ToolBoxWindow.dll" KeyPath="yes"/>
+        </Component>
+
+        <!--*******************************-->
+
+        <!--   Graphic Editors  -->
+        <Component Id="EntityDrawning.dll">
+          <File Id="EntityDrawning.dll" Source="$(var.HDL_Light.TargetDir)\EntityDrawning.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="FSM.dll">
+          <File Id="FSM.dll" Source="$(var.HDL_Light.TargetDir)\FSM.dll" KeyPath="yes"/>
+        </Component>
+        <Component Id="Schema.dll">
+          <File Id="Schema.dll" Source="$(var.HDL_Light.TargetDir)\Schema.dll" KeyPath="yes"/>
+        </Component>
+        <!--*******************************-->
+
+        <Component Id="DataContainer.dll">
+          <File Id="DataContainer.dll" Source="$(var.HDL_Light.TargetDir)\DataContainer.dll" KeyPath="yes"/>
+        </Component>
+
+        <Component Id="My_Editor.dll">
+          <File Id="My_Editor.dll" Source="$(var.HDL_Light.TargetDir)\My_Editor.dll" KeyPath="yes"/>
+        </Component>
+
+        <Component Id="Schematix.Core.dll">
+          <File Id="Schematix.Core.dll" Source="$(var.HDL_Light.TargetDir)\Core.dll" KeyPath="yes"/>
+        </Component>
+
+        <Component Id="Schematix.Waveform.dll">
+          <File Id="Schematix.Waveform.dll" Source="$(var.HDL_Light.TargetDir)\Waveform.dll" KeyPath="yes"/>
+        </Component>
+
+        <Component Id="log4net.dll">
+          <File Id="log4net.dll" Source="$(var.HDL_Light.TargetDir)\log4net.dll" KeyPath="yes"/>
+        </Component>
+
+        <!--  Important XML File (ToolBoxData.xml) -->
+        <Component Id="ToolBoxData.xml">
+          <File Id="ToolBoxData.xml" Source="$(var.HDL_Light.TargetDir)\ToolBoxData.xml" KeyPath="yes"/>
+        </Component>
+      </ComponentGroup>
+
+    </Fragment>
+</Wix>

@@ -1,0 +1,236 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:l="clr-namespace:Schematix.Dialogs.Search_Replace"
+	 xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic">
+
+    <Geometry x:Key="DownArrow">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
+    <Geometry x:Key="CloseX">M1,1 L8,8 M1,8 L8,1</Geometry>
+
+    <GeometryGroup x:Key="HandMagnifier">
+        <EllipseGeometry Center="9,5" RadiusX="4" RadiusY="4" />
+        <LineGeometry StartPoint="2,12" EndPoint="6,8" />
+    </GeometryGroup>
+
+    <LinearGradientBrush x:Key="Rest" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#80B4BBF6" Offset="0"/>
+        <GradientStop Color="#FF1A40CF" Offset="0.4"/>
+        <GradientStop Color="#E600E5E5" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Hover" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#40BAC1FF" Offset="0"/>
+        <GradientStop Color="#FF204EFF" Offset="0.4"/>
+        <GradientStop Color="#7300FFFF" Offset="1"/>
+    </LinearGradientBrush>
+
+    <Style x:Key="SearchButton" TargetType="{x:Type ButtonBase}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <theme:ClassicBorderDecorator Name="Border"
+                                   BorderStyle="ThinRaised"
+																																			Margin="{TemplateBinding Margin}"
+                                   Background="{TemplateBinding Background}"
+                                   BorderThickness="{TemplateBinding BorderThickness}"
+                                   BorderBrush="{TemplateBinding BorderBrush}"
+                                   SnapsToDevicePixels="True">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+																								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+																								HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+																								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </theme:ClassicBorderDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Setter Property="BorderBrush" Value="{x:Static theme:ClassicBorderDecorator.ClassicBorderBrush}"/>
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            <Setter TargetName="Border" Property="BorderStyle" Value="ThinPressed"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="ToggleButton.IsChecked" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="BorderBrush" Value="{x:Static theme:ClassicBorderDecorator.ClassicBorderBrush}"/>
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPressed" Value="True"/>
+                                <Condition Property="ToggleButton.IsChecked" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Border" Property="BorderStyle" Value="ThinPressed"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RegularSearchButton" TargetType="{x:Type ButtonBase}" BasedOn="{StaticResource SearchButton}">
+        <Setter Property="BorderBrush" Value="{x:Static theme:ClassicBorderDecorator.ClassicBorderBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+    </Style>
+
+    <ControlTemplate x:Key="InstantSearchTemplate" TargetType="{x:Type l:SearchBox}">
+        <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Margin="{TemplateBinding Padding}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="PART_SearchText" Grid.Column="0"
+												BorderThickness="{TemplateBinding BorderThickness}"
+												BorderBrush="{TemplateBinding BorderBrush}"
+												Background="{TemplateBinding Background}"
+												Margin="0" VerticalAlignment="Stretch"
+												ToolTip="{TemplateBinding ToolTip}"
+												Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <TextBlock Name="Prompt" IsHitTestVisible="False" Visibility="Hidden"
+														Margin="{Binding BorderThickness, ElementName=PART_SearchText}"
+														Padding="{Binding Padding, ElementName=PART_SearchText}"
+														FontStyle="Italic" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+														Text="{TemplateBinding Prompt}"/>
+            <Button Name="PART_SearchButton" Grid.Column="1" 
+											Style="{StaticResource SearchButton}" IsEnabled="False"
+											Margin="0,0,0,0.5" Padding="3,-1" MinWidth="29">
+                <Grid>
+                    <Rectangle Stroke="#CC6F6E6F" Fill="White" 
+																StrokeThickness="1" RadiusX="2" RadiusY="2"/>
+                    <Rectangle Name="IconBackground" Margin="1" 
+																Stroke="#80FFFFFF" Fill="{StaticResource Rest}"
+																StrokeThickness="1" RadiusX="2" RadiusY="2"/>
+                    <Path Name="Icon"
+											VerticalAlignment="Center" HorizontalAlignment="Center"
+											Stroke="#E6FFFFFF" StrokeThickness="2" 
+											Data="{StaticResource HandMagnifier}"/>
+                </Grid>
+            </Button>
+            <ToggleButton Name="PART_DropDownArrow" Grid.Column="2"
+																	Style="{StaticResource SearchButton}" ClickMode="Press" 
+																	IsChecked="{Binding ContextMenu.IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+																	Margin="0,0,0,0.5" Padding="3,7">
+                <Path VerticalAlignment="Center" HorizontalAlignment="Center"
+										Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+										Data="{StaticResource DownArrow}"/>
+            </ToggleButton>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="State" Value="Prompt">
+                <Setter TargetName="Prompt" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="State" Value="Text">
+                <Setter TargetName="PART_SearchButton" Property="IsEnabled" Value="True"/>
+                <Setter TargetName="Icon" Property="Data" Value="{StaticResource CloseX}"/>
+            </Trigger>
+            <Trigger SourceName="PART_SearchButton" Property="IsMouseOver" Value="True">
+                <Setter TargetName="IconBackground" Property="Fill" Value="{StaticResource Hover}"/>
+            </Trigger>
+            <Trigger Property="ContextMenu" Value="{x:Null}">
+                <Setter TargetName="PART_DropDownArrow" Property="IsEnabled" Value="False"/>
+                <Setter TargetName="PART_DropDownArrow" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="RegularSearchTemplate" TargetType="{x:Type l:SearchBox}">
+        <theme:ClassicBorderDecorator BorderStyle="Sunken"
+																																BorderThickness="{TemplateBinding BorderThickness}"
+																																BorderBrush="{TemplateBinding BorderBrush}"
+																																Background="{TemplateBinding Background}"
+																																Margin="{TemplateBinding Padding}"
+																																Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Name="PART_SearchText" Grid.Column="0"
+												BorderThickness="0" BorderBrush="{x:Null}"	Background="{x:Null}"
+												Margin="0" VerticalAlignment="Stretch"
+												ToolTip="{TemplateBinding ToolTip}"
+												Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <TextBlock Name="Prompt" IsHitTestVisible="False" Visibility="Hidden"
+														Margin="{Binding BorderThickness, ElementName=PART_SearchText}"
+														Padding="{Binding Padding, ElementName=PART_SearchText}"
+														FontStyle="Italic" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+														Text="{TemplateBinding Prompt}"/>
+                <Button Name="PART_SearchButton" Grid.Column="1" 
+											Style="{StaticResource RegularSearchButton}"
+											Padding="3,-1" MinWidth="28">
+                    <Grid>
+                        <Rectangle Stroke="#CC6F6E6F" Fill="White" 
+																StrokeThickness="1" RadiusX="2" RadiusY="2"/>
+                        <Rectangle Name="IconBackground" Margin="1" 
+																Stroke="#80FFFFFF" Fill="{StaticResource Rest}"
+																StrokeThickness="1" RadiusX="2" RadiusY="2"/>
+                        <Path Name="Icon"
+											VerticalAlignment="Center" HorizontalAlignment="Center"
+											Stroke="#E6FFFFFF" StrokeThickness="2" 
+											Data="{StaticResource HandMagnifier}"/>
+                    </Grid>
+                </Button>
+                <ToggleButton Name="PART_DropDownArrow" Grid.Column="2"
+																	Style="{StaticResource RegularSearchButton}" ClickMode="Press" 
+																	IsChecked="{Binding ContextMenu.IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+																	Padding="3,6">
+                    <Path	VerticalAlignment="Center" HorizontalAlignment="Center"
+										Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+										Data="{StaticResource DownArrow}"/>
+                </ToggleButton>
+            </Grid>
+        </theme:ClassicBorderDecorator>
+        <ControlTemplate.Triggers>
+            <Trigger Property="State" Value="Prompt">
+                <Setter TargetName="Prompt" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="PART_SearchButton" Property="IsEnabled" Value="False"/>
+            </Trigger>
+            <Trigger Property="State" Value="Input">
+                <Setter TargetName="PART_SearchButton" Property="IsEnabled" Value="False"/>
+            </Trigger>
+            <Trigger Property="State" Value="Search">
+                <Setter TargetName="Icon" Property="Data" Value="{StaticResource CloseX}"/>
+            </Trigger>
+            <Trigger SourceName="PART_SearchButton" Property="IsMouseOver" Value="True">
+                <Setter TargetName="IconBackground" Property="Fill" Value="{StaticResource Hover}"/>
+            </Trigger>
+            <Trigger Property="ContextMenu" Value="{x:Null}">
+                <Setter TargetName="PART_DropDownArrow" Property="IsEnabled" Value="False"/>
+                <Setter TargetName="PART_DropDownArrow" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="{x:Type l:SearchBox}" TargetType="{x:Type l:SearchBox}">
+        <Setter Property="Focusable" Value="false" />
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="{x:Static theme:ClassicBorderDecorator.ClassicBorderBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="Margin" Value="1"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template" Value="{StaticResource InstantSearchTemplate}"/>
+        <Style.Triggers>
+            <Trigger Property="Mode" Value="Regular">
+                <Setter Property="Template" Value="{StaticResource RegularSearchTemplate}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

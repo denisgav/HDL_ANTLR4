@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{74BDB369-74A9-4A67-AE58-4DE3D3F55A5F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FSM</RootNamespace>
+    <AssemblyName>FSM</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constructor\Code_Generators\Verilog_Generator.cs" />
+    <Compile Include="Constructor\Code_Generators\VHDL_Generator.cs" />
+    <Compile Include="Constructor\Constructor_Core.cs" />
+    <Compile Include="Constructor\Constructor_Core_Events.cs" />
+    <Compile Include="Constructor\Graph_History.cs" />
+    <Compile Include="Constructor\GroupSelector.cs" />
+    <Compile Include="Constructor\HistoryElem.cs" />
+    <Compile Include="Constructor\My_Bitmap.cs" />
+    <Compile Include="Constructor\My_Figures\My_Figure.cs" />
+    <Compile Include="Constructor\My_Figures\My_Line.cs" />
+    <Compile Include="Constructor\My_Figures\My_Reset.cs" />
+    <Compile Include="Constructor\My_Figures\My_Signal\My_Constant.cs" />
+    <Compile Include="Constructor\My_Figures\My_Signal\My_Port.cs" />
+    <Compile Include="Constructor\My_Figures\My_Signal\My_Signal.cs" />
+    <Compile Include="Constructor\My_Figures\My_State.cs" />
+    <Compile Include="Constructor\My_Figures\Text\My_Comment.cs" />
+    <Compile Include="Constructor\My_Figures\Text\My_Label.cs" />
+    <Compile Include="Constructor\My_Graph.cs" />
+    <Compile Include="Constructor\My_Paper.cs" />
+    <Compile Include="Constructor\ObjectCopier.cs" />
+    <Compile Include="Constructor_Controls\FormHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Constructor_Controls\FormHistory.designer.cs">
+      <DependentUpon>FormHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\CommentProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\CommentProperties.designer.cs">
+      <DependentUpon>CommentProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\ConstantProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\ConstantProperties.Designer.cs">
+      <DependentUpon>ConstantProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\LineProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\LineProperties.designer.cs">
+      <DependentUpon>LineProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\PaperProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\PaperProperties.Designer.cs">
+      <DependentUpon>PaperProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\Reset Properties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\Reset Properties.Designer.cs">
+      <DependentUpon>Reset Properties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\SignalPropertiesVerilog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\SignalPropertiesVerilog.Designer.cs">
+      <DependentUpon>SignalPropertiesVerilog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\SignalPropertiesVHDL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\SignalPropertiesVHDL.Designer.cs">
+      <DependentUpon>SignalPropertiesVHDL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\StateProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Constructor_Controls\Properties Windows\StateProperties.Designer.cs">
+      <DependentUpon>StateProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Constructor_UserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Constructor_UserControl.Designer.cs">
+      <DependentUpon>Constructor_UserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Export\Shell32.cs" />
+    <Compile Include="Export\User32.cs" />
+    <Compile Include="FSM_Options\FSM_Options.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FSM_Options\FSM_Options.Designer.cs">
+      <DependentUpon>FSM_Options.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FSM_Options\FSM_OptionsHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Constructor_Controls\FormHistory.resx">
+      <DependentUpon>FormHistory.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Constructor_Controls\Properties Windows\CommentProperties.resx">
+      <DependentUpon>CommentProperties.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Constructor_Controls\Properties Windows\ConstantProperties.resx">
+      <DependentUpon>ConstantProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Constructor_Controls\Properties Windows\LineProperties.resx">
+      <DependentUpon>LineProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Constructor_Controls\Properties Windows\PaperProperties.resx">
+      <DependentUpon>PaperProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Constructor_Controls\Properties Windows\Reset Properties.resx">
+      <DependentUpon>Reset Properties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Constructor_Controls\Properties Windows\SignalPropertiesVerilog.resx">
+      <DependentUpon>SignalPropertiesVerilog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Constructor_Controls\Properties Windows\SignalPropertiesVHDL.resx">
+      <DependentUpon>SignalPropertiesVHDL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Constructor_Controls\Properties Windows\StateProperties.resx">
+      <DependentUpon>StateProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Constructor_UserControl.resx">
+      <DependentUpon>Constructor_UserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FSM_Options\FSM_Options.resx">
+      <DependentUpon>FSM_Options.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icons\const.png" />
+    <Content Include="Icons\cursor.png" />
+    <Content Include="Icons\FSM.png" />
+    <Content Include="Icons\new_FSM.png" />
+    <Content Include="Icons\reset.png" />
+    <Content Include="Icons\signal.png" />
+    <Content Include="Icons\state.png" />
+    <Content Include="Icons\transition.png" />
+    <Content Include="Icons\zoomin.png" />
+    <Content Include="Icons\zoomout.png" />
+    <None Include="Resources\reset2_.gif" />
+    <None Include="Resources\reset2.gif" />
+    <None Include="Resources\reset1_.gif" />
+    <None Include="Resources\reset1.gif" />
+    <None Include="Resources\cut.png" />
+    <None Include="Resources\copy.png" />
+    <None Include="Resources\paste.png" />
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{9581E8F6-EDD9-463E-BFB8-AFA1D8673884}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Panels\CommonProperties\CommonProperties.csproj">
+      <Project>{F1DD26BF-235B-497C-8904-EC0F849E4623}</Project>
+      <Name>CommonProperties</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="Schematix.SearchReplaceUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="320"
+             Loaded="UserControl_Loaded">
+
+        <Grid x:Name="LayoutRoot">
+            <TabControl x:Name="MainTabControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" SelectionChanged="MainTabControl_SelectionChanged">
+                <TabItem Header="Quick Find" x:Name="TabSearch">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Vertical">
+                            <TextBlock>Find That:</TextBlock>
+                            <ComboBox x:Name="ComboboxQuickFind" IsEditable="True"></ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Orientation="Vertical">
+                            <TextBlock>Look In:</TextBlock>
+                            <ComboBox x:Name="SearchSource1" SelectedIndex="0" SelectionChanged="SearchSource1_SelectionChanged">
+                                <ComboBoxItem>Current Document</ComboBoxItem>
+                                <ComboBoxItem>All OPen Documents</ComboBoxItem>
+                                <ComboBoxItem>Current Project</ComboBoxItem>
+                                <ComboBoxItem>Current Solution</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <Expander Header="Find Options" Grid.Row="2">
+                            <StackPanel Orientation="Vertical">
+                                <CheckBox x:Name="CheckBoxMatchCase1" IsChecked="True">Match Case</CheckBox>
+                                <CheckBox x:Name="CheckBoxSearchUp1" IsChecked="False">Search Up</CheckBox>
+                                <CheckBox x:Name="CheckBoxUse1" IsChecked="False">Use Regular Expression</CheckBox>
+                            </StackPanel>
+                        </Expander>
+
+                        <Button x:Name="ButtonFindNext1" Grid.Row="3" HorizontalAlignment="Right" Width="100" Click="ButtonFindNext1_Click" >Find Next</Button>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Quick Replace" x:Name="TabReplase">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Vertical">
+                            <TextBlock>Find That:</TextBlock>
+                            <ComboBox x:Name="ComboboxQuickSource" IsEditable="True"></ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Orientation="Vertical">
+                            <TextBlock>Replace With:</TextBlock>
+                            <ComboBox x:Name="ComboboxQuickReplace" IsEditable="True"></ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Orientation="Vertical">
+                            <TextBlock>Look In:</TextBlock>
+                            <ComboBox x:Name="SearchSource2" SelectedIndex="0" SelectionChanged="SearchSource2_SelectionChanged">
+                            <ComboBoxItem>Current Document</ComboBoxItem>
+                            <ComboBoxItem>All OPen Documents</ComboBoxItem>
+                            <ComboBoxItem>Current Project</ComboBoxItem>
+                            <ComboBoxItem>Current Solution</ComboBoxItem>
+                        </ComboBox>
+                        </StackPanel>
+
+                        <Expander Header="Find Options" Grid.Row="3">
+                            <StackPanel Orientation="Vertical">
+                                <CheckBox x:Name="CheckBoxMatchCase2" IsChecked="True">Match Case</CheckBox>
+                            <CheckBox x:Name="CheckBoxSearchUp2" IsChecked="False">Search Up</CheckBox>
+                                <CheckBox x:Name="CheckBoxUse2" IsChecked="False">Use Regular Expression</CheckBox>
+                            </StackPanel>
+                        </Expander>
+
+                        <StackPanel  Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Stretch" Orientation="Horizontal">
+                            <Button x:Name="ButtonFindNext2" Width="80" Margin="4 0 4 0" Click="ButtonFindNext2_Click" >Find Next</Button>
+                            <Button x:Name="ButtonReplace2" Width="80" Margin="4 0 4 0" Click="ButtonReplace2_Click">Replace</Button>
+                            <Button x:Name="ButtonReplaceAll2" Width="80" Margin="4 0 4 0" Click="ButtonReplaceAll2_Click">ReplaceAll</Button>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+</UserControl>

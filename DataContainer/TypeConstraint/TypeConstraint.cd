@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DataContainer.TypeConstraint.AbstractConstraint" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TypeConstraint\AbstractConstraint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.TypeConstraint.IndexTypeConstraint" Collapsed="true">
+    <Position X="5.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAABAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TypeConstraint\IndexTypeConstraint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.TypeConstraint.RangeTypeConstraint" Collapsed="true">
+    <Position X="3" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAACAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TypeConstraint\RangeTypeConstraint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.TypeConstraint.ResolvedTypeConstraint" Collapsed="true">
+    <Position X="7.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAIAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>TypeConstraint\ResolvedTypeConstraint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

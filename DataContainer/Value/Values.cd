@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DataContainer.Value.AbstractValue" Collapsed="true">
+    <Position X="6.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAQAA=</HashCode>
+      <FileName>Value\AbstractValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.BOOLEAN_VALUE" Collapsed="true">
+    <Position X="15.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Value\BuiltIn\BOOLEAN_VALUE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.STD_LOGIC_VALUE" Collapsed="true">
+    <Position X="20" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAACAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Value\BuiltIn\STD_LOGIC_VALUE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.STD_LOGIC_VECTOR_VALUE" Collapsed="true">
+    <Position X="12.5" Y="11.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Value\BuiltIn\STD_LOGIC_VECTOR_VALUE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.STD_ULOGIC_VALUE" Collapsed="true">
+    <Position X="20" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAABACAAgAAAAAAAEEAAAAhIAAACAIAAAAAAACA=</HashCode>
+      <FileName>Value\BuiltIn\STD_ULOGIC_VALUE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.TIME_VALUE" Collapsed="true">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEEAAAAAAAAAAAACAAAAAAAAAAQ=</HashCode>
+      <FileName>Value\BuiltIn\TIME_VALUE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.ArrayValue" Collapsed="true">
+    <Position X="14.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAABBAAAAIAAAAAAAAAAAAAAAAgAAAAACA=</HashCode>
+      <FileName>Value\Composite\ArrayValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataContainer.Value.CompositeValue" Collapsed="true">
+    <Position X="15.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAIAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Value\Composite\CompositeValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.RecordValue" Collapsed="true">
+    <Position X="18" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAACAAAAABAACAIAAAAAAAAAAAAAAAAgAAAQACA=</HashCode>
+      <FileName>Value\Composite\RecordValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataContainer.Value.EnumerationValue" Collapsed="true">
+    <Position X="18.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAEgAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Value\Scalar\EnumerationValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.IntegerValue" Collapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Value\Scalar\IntegerValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.PhysicalValue" Collapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAEAAAAAAAAAAAAAEAAAABgAAAAAAA=</HashCode>
+      <FileName>Value\Scalar\PhysicalValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.ScalarValue" Collapsed="true">
+    <Position X="15.5" Y="2" Width="1.5" />
+    <InheritanceLine Type="DataContainer.Value.AbstractValue" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="6.5" />
+        <Point X="7" Y="1.455" />
+        <Point X="16.25" Y="1.455" />
+        <Point X="16.25" Y="2" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Value\Scalar\ScalarValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.STD_ULOGIC_VECTOR_VALUE" Collapsed="true">
+    <Position X="12.5" Y="10.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Value\BuiltIn\STD_ULOGIC_VECTOR_VALUE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.RealValue" Collapsed="true">
+    <Position X="13.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Value\Scalar\RealValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.BIT_VECTOR_VALUE" Collapsed="true">
+    <Position X="15.5" Y="10.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Value\BuiltIn\BIT_VECTOR_VALUE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.BIT_VALUE" Collapsed="true">
+    <Position X="17.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Value\BuiltIn\BIT_VALUE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Value.CHARACTER_VALUE" Collapsed="true">
+    <Position X="13.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Value\BuiltIn\CHARACTER_VALUE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

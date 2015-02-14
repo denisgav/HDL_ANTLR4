@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+	x:Class="StartPage.StartPageUserControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Loaded="UserControl_Loaded">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary
+					Source="/StartPage;component/Styles.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<UserControl.Background>
+		<ImageBrush
+			ImageSource="Resources\Background.jpg"
+			AlignmentX="Left"
+			AlignmentY="Top"
+			Stretch="Fill" />
+	</UserControl.Background>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition
+				Width="*"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto"></RowDefinition>
+			<RowDefinition
+				Height="*"></RowDefinition>
+		</Grid.RowDefinitions>
+		<GroupBox
+			BorderThickness="0"
+			VerticalAlignment="Stretch"
+			HorizontalAlignment="Stretch"
+			Grid.Column="0"
+			Grid.Row="0">
+			<StackPanel>
+				<StackPanel
+					Orientation="Horizontal">
+					<Image
+						Source="/StartPage;component/Resources/SmallIcon.ico"
+						Width="24"
+						Height="24"
+						Margin="5"
+						Stretch="Fill"></Image>
+					<TextBlock
+						FontSize="35"
+						Foreground="White"
+						FontWeight="Normal"
+						Text="HDL Light 1.0"/>
+				</StackPanel>
+				<TextBlock
+					Foreground="White"
+					Text="Release data: 06.07.2013"/>
+			</StackPanel>
+		</GroupBox>
+		<GroupBox
+			Grid.Row="1"
+			Grid.Column="0"
+			BorderThickness="0"
+			x:Name="GroupBoxContent">
+			<Grid
+				x:Name="GridContent">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="Auto"></ColumnDefinition>
+					<ColumnDefinition
+						Width="*"></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<ScrollViewer
+					HorizontalScrollBarVisibility="Auto"
+					VerticalScrollBarVisibility="Auto">
+					<StackPanel
+						Grid.Column="0"
+						Orientation="Vertical"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Stretch">
+						<Button
+							x:Name="ButtonOpenProject"
+							Click="ButtonOpenProject_Click"
+							Margin="3">
+							<Button.Content>
+								<StackPanel
+									Orientation="Horizontal">
+									<Image
+										Height="16"
+										Width="16"
+										Source="Resources/OpenProject.bmp"
+										Margin="0, 0, 5, 0"></Image>
+									<TextBlock>Open Project</TextBlock>
+								</StackPanel>
+							</Button.Content>
+						</Button>
+						<Button
+							x:Name="ButtonNewProject"
+							Click="ButtonNewProject_Click"
+							Margin="3">
+							<Button.Content>
+								<StackPanel
+									Orientation="Horizontal">
+									<Image
+										Height="16"
+										Width="16"
+										Source="Resources/NewProject.bmp"
+										Margin="0, 0, 5, 0"></Image>
+									<TextBlock>New Project</TextBlock>
+								</StackPanel>
+							</Button.Content>
+						</Button>
+						<Expander
+							Header="Recent Projects"
+							Margin="2"
+							x:Name="ExpanderRecentProjects"
+							IsExpanded="True">
+							<StackPanel
+								x:Name="RecentProjectsList"
+								Orientation="Vertical"
+								HorizontalAlignment="Stretch"
+								VerticalAlignment="Stretch"></StackPanel>
+						</Expander>
+						<Expander
+							Header="Project List"
+							Margin="2"
+							x:Name="ExpanderProjectList"
+							IsExpanded="False">
+							<StackPanel
+								x:Name="ProjectsList"
+								Orientation="Vertical"
+								HorizontalAlignment="Stretch"
+								VerticalAlignment="Stretch"></StackPanel>
+						</Expander>
+						<Expander
+							Header="Getting Started"
+							Margin="2"
+							IsExpanded="True">
+							<StackPanel>
+								<TextBlock
+									Margin="3"
+									FontWeight="Bold"
+									TextDecorations="Underline"
+									Foreground="#FF1F2A85"
+									x:Name="Url1"
+									MouseLeftButtonUp="Url1_MouseLeftButtonUp"
+									Cursor="Hand">Official Site.</TextBlock>
+								<TextBlock
+									Margin="3"
+									FontWeight="Bold"
+									TextDecorations="Underline"
+									Foreground="#FF1F2A85"
+									x:Name="Url2"
+									MouseLeftButtonUp="Url2_MouseLeftButtonUp"
+									Cursor="Hand">Forums.</TextBlock>
+								<!--
+                                <TextBlock
+									Margin="3"
+									FontWeight="Bold"
+									TextDecorations="Underline"
+									Foreground="#FF1F2A85"
+									x:Name="Url3"
+									MouseLeftButtonUp="Url3_MouseLeftButtonUp"
+									Cursor="Hand">Help.</TextBlock>
+                                -->
+							</StackPanel>
+						</Expander>
+					</StackPanel>
+				</ScrollViewer>
+				<TabControl
+					Grid.Column="1"
+					Margin="0"
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Stretch"
+					Background="WhiteSmoke"
+					BorderBrush="Chocolate">
+					<TabControl.OpacityMask>
+						<LinearGradientBrush
+							StartPoint="0 0"
+							EndPoint="0 1">
+							<GradientStopCollection>
+								<GradientStop
+									Color="Black"
+									Offset="0"></GradientStop>
+								<GradientStop
+									Color="Black"
+									Offset="0.05"></GradientStop>
+								<GradientStop
+									Color="Black"
+									Offset="0.7"></GradientStop>
+								<GradientStop
+									Color="Transparent"
+									Offset="1"></GradientStop>
+							</GradientStopCollection>
+						</LinearGradientBrush>
+					</TabControl.OpacityMask>
+					<TabItem
+						Header="How To...">
+                        <FlowDocumentScrollViewer>
+                            <FlowDocument>
+                                <Paragraph FontSize="18.6666666666667" FontFamily="Times New Roman" Margin="0" TextAlignment="Justify" TextIndent="56.73">
+                                    <Span>
+                                        <Run Text="HDL-Light software contains full-featured tabbed-based IDE, which supports powerful source code editor for VHDL language with such features, as syntax highlighting, automatic formatting, code completion, code snippets/templates and code folding." />
+                                    </Span>
+                                </Paragraph>
+                                <Paragraph FontSize="18.6666666666667" FontFamily="Times New Roman" Margin="0" TextAlignment="Justify" TextIndent="56.73">
+                                    <Span>
+                                        <Run Text="The configuration of opened windows (dock state, positions) is saved in the appropriate project file. The HDL editor will be restored to the same state as it has been before  when the same project is reloaded." />
+                                    </Span>
+                                </Paragraph>
+                            </FlowDocument>
+                        </FlowDocumentScrollViewer>
+                    </TabItem>					
+					<TabItem
+						Header="VHDL LRM">
+						<WebBrowser
+							x:Name="LRMWebBrowser" />
+					</TabItem>
+				</TabControl>
+			</Grid>
+		</GroupBox>
+	</Grid>
+</UserControl>

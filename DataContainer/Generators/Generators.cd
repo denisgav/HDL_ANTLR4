@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DataContainer.Generator.BaseGenerator" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAIABAAAAAAAAAAAAAAAAAQAAgEAAgABA=</HashCode>
+      <FileName>Generators\BaseGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Clock" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAASAAAAAEACAAAAAiAAAAAEAAQABgAAAAAAA=</HashCode>
+      <FileName>Generators\Clock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataContainer.Generator.Constant" Collapsed="true">
+    <Position X="34.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAHAAAAICAAgSIEAAAgAAAgAQAEAEACQAAgAAQAAIA=</HashCode>
+      <FileName>Generators\Constant.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataContainer.Generator.GeneratorSettings" Collapsed="true">
+    <Position X="48" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIIAAgCCAAIAAAAAAAAAABAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Generators\GeneratorSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Counters.BinaryCounter" Collapsed="true">
+    <Position X="36.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAEAAAAAIAAAAAAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Generators\Counters\BinaryCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Counters.Circular0" Collapsed="true">
+    <Position X="41" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAEAAAAAIAAAAAAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Generators\Counters\Circular0.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Counters.Circular1" Collapsed="true">
+    <Position X="43.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAEAAAAAIAAAAAAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Generators\Counters\Circular1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Counters.Counter" Collapsed="true">
+    <Position X="41" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgAGAAAAQCAAgABAAAAgEIIAAAAGAEACAgUgAAAEAAA=</HashCode>
+      <FileName>Generators\Counters\Counter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataContainer.Generator.Counters.GrayCounter" Collapsed="true">
+    <Position X="45.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAFAAAAAIAAAAAAAUAAQAAAAAAAAAA=</HashCode>
+      <FileName>Generators\Counters\GrayCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Counters.JohnsonCounter" Collapsed="true">
+    <Position X="38.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAQAAAEAAAAAIAAAAAAAEAAQAAAAAAEAAA=</HashCode>
+      <FileName>Generators\Counters\JohnsonCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Continuous.Chisquare" Collapsed="true">
+    <Position X="20.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAgAAAAAAABAEAAAABAAAAA=</HashCode>
+      <FileName>Generators\Random\Continuous\Chisquare.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Continuous.Erlang" Collapsed="true">
+    <Position X="25.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAgAAAEAAAAAAAAAAAAAABAEQAAABEAAAA=</HashCode>
+      <FileName>Generators\Random\Continuous\Erlang.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Continuous.Exponential" Collapsed="true">
+    <Position X="29.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAAAAAAAAABAAgAAAAIAAAA=</HashCode>
+      <FileName>Generators\Random\Continuous\Exponential.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Continuous.Lognormal" Collapsed="true">
+    <Position X="32" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAgAAAAAAABgAQAAIAEAAAA=</HashCode>
+      <FileName>Generators\Random\Continuous\Lognormal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Continuous.My_Random_Continuous_Base" Collapsed="true">
+    <Position X="25.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAACAAgAAAAAAgAAAAAAAAAABAQAAAAAAAAAA=</HashCode>
+      <FileName>Generators\Random\Continuous\My_Random_Continuous_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Continuous.Normal" Collapsed="true">
+    <Position X="18.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAAAAAAAAABAAoAAAAKAAAA=</HashCode>
+      <FileName>Generators\Random\Continuous\Normal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Continuous.SimpleContinuous" Collapsed="true">
+    <Position X="23" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAgAAAgIAAEAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Generators\Random\Continuous\SimpleContinuous.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Continuous.Student" Collapsed="true">
+    <Position X="27.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAgAAAAAAABAEAAABBAAAAA=</HashCode>
+      <FileName>Generators\Random\Continuous\Student.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Discrete.Bernoulli" Collapsed="true">
+    <Position X="7.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAAAAAAAAABAQEAAAABAAAA=</HashCode>
+      <FileName>Generators\Random\Discrete\Bernoulli.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Discrete.Binomial" Collapsed="true">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAAAAAAAAABAUEAAABBQAAA=</HashCode>
+      <FileName>Generators\Random\Discrete\Binomial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Discrete.Equilikely" Collapsed="true">
+    <Position X="16.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAAAAAAAAABgQQAAIAEAAAA=</HashCode>
+      <FileName>Generators\Random\Discrete\Equilikely.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Discrete.Geometric" Collapsed="true">
+    <Position X="2.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAAAAAAAAABAQEAAAABAAAA=</HashCode>
+      <FileName>Generators\Random\Discrete\Geometric.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Discrete.My_Random_Discrete_Base" Collapsed="true">
+    <Position X="9.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAACAAgAAAAAAgAAAAAAAAAABAQAAAAAAAAAA=</HashCode>
+      <FileName>Generators\Random\Discrete\My_Random_Discrete_Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Discrete.Pascal" Collapsed="true">
+    <Position X="5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEgAAAAAAAAAAAAABAEEAAABBAAAA=</HashCode>
+      <FileName>Generators\Random\Discrete\Pascal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Discrete.Poisson" Collapsed="true">
+    <Position X="9.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAAAAAAAAABAAgAAAAIAAAA=</HashCode>
+      <FileName>Generators\Random\Discrete\Poisson.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.Discrete.SimpleDiscrete" Collapsed="true">
+    <Position X="14" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAgAAAgIAAEAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Generators\Random\Discrete\SimpleDiscrete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.Generator.Random.My_Random_Base" Collapsed="true">
+    <Position X="17.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAGCAAAABAg0QgAAAAxAAgAAAAABCCCCAAAAAAAAAA=</HashCode>
+      <FileName>Generators\Random\My_Random_Base.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="DataContainer.Generator.IGeneratorDataFill&lt;TValue&gt;" Collapsed="true">
+    <Position X="48" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generators\IGeneratorDataFill.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="DataContainer.Generator.GeneratorType" Collapsed="true">
+    <Position X="48" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEQAAAAggAAAAAAAAAgA=</HashCode>
+      <FileName>Generators\BaseGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DataContainer.Generator.Counters.CounterRype" Collapsed="true">
+    <Position X="49.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgACEAAAAAAAAg=</HashCode>
+      <FileName>Generators\Counters\Counter.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DataContainer.Generator.Random.RandomTypes" Collapsed="true">
+    <Position X="49.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASA=</HashCode>
+      <FileName>Generators\Random\My_Random_Base.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DataContainer.Generator.Random.ContinuousRandomTypes" Collapsed="true">
+    <Position X="48" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAQBAAQAAAAAAAAAAAAAAAAEAIAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Generators\Random\My_Random_Base.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="DataContainer.Generator.Random.DiscreteRandomTypes" Collapsed="true">
+    <Position X="51.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQIACAAAAAAAAAACCEAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Generators\Random\My_Random_Base.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

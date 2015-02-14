@@ -1,0 +1,164 @@
+﻿<UserControl x:Class="MessageWindow.MessageWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="MytoggleButtonTemplate" TargetType="ToggleButton">
+            <Border x:Name="MainBorder" BorderBrush="#606060" BorderThickness="1" CornerRadius="1" Background="WhiteSmoke" TextBlock.Foreground="Black">
+                <ContentPresenter RecognizesAccessKey="True"></ContentPresenter>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter TargetName="MainBorder" Property="Background" Value="#C8C8C8"></Setter>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="MainBorder" Property="Background" Value="#E6E6E6"></Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="MainBorder" Property="BorderBrush" Value="#EBEBEB"></Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <DataTemplate x:Key="HeaderTemplateArrowUp">
+            <DockPanel>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
+                <Path x:Name="arrow"
+                   StrokeThickness = "1"                                      
+                   Fill            = "Red"
+                   Data            = "M 5,10 L 15,10 L 10,5 L 5,10"/>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="HeaderTemplateArrowDown">
+            <DockPanel>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding }"/>
+                <Path x:Name="arrow"
+                      StrokeThickness = "1"                                   
+                      Fill            = "Red"
+                      Data            = "M 5,5 L 10,10 L 15,5 L 5,5"/>
+            </DockPanel>
+        </DataTemplate>
+
+        <Style x:Key="{x:Type ListViewItem}" TargetType="ListViewItem">
+            <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick" />
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="Border" Padding="2" SnapsToDevicePixels="true" Background="Transparent" BorderThickness="1" BorderBrush="Gray">
+                            <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="Orange"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="Blue"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="2 2 4 2">
+            <ToggleButton x:Name="ErrorButton" Template="{StaticResource MytoggleButtonTemplate}" Click="ErrorButton_Click" IsChecked="True">
+                <ToggleButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/MessageWindow;component/Icons/error.png" Width="24" Height="24"></Image>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="ErrorTextBlock" Text="{Binding Path = messageList.NumErrors}"></TextBlock>
+                    </StackPanel>
+                </ToggleButton.Content>
+            </ToggleButton>
+
+            <ToggleButton x:Name="WarningButton" Template="{StaticResource MytoggleButtonTemplate}" Click="WarningButton_Click"  IsChecked="True">
+                <ToggleButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/MessageWindow;component/Icons/warning.png" Width="24" Height="24"></Image>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="WarningTextBlock">Warning</TextBlock>
+                    </StackPanel>
+                </ToggleButton.Content>
+            </ToggleButton>
+
+            <ToggleButton x:Name="MessageButton" Template="{StaticResource MytoggleButtonTemplate}" Click="MessageButton_Click"  IsChecked="True">
+                <ToggleButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/MessageWindow;component/Icons/message.png" Width="24" Height="24"></Image>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="MessageTextBlock">Messages</TextBlock>
+                    </StackPanel>
+                </ToggleButton.Content>
+            </ToggleButton>
+        </StackPanel>
+
+        <ScrollViewer  Grid.Column="1" Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ListView x:Name="listView">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="True">
+                        <GridView.Columns>
+                            <GridViewColumn Header="" Width="Auto">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image VerticalAlignment="Center" Width="16" Height="16" Source = "{Binding Path = MessageIconPath}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <!--Иконка-->
+
+                            <GridViewColumn Width="Auto">
+                                <GridViewColumnHeader Click="GridViewColumnHeaderNumber_Click" Tag="Number">#</GridViewColumnHeader>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path = Number}"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <!--Номер-->
+
+                            <GridViewColumn Width="600">
+                                <GridViewColumnHeader Click="GridViewColumnHeaderDescription_Click" Tag="Description">Description</GridViewColumnHeader>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Path = Description}"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <!--Описание-->
+
+                            <GridViewColumn Width="Auto">
+                                <GridViewColumnHeader Click="GridViewColumnHeaderFile_Click" Tag="Description">File</GridViewColumnHeader>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path = FileName}"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <!--Имя файла-->
+
+                            <GridViewColumn Header="Line">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path = LineNumber}"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <!--Номер строки-->
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

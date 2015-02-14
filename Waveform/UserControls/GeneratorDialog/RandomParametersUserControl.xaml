@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="Schematix.Waveform.UserControls.RandomParametersUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:my="clr-namespace:Schematix.Waveform.UserControls">
+
+    <GroupBox Header="Parameters">
+        <StackPanel x:Name="MainStackPanel" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid  x:Name="GridParametern" Visibility="Collapsed" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0">n =</TextBlock>
+                <my:MaskedTextBox x:Name="TextBoxParametern" Grid.Column="1" TextAlignment="Center"></my:MaskedTextBox>
+            </Grid>
+
+            <Grid  x:Name="GridParameterb" Visibility="Visible" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0">b =</TextBlock>
+                <my:MaskedTextBox x:Name="TextBoxParameterb" Grid.Column="1" TextAlignment="Center"></my:MaskedTextBox>
+            </Grid>
+
+            <Grid  x:Name="GridParameterm" Visibility="Visible" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0">m =</TextBlock>
+                <my:MaskedTextBox x:Name="TextBoxParameterm" Grid.Column="1" TextAlignment="Center"></my:MaskedTextBox>
+            </Grid>
+
+            <Grid  x:Name="GridParametera" Visibility="Visible" Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0">a =</TextBlock>
+                <my:MaskedTextBox x:Name="TextBoxParametera" Grid.Column="1" TextAlignment="Center"></my:MaskedTextBox>
+            </Grid>
+
+            <Grid  x:Name="GridParameters" Visibility="Visible" Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0">s =</TextBlock>
+                <my:MaskedTextBox x:Name="TextBoxParameters" Grid.Column="1" TextAlignment="Center"></my:MaskedTextBox>
+            </Grid>
+
+            <Grid  x:Name="GridParameterDiapasone" Visibility="Visible" Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0">Range =</TextBlock>
+                <my:MaskedTextBox x:Name="TextBoxParameterRange" Grid.Column="1" TextAlignment="Center"></my:MaskedTextBox>
+            </Grid>
+
+            <Grid  x:Name="GridParameterp" Visibility="Visible" Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0">p =</TextBlock>
+                <my:MaskedTextBox x:Name="TextBoxParameterp" Grid.Column="1" TextAlignment="Center"></my:MaskedTextBox>
+            </Grid>
+        </StackPanel>
+    </GroupBox>
+</UserControl>

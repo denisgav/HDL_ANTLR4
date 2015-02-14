@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="Schematix.Waveform.UserControls.ValueRepresenter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             Unloaded="UserControl_Unloaded">
+    
+    <UserControl.Resources>
+        <ContextMenu x:Key="BookmarkMenu">
+            <MenuItem x:Name="ButtonCorrectBookMark" Header="Correct..." Click="ButtonCorrectBookMark_Click">
+                <MenuItem.Icon>
+                    <Image Source="/Schematix.Waveform;component/icons/BookMark.jpg" Width="16" Height="16" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem x:Name="ButtonDeleteBookMark" Header="Delete" Click="ButtonDeleteBookMark_Click">
+                <MenuItem.Icon>
+                    <Image Source="/Schematix.Waveform;component/icons/Delete.jpg" Width="16" Height="16" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+    </UserControl.Resources>
+    
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0">
+            <Border.Background>
+                <SolidColorBrush>
+                    <SolidColorBrush.Color>
+                        <Color R="255" G="255" B="255" A="127"/>
+                    </SolidColorBrush.Color>
+                </SolidColorBrush>
+            </Border.Background>
+            <Border.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="MenuItemAddBookMark" Header="Add BookMark" Click="MenuItemAddBookMark_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Schematix.Waveform;component/icons/BookMark.jpg" Width="16" Height="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="MenuItemSignalProperties" Header="Properties" Click="MenuItemSignalProperties_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Schematix.Waveform;component/icons/Properties.jpg" Width="16" Height="16" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </Border.ContextMenu>
+            <Canvas x:Name="CanvasWaveform" Loaded="CanvasWaveform_Loaded" SizeChanged="CanvasWaveform_SizeChanged" SnapsToDevicePixels="True" Margin="2 0 0 0">
+                <Rectangle x:Name="RectangleSelection" Stroke="Blue" Canvas.Top="0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush>
+                            <SolidColorBrush.Color>
+                                <Color A="127" R="0" G="0" B="255"/>
+                            </SolidColorBrush.Color>
+                        </SolidColorBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Canvas>
+        </Border>
+
+        <Popup Name="popBookmark" StaysOpen="False" Placement="Mouse" MaxWidth="200" PopupAnimation="Slide" AllowsTransparency="True">
+            <Border BorderBrush="DarkGray" BorderThickness="2" CornerRadius="20">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" >
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Color="White" Offset="0"></GradientStop>
+                            <GradientStop Color="White" Offset="0.45"></GradientStop>
+                            <GradientStop Color="LightBlue" Offset="0.9"></GradientStop>
+                            <GradientStop Color="Blue" Offset="1"></GradientStop>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Border.Background>
+                
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="TextBlockBookMarkHeader" Grid.Row="0" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="5" FontWeight="Bold" TextWrapping="Wrap">HEADER</TextBlock>
+                    <TextBlock x:Name="TextBlockBookMarkText" Grid.Row="1" TextAlignment="Justify" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" TextWrapping="Wrap">Text</TextBlock>
+                </Grid>
+            </Border>
+        </Popup>
+        
+        <StackPanel Orientation="Horizontal" x:Name="StackPanelZoom" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Button x:Name="ButtonZoomPlus" Click="ButtonZoomPlus_Click">+</Button>
+            <Button x:Name="ButtonZoomMinus" Click="ButtonZoomMinus_Click">-</Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

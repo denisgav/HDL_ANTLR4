@@ -1,0 +1,12 @@
+﻿<src:SchematixPanelBase x:Class="Schematix.Panels.ConsolePanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:src="clr-namespace:Schematix.Panels"
+        xmlns:console="clr-namespace:ConsoleControl;assembly=ConsoleControl"
+        Title="Console">
+    <Grid>
+        <WindowsFormsHost x:Name="HostControl">
+            <console:ConsoleControl x:Name="console"></console:ConsoleControl>
+        </WindowsFormsHost>
+    </Grid>
+</src:SchematixPanelBase>

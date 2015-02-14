@@ -1,0 +1,6 @@
+﻿call "$(WIX)bin\heat.exe" dir "$(SolutionDir)Schematix\bin\$(ConfigurationName)\Ghdl" -cg GHDLComponents -gg -dr INSTALLFOLDER -out "$(ProjectDir)Fragments\Ghdl.wxs" -var var.GhdlSrc
+call "$(WIX)bin\heat.exe" dir "$(SolutionDir)Schematix\bin\$(ConfigurationName)\Libraries" -cg LibraryComponents  -gg -dr INSTALLFOLDER -out "$(ProjectDir)Fragments\Libraries.wxs" -var var.LibrariesSrc
+call "$(WIX)bin\heat.exe" dir "$(SolutionDir)Schematix\bin\$(ConfigurationName)\LRM" -cg LRMComponents  -gg -dr INSTALLFOLDER -out "$(ProjectDir)Fragments\LRM.wxs" -var var.LRMSrc
+
+defines
+GhdlSrc=$(SolutionDir)Schematix\bin\$(Configuration)\Ghdl; LibrariesSrc=$(SolutionDir)Schematix\bin\$(Configuration)\Libraries; LRMSrc=$(SolutionDir)Schematix\bin\$(Configuration)\LRM

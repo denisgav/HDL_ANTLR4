@@ -1,0 +1,159 @@
+﻿<Window x:Class="ToolBoxWindow.ToolBoxWindowSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:lib="clr-namespace:ToolBoxWindow;assembly=ToolBoxWindow"
+    Title="ToolBoxSettings Window" WindowState="Maximized">
+    
+    <Window.Resources>
+        <Style x:Key="{x:Type ListViewItem}" TargetType="ListViewItem">
+            <EventSetter Event="PreviewMouseDown" Handler="ListViewGroupClick"></EventSetter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <GroupBox Header="Groups"  Grid.Column="0" Grid.Row="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ListView x:Name="ListViewGroups">
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="True">
+                                <GridView.Columns>
+                                    <GridViewColumn Header="" Width="Auto">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image VerticalAlignment="Center" Width="16" Height="16" Source = "{Binding Path = IconPath}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <!--Иконка-->
+
+                                    <GridViewColumn Width="Auto">
+                                        <GridViewColumnHeader>Caption</GridViewColumnHeader>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path = Caption}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <!--Номер-->
+
+                                    <GridViewColumn Width="Auto">
+                                        <GridViewColumnHeader Tag="Description">Description</GridViewColumnHeader>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Path = Description}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <!--Описание-->
+
+                                    <GridViewColumn Width="Auto">
+                                        <GridViewColumnHeader>TypeOfElements</GridViewColumnHeader>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path = TypeOfElements}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <!--Тип Элементв управления-->
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </ScrollViewer>
+
+                <WrapPanel Grid.Column="0" Grid.Row="1">
+                    <Button x:Name="ButtonDeleteGroup" Margin="5" Click="ButtonDeleteGroup_Click">Delete Group</Button>
+                    <Button x:Name="ButtonUpdateGroup" Margin="5" Click="ButtonUpdateGroup_Click">Update Group</Button>
+                    <Button x:Name="ButtonNewGroup" Margin="5" Click="ButtonNewGroup_Click">New Group</Button>
+                </WrapPanel>
+            </Grid>
+        </GroupBox>
+        
+        <GroupBox Header="Items" Grid.Row="0" Grid.Column="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ListView x:Name="ListViewElements">
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="True">
+                                <GridView.Columns>
+                                    <GridViewColumn Header="" Width="Auto">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image VerticalAlignment="Center" Width="16" Height="16" Source = "{Binding Path = IconPath}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <!--Иконка-->
+
+                                    <GridViewColumn Width="Auto">
+                                        <GridViewColumnHeader>Caption</GridViewColumnHeader>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path = Caption}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Width="Auto">
+                                        <GridViewColumnHeader Tag="Description">Description</GridViewColumnHeader>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Path = Description2}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <!--Описание-->
+
+                                    <GridViewColumn Width="Auto">
+                                        <GridViewColumnHeader>Command</GridViewColumnHeader>
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path = Command}"></TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </ScrollViewer>
+
+
+                <WrapPanel Grid.Column="0" Grid.Row="1">
+                    <Button x:Name="ButtonDeleteItem" Margin="5" Click="ButtonDeleteItem_Click">Delete Item</Button>
+                    <Button x:Name="ButtonUpdateItem" Margin="5" Click="ButtonUpdateItem_Click">Update Item</Button>
+                    <Button x:Name="ButtonNewItem" Margin="5" Click="ButtonNewItem_Click">New Item</Button>
+                </WrapPanel>
+            </Grid>
+        </GroupBox>
+        
+        <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="10"></GridSplitter>
+        
+        <WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right">
+            <Button x:Name="ButtonOK" Width="50" Margin="5" Click="ButtonOK_Click">OK</Button>
+            <Button x:Name="ButtonCancel" Width="50" Margin="5" IsCancel="True">Cancel</Button>
+        </WrapPanel>
+    </Grid>
+</Window>

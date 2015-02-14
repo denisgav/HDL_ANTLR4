@@ -1,0 +1,828 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window
+	x:Class="Schematix.MainWindow" 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	xmlns:local="clr-namespace:Schematix" 
+	xmlns:avalonDock="http://avalondock.codeplex.com" 
+	xmlns:search="clr-namespace:Schematix.Dialogs.Search_Replace"
+	Title="HDL Light"
+	Height="350"
+	Width="600"
+	Icon="/HDL_Light;component/Images/Chip.png"
+	Loaded="Window_Loaded"
+	Closing="Window_Closing">
+	<Window.Resources>
+		<ResourceDictionary Source="MainWindowResources.xaml"/>
+	</Window.Resources>
+	<Window.CommandBindings>
+		<!-- File Menu -->
+		<CommandBinding
+			Command="local:MyCommands.NewProject"
+			CanExecute="NewProject_CanExecute"
+			Executed="NewProject_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.OpenProject"
+			CanExecute="OpenProject_CanExecute"
+			Executed="OpenProject_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.Save"
+			CanExecute="Save_CanExecute"
+			Executed="Save_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.SaveAs"
+			CanExecute="SaveAs_CanExecute"
+			Executed="SaveAs_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.SaveAll"
+			CanExecute="SaveAll_CanExecute"
+			Executed="SaveAll_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.Close"
+			CanExecute="Close_CanExecute"
+			Executed="Close_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.CloseProject"
+			CanExecute="CloseProject_CanExecute"
+			Executed="CloseProject_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.Exit"
+			CanExecute="Exit_CanExecute"
+			Executed="Exit_Executed" />
+		<!--=================-->
+		<!--Edit Menu-->
+		<CommandBinding
+			Command="local:MyCommands.Undo"
+			CanExecute="Undo_CanExecute"
+			Executed="Undo_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.Redo"
+			CanExecute="Redo_CanExecute"
+			Executed="Redo_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.Cut"
+			CanExecute="Cut_CanExecute"
+			Executed="Cut_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.Copy"
+			CanExecute="Copy_CanExecute"
+			Executed="Copy_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.Paste"
+			CanExecute="Paste_CanExecute"
+			Executed="Paste_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.Delete"
+			CanExecute="Delete_CanExecute"
+			Executed="Delete_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.SelectAll"
+			CanExecute="SelectAll_CanExecute"
+			Executed="SelectAll_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.Search"
+			CanExecute="Search_CanExecute"
+			Executed="Search_Executed" />
+		<CommandBinding
+			Command="ApplicationCommands.Find"
+			CanExecute="Find_CanExecute"
+			Executed="Find_Executed" />
+		<!--=================-->
+		<!--View Menu-->
+		<CommandBinding
+			Command="local:MyCommands.Toolbox"
+			Executed="Toolbox_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.ProjectExplorer"
+			Executed="ProjectExplorer_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.DesignBrowser"
+			Executed="DesignBrowser_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.MessageWindow"
+			Executed="MessageWindow_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.ConsoleWindow"
+			Executed="ConsoleWindow_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.NewConsoleWindow"
+			Executed="NewConsoleWindow_Executed" />
+		<!--=================-->
+		<!--Window Menu-->
+		<CommandBinding
+			Command="local:MyCommands.CloseAll"
+			Executed="CloseAll_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.CloseAllButThis"
+			Executed="CloseAllButThis_Executed" />
+        <CommandBinding
+			Command="local:MyCommands.ResetLayout"
+			Executed="ResetLayout_Executed" />
+		<!--=================-->
+		<!--Help Menu-->
+		<CommandBinding
+			Command="local:MyCommands.Contents"
+			Executed="Contents_Executed" />
+		<CommandBinding
+			Command="local:MyCommands.About"
+			Executed="About_Executed" />
+		<!--=================-->
+		<!--Compiler-->
+		<CommandBinding
+			Command="local:MyCommands.CheckSyntax"
+			Executed="CheckSyntax_Executed"
+			CanExecute="CheckSyntax_CanExecute" />
+		<CommandBinding
+			Command="local:MyCommands.Compile"
+			Executed="Compile_Executed"
+			CanExecute="Compile_CanExecute" />
+		<CommandBinding
+			Command="local:MyCommands.Clear"
+			Executed="Clear_Executed"
+			CanExecute="Clear_CanExecute" />
+        <CommandBinding
+			Command="local:MyCommands.RebuildLibrary"
+			Executed="RebuildLibrary_Executed"
+			CanExecute="RebuildLibrary_CanExecute" />
+		<!--=================-->
+	</Window.CommandBindings>
+	<Grid
+		x:Name="layoutRoot">
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<Menu
+			Grid.Row="0"
+			x:Name="MainMenu">
+			<MenuItem
+				Header="_File"
+				x:Name="MenuItemFile">
+				<MenuItem
+					Header="_New  Project ..."
+					Command="local:MyCommands.NewProject">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/NewProject.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="_Open Project ..."
+					Command="local:MyCommands.OpenProject">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/OpenProject.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator></Separator>
+				<MenuItem
+					Header="_Save"
+					Command="local:MyCommands.Save">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Save.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="Save As... "
+					Command="local:MyCommands.SaveAs">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Save.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="Save All"
+					Command="local:MyCommands.SaveAll">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/SaveAll.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator></Separator>
+				<MenuItem
+					Header="_Close"
+					Command="local:MyCommands.Close"></MenuItem>
+				<MenuItem
+					Header="Close Project"
+					Command="local:MyCommands.CloseProject">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/CloseProject.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator></Separator>
+				<MenuItem
+					Header="_Exit"
+					Command="local:MyCommands.Exit"></MenuItem>
+			</MenuItem>
+			<MenuItem
+				Header="_Edit"
+				x:Name="MenuItemEdit">
+				<MenuItem
+					Header="_Undo"
+					Command="local:MyCommands.Undo">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Undo.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="_Redo"
+					Command="local:MyCommands.Redo">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Redo.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator></Separator>
+				<MenuItem
+					Header="Cu_t"
+					Command="local:MyCommands.Cut">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Cut.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="_Copy"
+					Command="local:MyCommands.Copy">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Copy.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="_Paste"
+					Command="local:MyCommands.Paste">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Paste.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="_Delete"
+					Command="local:MyCommands.Delete">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Delete.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator></Separator>
+				<MenuItem
+					Header="Select _All"
+					Command="local:MyCommands.SelectAll">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/SelectAll.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+			<MenuItem
+				Header="View"
+				x:Name="MenuView">
+				<MenuItem
+					Header="_Toolbox"
+					Command="local:MyCommands.Toolbox">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/ToolBox.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="Project Explorer"
+					Command="local:MyCommands.ProjectExplorer">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Project.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="Design Browser"
+					Command="local:MyCommands.DesignBrowser">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Design/chip.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="Message"
+					Command="local:MyCommands.MessageWindow">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Message.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="Console"
+					Command="local:MyCommands.ConsoleWindow">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/console.ico"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="New Console"
+					Command="local:MyCommands.NewConsoleWindow">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/console.ico"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+			<MenuItem
+				Header="_Tools"
+				x:Name="MenuItemTools">
+				<MenuItem
+					Header="Options"
+					x:Name="MenuItemOptions"
+					Click="MenuItemOptions_Click"></MenuItem>
+				<MenuItem
+					Header="Theme"
+					x:Name="MenuItemTheme">
+					<MenuItem
+						Header="Default"
+						Click="MenuItemDefault_Click" />
+					<MenuItem
+						Header="VS2010"
+						Click="MenuItemVS2010_Click" />
+					<MenuItem
+						Header="Aero"
+						Click="MenuItemAero_Click" />
+					<MenuItem
+						Header="ExpressionDark"
+						Click="MenuItemExpressionDark_Click" />
+					<MenuItem
+						Header="ExpressionLight"
+						Click="MenuItemExpressionLight_Click" />
+					<MenuItem
+						Header="Metro"
+						Click="MenuItemMetro_Click" />
+				</MenuItem>
+			</MenuItem>
+			<MenuItem
+				Header="Project"
+				x:Name="MenuItemProject"
+				Visibility="Collapsed"></MenuItem>
+			<MenuItem
+				Header="_Window">
+				<MenuItem
+					Header="Close All"
+					Command="local:MyCommands.CloseAll"></MenuItem>
+				<MenuItem
+					Header="Close All, But This"
+					Command="local:MyCommands.CloseAllButThis"></MenuItem>
+                <MenuItem
+					Header="Reset Layout"
+					Command="local:MyCommands.ResetLayout"></MenuItem>
+			</MenuItem>
+			<MenuItem
+				Header="_Help">
+				<MenuItem
+					Header="Contents..."
+					Command="local:MyCommands.Contents">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/Help.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem
+					Header="About..."
+					Command="local:MyCommands.About">
+					<MenuItem.Icon>
+						<Image
+							Source="/HDL_Light;component/Images/About.png"
+							Width="16"
+							Height="16"
+							Margin="2" />
+					</MenuItem.Icon>
+				</MenuItem>
+			</MenuItem>
+		</Menu>
+		<ToolBarTray
+			x:Name="MainToolBarTray"
+			Grid.Row="1">
+			<ToolBarTray.Resources>
+				<Style
+					TargetType="{x:Type Image}">
+					<Style.Triggers>
+						<DataTrigger
+							Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}"
+							Value="False">
+							<Setter
+								Property="Opacity"
+								Value="0.30" />
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</ToolBarTray.Resources>
+			<ToolBar
+				Band="1"
+				BandIndex="1">
+				<Button
+					Command="local:MyCommands.NewProject"
+					ToolTip="NewProject">
+					<Image
+						Source="/HDL_Light;component/Images/NewProject.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+				<Button
+					Command="local:MyCommands.OpenProject"
+					ToolTip="Open Project">
+					<Image
+						Source="/HDL_Light;component/Images/OpenProject.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+			</ToolBar>
+			<ToolBar
+				Band="1"
+				BandIndex="2">
+				<Button
+					Command="local:MyCommands.Save"
+					ToolTip="Save">
+					<Image
+						Source="/HDL_Light;component/Images/Save.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+				<Button
+					Command="local:MyCommands.SaveAll"
+					ToolTip="Save All">
+					<Image
+						Source="/HDL_Light;component/Images/SaveAll.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+			</ToolBar>
+			<ToolBar
+				Band="1"
+				BandIndex="3">
+				<Button
+					Command="local:MyCommands.Cut"
+					ToolTip="Cut">
+					<Image
+						Source="/HDL_Light;component/Images/Cut.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+				<Button
+					Command="local:MyCommands.Copy"
+					ToolTip="Copy">
+					<Image
+						Source="/HDL_Light;component/Images/Copy.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+				<Button
+					Command="local:MyCommands.Paste"
+					ToolTip="Paste">
+					<Image
+						Source="/HDL_Light;component/Images/Paste.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+				<Button
+					Command="local:MyCommands.Delete"
+					ToolTip="Delete">
+					<Image
+						Source="/HDL_Light;component/Images/Delete.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+			</ToolBar>
+			<ToolBar
+				Band="1"
+				BandIndex="4">
+				<Button
+					Command="local:MyCommands.Undo"
+					ToolTip="Undo">
+					<Image
+						Source="/HDL_Light;component/Images/Undo.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+				<Button
+					Command="local:MyCommands.Redo"
+					ToolTip="Redo">
+					<Image
+						Source="/HDL_Light;component/Images/Redo.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+			</ToolBar>
+			<ToolBar
+				Band="1"
+				BandIndex="5">
+				<TextBlock
+					HorizontalAlignment="Right"
+					VerticalAlignment="Center"
+					Margin="4">Current project: </TextBlock>
+				<ComboBox
+					x:Name="ComboBoxTopProject"
+					Grid.Column="1"
+					SelectionChanged="ComboBoxTopProject_SelectionChanged"
+					MinWidth="60"
+					Margin="4"></ComboBox>
+				<Button
+					x:Name="CoboBoxButtonCheckSyntax"
+					Margin="4"
+					Command="local:MyCommands.CheckSyntax"
+					ToolTip="Check Syntax">
+					<Image
+						Source="/HDL_Light;component/Images/compiler/check.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+                <Button
+					x:Name="CoboBoxButtonRebuildLibrary"
+					Margin="4"
+					Command="local:MyCommands.RebuildLibrary"
+					ToolTip="Rebuild Library">
+                    <Image
+						Source="/HDL_Light;component/Images/Design/library.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+                </Button>
+                <Button
+					x:Name="CoboBoxButtonCompile"
+					Margin="4"
+					Command="local:MyCommands.Compile"
+					ToolTip="Compile">
+					<Image
+						Source="/HDL_Light;component/Images/compiler/build.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+				<Button
+					x:Name="CoboBoxButtonClear"
+					Margin="4"
+					Command="local:MyCommands.Clear"
+					ToolTip="Clear">
+					<Image
+						Source="/HDL_Light;component/Images/compiler/clear.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+			</ToolBar>
+			<ToolBar
+				Band="1"
+				x:Name="ToolBarSearch"
+				BandIndex="6">
+				<ToolBar.Resources>
+					<ResourceDictionary
+						Source="Dialogs\Search_Replace\SearchTextBox\Resources.xaml"></ResourceDictionary>
+				</ToolBar.Resources>
+				<search:SearchBox
+					x:Name="SearchBox"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					Width="192"
+					Height="22"
+					Mode="{Binding SelectedValue.Content, ElementName=SearchMode}"
+					Prompt="Input Prompt"
+					ToolTip="Type to search"
+					Command="ApplicationCommands.Find"
+					CommandParameter="{Binding Text, RelativeSource={RelativeSource Self}}"
+					TextInput="SearchBox_TextInput">
+					<search:SearchBox.ContextMenu>
+						<ContextMenu>
+							<RadioButton
+								x:Name="RadioButtonCurrentFileSearch"
+								IsChecked="True"
+								Checked="RadioButtonCurrentFileSearch_Checked"> Current File </RadioButton>
+							<RadioButton
+								x:Name="RadioButtonCurrentProjectSearch"
+								Checked="RadioButtonCurrentProjectSearch_Checked"> Current Project </RadioButton>
+							<RadioButton
+								x:Name="RadioButtonEntireSolutionSearchSearch"
+								Checked="RadioButtonEntireSolutionSearchSearch_Checked">Entire Solution </RadioButton>
+						</ContextMenu>
+					</search:SearchBox.ContextMenu>
+				</search:SearchBox>
+				<Button
+					x:Name="ButtonSearch"
+					Command="local:MyCommands.Search">
+					<Image
+						Source="/HDL_Light;component/Images/Search.png"
+						Width="16"
+						Height="16"
+						Margin="2" />
+				</Button>
+			</ToolBar>
+		</ToolBarTray>
+		<ToolBarTray
+			Grid.Row="2"
+			x:Name="ToolBarTrayCurrentActiveWindow"></ToolBarTray>
+		<avalonDock:DockingManager
+			Grid.Row="3"
+			x:Name="dockManager"
+			AllowMixedOrientation="True"
+			ActiveContentChanged="dockManager_ActiveContentChanged">
+			<avalonDock:DockingManager.DocumentHeaderTemplate>
+				<DataTemplate>
+					<StackPanel
+						Orientation="Horizontal"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Stretch">
+						<Image
+							Source="{Binding IconSource}"
+							Width="16"
+							Height="16"
+							Margin="2"></Image>
+						<TextBlock
+							Text="{Binding Title}"
+							TextTrimming="CharacterEllipsis"
+							Foreground="{Binding Background}"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center" />
+					</StackPanel>
+				</DataTemplate>
+			</avalonDock:DockingManager.DocumentHeaderTemplate>
+			<avalonDock:DockingManager.AnchorableHeaderTemplate>
+				<DataTemplate>
+					<StackPanel
+						Orientation="Horizontal">
+						<Image
+							Source="{Binding IconSource}"
+							Width="16"
+							Height="16"
+							Margin="2"></Image>
+						<TextBlock
+							Text="{Binding Title}"
+							TextTrimming="CharacterEllipsis" />
+					</StackPanel>
+				</DataTemplate>
+			</avalonDock:DockingManager.AnchorableHeaderTemplate>
+			<avalonDock:DockingManager.AnchorableTitleTemplate>
+				<DataTemplate>
+					<StackPanel
+						Orientation="Horizontal">
+						<Image
+							Source="{Binding IconSource}"
+							Width="16"
+							Height="16"
+							Margin="2"></Image>
+						<TextBlock
+							Text="{Binding Title}"
+							TextTrimming="CharacterEllipsis" />
+					</StackPanel>
+				</DataTemplate>
+			</avalonDock:DockingManager.AnchorableTitleTemplate>
+		</avalonDock:DockingManager>
+		<!--Status Bars-->
+		<Grid
+			Grid.Row="4"
+			x:Name="GridStatusBars">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="*" />
+			</Grid.ColumnDefinitions>
+			<StatusBar
+				Grid.Column="0"
+				x:Name="StatusBarMain"
+				Loaded="StatusBarMain_Loaded"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Stretch"
+				HorizontalContentAlignment="Right">
+				<Expander
+					x:Name="ExpanderPerfomance"
+					ExpandDirection="Right"
+					Template="{StaticResource ResourceKey=StretchyExpanderTemp}">
+					<Expander.Header>
+						<Image
+							Source="/HDL_Light;component/Images/performance.png"
+							Width="16"
+							Height="16"
+							Margin="2"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center" />
+					</Expander.Header>
+					<StackPanel
+						Orientation="Horizontal"
+						VerticalAlignment="Center">
+						<Label
+							VerticalAlignment="Center">Processor Usage:</Label>
+						<ProgressBar
+							x:Name="ProgressBarProc"
+							Width="60"
+							Minimum="0"
+							Maximum="100"
+							SmallChange="1"
+							LargeChange="1"
+							Height="12"></ProgressBar>
+						<Label
+							x:Name="LabelProcUsage"
+							Width="40"
+							VerticalAlignment="Center"></Label>
+						<Label
+							VerticalAlignment="Center">Memory Avaliable:</Label>
+						<ProgressBar
+							x:Name="ProgressBarMem"
+							Width="60"
+							Minimum="0"
+							Maximum="100"
+							SmallChange="1"
+							LargeChange="1"
+							Height="12"></ProgressBar>
+						<Label
+							x:Name="LabelMemUsage"
+							Width="100"
+							VerticalAlignment="Center"></Label>
+					</StackPanel>
+				</Expander>
+			</StatusBar>
+			<StatusBar
+				Grid.Column="1"
+				x:Name="StatusBarContent">
+				<Label
+					Content="Start Window"></Label>
+			</StatusBar>
+		</Grid>
+	</Grid>
+</Window>

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Directory Id="dirD4D5E72D430002B4BCF3B31D2442AD13" Name="LRM" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="LRMComponents">
+            <Component Id="cmp5E7248FC331B6F4B7BDDE6D69D273CCE" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{F214CEB5-4008-4899-B901-C53A0F0C2ED0}">
+                <File Id="fil3ABB793C23D154AFB052D19E57901BD2" KeyPath="yes" Source="$(var.LRMSrc)\1076 -- Table of Contents.html" />
+            </Component>
+            <Component Id="cmpB70A5180020E13AD09274AB324168A9C" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{59FEF99A-1AF8-42C8-94A5-9C91C9C84603}">
+                <File Id="filF29084B9216DAF7976C9B3B84C8DBCD8" KeyPath="yes" Source="$(var.LRMSrc)\1076_0.html" />
+            </Component>
+            <Component Id="cmpF7BBE3F552BCCCA3933AC93981C8AA7C" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{13D856E4-C7AC-4AC8-BE86-B431D7306A90}">
+                <File Id="fil25155761CBE69FF42997E11621BCC15B" KeyPath="yes" Source="$(var.LRMSrc)\1076_1.html" />
+            </Component>
+            <Component Id="cmpE8E05EEFE4CAC7E91EF57E39F3DCC3BC" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{F366ACC6-2AC2-41BE-A6C6-1D497FA41106}">
+                <File Id="fil1F82C236750621981583CA33A15BB4F5" KeyPath="yes" Source="$(var.LRMSrc)\1076_10.html" />
+            </Component>
+            <Component Id="cmpA96D353EC5812D8440E568799555E69B" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{A67DE4C6-6D55-4676-AEBB-82B33ACB9965}">
+                <File Id="filFFFBDABD42DF65D19463A4BD01D2D232" KeyPath="yes" Source="$(var.LRMSrc)\1076_11.html" />
+            </Component>
+            <Component Id="cmp784CD4664DBCDB8CF8EA77D1909286C6" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{84C40ED5-4BAB-41B2-BB3D-6ED0BAAD1951}">
+                <File Id="fil9E687638DA784F2C96D3C8151825F48D" KeyPath="yes" Source="$(var.LRMSrc)\1076_12.html" />
+            </Component>
+            <Component Id="cmp778DF0C006ECAE2A9F409D208D3E776B" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{6D07A57D-4BCA-4CF6-BDC2-7AB779D8C805}">
+                <File Id="fil68C112BBF9244FADBC9BF6C0FD80B553" KeyPath="yes" Source="$(var.LRMSrc)\1076_13.html" />
+            </Component>
+            <Component Id="cmpFE4594C9CC49306A79040C9C51A4A42B" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{91D015B7-619A-40F8-B7A4-3B45E37033F4}">
+                <File Id="fil465944C57BDABAAD583030F07DCED9BD" KeyPath="yes" Source="$(var.LRMSrc)\1076_14.html" />
+            </Component>
+            <Component Id="cmpDFD8B3A0FDA9ED310B8C10BFF9510923" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{D0A4FB26-26C9-4EFC-9659-95B217A830CF}">
+                <File Id="fil184314A80EF8D6B9E5268C1399FF8C4C" KeyPath="yes" Source="$(var.LRMSrc)\1076_2.html" />
+            </Component>
+            <Component Id="cmpD2C616F0048C5AE3D437F5ECAC4F5558" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{4DDAEB70-AE5F-4DDE-AC82-33EF94BE2E06}">
+                <File Id="filBB5AAB3EE1143D8815D527EE859E28DC" KeyPath="yes" Source="$(var.LRMSrc)\1076_3.html" />
+            </Component>
+            <Component Id="cmp7F760DB81790F3416A0A086A9D365C0D" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{520E56D9-830F-4A90-9EF7-AAA3361C92D6}">
+                <File Id="fil38241B9186FBD9CC25A17BC236070990" KeyPath="yes" Source="$(var.LRMSrc)\1076_4.html" />
+            </Component>
+            <Component Id="cmp97CF904F9FD4CDD532BFA382DFE998A4" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{D9D843B8-2E4A-402D-BB27-EA942C40C498}">
+                <File Id="fil77328ECFB57E643F7CB5F8B1A7CD697B" KeyPath="yes" Source="$(var.LRMSrc)\1076_5.html" />
+            </Component>
+            <Component Id="cmp5BCB4F48AA7A0EB25D7F4A87303DA628" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{CA38A776-30AC-42CC-ABEE-AC0BC2776253}">
+                <File Id="fil6732DCC3136728963B98B70822E0BFBF" KeyPath="yes" Source="$(var.LRMSrc)\1076_6.html" />
+            </Component>
+            <Component Id="cmp3218AA4EE063568D38EB17881D9D5864" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{EB050B0D-33C3-414B-A0D7-D0944BE9BBC9}">
+                <File Id="fil94D5F0DFD50367A00735F5DE08D0B019" KeyPath="yes" Source="$(var.LRMSrc)\1076_7.html" />
+            </Component>
+            <Component Id="cmp511554C26155BFCD1D9ACE9FB55537BF" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{91C5D0C2-DA51-4EAF-AB31-B91118DA53ED}">
+                <File Id="fil9D29FEA052D7866EDD5A924DF20A2A50" KeyPath="yes" Source="$(var.LRMSrc)\1076_8.html" />
+            </Component>
+            <Component Id="cmp6F7AC43CDA8EF3D77CF794801868877F" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{E26A936E-BC0D-45FA-965D-1C05EEE591AE}">
+                <File Id="filB2BA550C4176D172001A9CF02DF84DDE" KeyPath="yes" Source="$(var.LRMSrc)\1076_9.html" />
+            </Component>
+            <Component Id="cmp896A5EC84FFA3F71A1B350F7188F6756" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{9DB07FC2-6461-4AF4-9E67-99D9C843F6EA}">
+                <File Id="fil02999E965C07B14D7F8AE57481E15B19" KeyPath="yes" Source="$(var.LRMSrc)\1076_AXA.html" />
+            </Component>
+            <Component Id="cmp46FB5582C1F8D7D43FF83DC95158B8FA" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{704ACF59-724F-4397-8489-E9057842346C}">
+                <File Id="fil95E0557A87BA204F87CD2B721AFC1DA8" KeyPath="yes" Source="$(var.LRMSrc)\1076_AXB.html" />
+            </Component>
+            <Component Id="cmp2D434A1E021D17127BEE761BF14CCA72" Directory="dirD4D5E72D430002B4BCF3B31D2442AD13" Guid="{F947E83E-CCD4-4420-A457-DADB7CE6AF83}">
+                <File Id="fil95B5575775D2E390E7721150E2A730A6" KeyPath="yes" Source="$(var.LRMSrc)\1076_toc.html" />
+            </Component>
+            <Component Id="cmp740CB6DBCC0EB7363DC3808383741B44" Directory="dir1CD9C2D5B079218B57BEE38C12EC8B08" Guid="{2FCE83ED-D106-470F-B9BB-D8D3FD196761}">
+                <File Id="filE21620AE3468376FFB946B4A5A1EEEC2" KeyPath="yes" Source="$(var.LRMSrc)\pics\HJEM.GIF" />
+            </Component>
+            <Component Id="cmpFE66DEC693F01DDC3AABC06379E42F67" Directory="dir1CD9C2D5B079218B57BEE38C12EC8B08" Guid="{6F464595-CCE0-4001-8556-1C8658E35F89}">
+                <File Id="fil29FDE020FA1612953B571A2730178794" KeyPath="yes" Source="$(var.LRMSrc)\pics\HOYRE.GIF" />
+            </Component>
+            <Component Id="cmp55A76E78554231E249A55E1EF4A5ACE2" Directory="dir1CD9C2D5B079218B57BEE38C12EC8B08" Guid="{E4018C54-A0AD-4D7C-9E8C-63772F632BEF}">
+                <File Id="fil6B402B0363E7E1CDBE859A2E38D95EED" KeyPath="yes" Source="$(var.LRMSrc)\pics\TOPP.GIF" />
+            </Component>
+            <Component Id="cmp2D43E6B18F83BE9833E8A013356A34FE" Directory="dir1CD9C2D5B079218B57BEE38C12EC8B08" Guid="{64BC5306-84B7-40C6-A548-0634EBDC3E60}">
+                <File Id="filF9B4F866473E5EC5B4833302E765B6ED" KeyPath="yes" Source="$(var.LRMSrc)\pics\VENSTRE.GIF" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirD4D5E72D430002B4BCF3B31D2442AD13">
+            <Directory Id="dir1CD9C2D5B079218B57BEE38C12EC8B08" Name="pics" />
+        </DirectoryRef>
+    </Fragment>
+</Wix>

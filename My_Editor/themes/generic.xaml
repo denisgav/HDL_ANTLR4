@@ -1,0 +1,15 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:editing="clr-namespace:My_Editor.Editing"
+>
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/My_Editor;component/TextEditor.xaml" />
+		<ResourceDictionary Source="/My_Editor;component/CodeCompletion/CompletionList.xaml" />
+		<ResourceDictionary Source="/My_Editor;component/CodeCompletion/InsightWindow.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	
+	<Style TargetType="{x:Type editing:LineNumberMargin}">
+		<Setter Property="TextBlock.Foreground" Value="Gray"/>
+		<Setter Property="Control.Cursor" Value="/My_Editor;component/themes/RightArrow.cur"/>
+	</Style>
+</ResourceDictionary>

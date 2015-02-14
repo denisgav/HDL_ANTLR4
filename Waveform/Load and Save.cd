@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Schematix.Waveform.Value_Dump.BookMark">
+    <Position X="13" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABAAQAAAAAAAAAAAAAAAAAAAAAAAAIAAAACAAAAQA=</HashCode>
+      <FileName>ValueDump\BookMark.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.GzDReader" Collapsed="true">
+    <Position X="3" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAACAAAAAAAEAA=</HashCode>
+      <FileName>ValueDump\GzD\GzDReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.GzDWriter" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ValueDump\GzD\GzDWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.My_Variable" BaseTypeListCollapsed="true">
+    <Position X="9.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAiAAgA4CAIAkAAAEAAQAgAAEAAAgAAAAAAACAAA=</HashCode>
+      <FileName>ValueDump\My_Variable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.Scope">
+    <Position X="7.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAGAAEACgAQAQAAAAEAAAAAAQAAABEAAA=</HashCode>
+      <FileName>ValueDump\Scope.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.ValueDumpReader" Collapsed="true">
+    <Position X="2" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IBAgACAQAAAAAACAAAAAgAAAAAAAAgABCAAAAQAAAAA=</HashCode>
+      <FileName>ValueDump\ValueDumpReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.ValueDumpWriter" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IBAAACAQAAAAAACAAAAAgAAAAAAAAAABCAAAAQEAAAA=</HashCode>
+      <FileName>ValueDump\ValueDumpWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.VCD_Variable">
+    <Position X="11.25" Y="2.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Schematix.Waveform.Value_Dump.VCD_Variable.VCDVariableType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ValueDump\VCD\VCD_Variable.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAgQCCAAAACgKAAAIAgAAEAACAAAIBgAASASAAAAAA=</HashCode>
+      <FileName>ValueDump\VCD\VCD_Variable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.VCDReader" Collapsed="true">
+    <Position X="0.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQUgIAEEICAAAAEAAREAAwQBADAAAgECQAQCgCAEEIA=</HashCode>
+      <FileName>ValueDump\VCD\VCDReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.VCDWriter" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAiAAAAAAABAAAARAAAAAAgBAAQQgAAEEEAA=</HashCode>
+      <FileName>ValueDump\VCD\VCDWriter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.WaveReader" Collapsed="true">
+    <Position X="3" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAAAIACAEAAAAABAAgAQAAAAAAgAAAAAAAAAIEAA=</HashCode>
+      <FileName>ValueDump\Wave\WaveReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Schematix.Waveform.Value_Dump.WaveWriter" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAiAAoAAAQBAAAAQAAQAAAAAAAAAAAAEAEAA=</HashCode>
+      <FileName>ValueDump\Wave\WaveWriter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="Schematix.Waveform.Value_Dump.VCDScope">
+    <Position X="6" Y="2.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Schematix.Waveform.Value_Dump.VCDScope.ScopeType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ValueDump\VCD\VCDScope.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAIAAAACA=</HashCode>
+      <FileName>ValueDump\VCD\VCDScope.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

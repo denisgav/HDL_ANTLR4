@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="Schematix.Waveform.UserControls.TimeUnitUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:my="clr-namespace:Schematix.Waveform.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="100">
+    <GroupBox Header="Time" Grid.Row="0" Grid.Column="1" Margin="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <my:MaskedTextBox x:Name="TextBoxClockTimeStep" Mask_Type="IntegerNumber" Bus="Dec" TextAlignment="Center" Grid.Column="0">1</my:MaskedTextBox>
+            <ComboBox x:Name="ComboBoxClockTimeStepUnit" IsEditable="False" Grid.Column="1"/>
+        </Grid>
+    </GroupBox>
+</UserControl>

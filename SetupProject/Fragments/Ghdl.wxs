@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Directory Id="dir6DE3936C9CD09229BE3BF7CFD528E916" Name="Ghdl" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="GHDLComponents">
+            <Component Id="cmp7E92CFC6D243F686D4B42402465689ED" Directory="dir6DE3936C9CD09229BE3BF7CFD528E916" Guid="{41A6B0CB-68A8-4536-9677-71AAF11C4615}">
+                <File Id="fil437749D5AE8872A447B15AC0DB99D117" KeyPath="yes" Source="$(var.GhdlSrc)\ghdl.htm" />
+            </Component>
+            <Component Id="cmp04C0A1E018A61DC87C69FB44C8717690" Directory="dir51897B85AC06BCD8D5795A1640EA1AC3" Guid="{077E0BCC-FA36-444F-9AFD-3B55A6D487FC}">
+                <File Id="fil28E44D11AE164649635D7EA56CA369A8" KeyPath="yes" Source="$(var.GhdlSrc)\bin\ghdl.exe" />
+            </Component>
+            <Component Id="cmpD7F356138D759D79FC050331487264C7" Directory="dir123681AC585747052095F55329217B92" Guid="{A35964F8-48AC-4C11-8822-947D4DED7B18}">
+                <File Id="fil38EEC5021F2D11673D0A57D18A7087CF" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\ieee-obj87.cf" />
+            </Component>
+            <Component Id="cmp227F1E1A0227E79B6AFE58595114C030" Directory="dir123681AC585747052095F55329217B92" Guid="{BE28098D-578F-4A83-A96B-9F669B1FA320}">
+                <File Id="filCD5C7271D2CF50098BF4BF4BA2EAA33F" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\numeric_bit-body.v87" />
+            </Component>
+            <Component Id="cmpD83040E06AC81010BA6D128B68F748D2" Directory="dir123681AC585747052095F55329217B92" Guid="{D1AB62C3-E30D-406D-A78A-B60ABC9C5EF3}">
+                <File Id="filE78F85D9FE84FBFD572F628B72406135" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\numeric_bit.v87" />
+            </Component>
+            <Component Id="cmp67F51799F305668CE6E2218EB609A337" Directory="dir123681AC585747052095F55329217B92" Guid="{1558A6F9-B500-4272-8284-0BE09F169868}">
+                <File Id="filADA8280B52C5A487454E53D1E97B1FD8" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\numeric_std-body.v87" />
+            </Component>
+            <Component Id="cmp8001FC6D37C06DAA5130972DE573322B" Directory="dir123681AC585747052095F55329217B92" Guid="{EFE12953-DE68-4CDF-BF77-163423291386}">
+                <File Id="filA7DA3D4F5CC005042F176BE680E2B027" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\numeric_std.v87" />
+            </Component>
+            <Component Id="cmp583F37483D19DA2E78B7F369861BC5D4" Directory="dir123681AC585747052095F55329217B92" Guid="{CDECCE47-716E-4587-9EF0-86E80A85F596}">
+                <File Id="fil9292A9BE6B20E3CF2A6AA99DAA192603" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\std_logic_1164.v87" />
+            </Component>
+            <Component Id="cmp03FE4E39C838FEF754A9F4A650F98F09" Directory="dir123681AC585747052095F55329217B92" Guid="{D58FF4CD-BA73-4FCE-B763-0B63E0D0E524}">
+                <File Id="filE8618236FE873A654EE2A7632E2CDA50" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\std_logic_1164_body.v87" />
+            </Component>
+            <Component Id="cmp48C4D72BE513BA52E182E8E42E2D86DF" Directory="dir123681AC585747052095F55329217B92" Guid="{27FD3A37-1EB6-4CB3-A853-366B633F5A32}">
+                <File Id="filBFF15A3E423FED7CB891FC094DE9A1B5" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\vital_primitives.vhd" />
+            </Component>
+            <Component Id="cmpC6667BEB88C57DBC092DE87CC5EEAB2E" Directory="dir123681AC585747052095F55329217B92" Guid="{1336F85F-84FB-44B3-B5AD-EBC191FB0369}">
+                <File Id="filF92D83CB8EF3B16AB4B7B00392CA4BAB" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\vital_primitives_body.vhd" />
+            </Component>
+            <Component Id="cmp8740F616C15BCE913B1E33EC19AF187C" Directory="dir123681AC585747052095F55329217B92" Guid="{95966E2B-F1F6-4AB2-B435-F4CF94B3C6EE}">
+                <File Id="filF1F930B5892720D3FD57EBE95EF1E2C8" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\vital_timing.vhd" />
+            </Component>
+            <Component Id="cmp85C8D40005557A3E8C3F8FB4FAEE378F" Directory="dir123681AC585747052095F55329217B92" Guid="{A535DCF0-E8EE-40F4-A844-F1B0D564797A}">
+                <File Id="fil248BCD190018C90FCC1220E0A3A5738C" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\ieee\vital_timing_body.vhd" />
+            </Component>
+            <Component Id="cmp676BEFBE39B50F0FB87FCAB6DB012AE9" Directory="dir5B669623B283312761C3E400EA5D09C3" Guid="{F457A184-4AB5-4F3B-8D5C-0CF94E9D5F5E}">
+                <File Id="filF815F58176F12943CA64FCEDA679763B" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\std\std-obj87.cf" />
+            </Component>
+            <Component Id="cmp1310ABC0108763759F48942DECCDE925" Directory="dir5B669623B283312761C3E400EA5D09C3" Guid="{753A12EE-1586-434F-9533-27E5E5472B78}">
+                <File Id="fil636DFDD7B73E0D7AC606C7DA2529C70D" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\std\textio.v87" />
+            </Component>
+            <Component Id="cmp41DD9F44F321FAA149F1CF534E6AA2B7" Directory="dir5B669623B283312761C3E400EA5D09C3" Guid="{E1C6F173-F729-4F6C-997A-37324DC4AF72}">
+                <File Id="fil8516A8F6AF0AF76A7E75F750C2A8935D" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\std\textio_body.v87" />
+            </Component>
+            <Component Id="cmp23DED34C4D668A946AA58B587DB83443" Directory="dirE2D351EAA8513843623478126FE81DFC" Guid="{73EC0D20-B0A6-43FB-84E1-AE2DF2FF047B}">
+                <File Id="filA18E9E261EFFC7D5AC26D2F6800298A6" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\synopsys\ieee-obj87.cf" />
+            </Component>
+            <Component Id="cmp4A62043AADB1F217A048A3FF372E3968" Directory="dirE2D351EAA8513843623478126FE81DFC" Guid="{BEF411D8-49D5-4F91-93F2-3ACA01647D64}">
+                <File Id="filC530AD818A3A0AE5550E70D37CFEE4B7" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\synopsys\std_logic_arith.vhd" />
+            </Component>
+            <Component Id="cmpFBDD4E16EEC589E60EBE8DC176253642" Directory="dirE2D351EAA8513843623478126FE81DFC" Guid="{4BAE1785-F6EE-49F6-A20D-475EB34C9BD5}">
+                <File Id="filC61066B41FDFA77D45DF33DC6E51339F" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\synopsys\std_logic_misc-body.vhd" />
+            </Component>
+            <Component Id="cmpC7C6FA96005E31C1E029579A78B3440B" Directory="dirE2D351EAA8513843623478126FE81DFC" Guid="{EF104980-1A87-4109-9D6D-DF7613C320A8}">
+                <File Id="filEDCFCB492B1059CB607D429FA2FC0F87" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\synopsys\std_logic_misc.vhd" />
+            </Component>
+            <Component Id="cmp208B5749A6D2D40D83CC9AD60B03B18D" Directory="dirE2D351EAA8513843623478126FE81DFC" Guid="{DA3A720A-B4E9-420A-91DB-FB4AE41969B5}">
+                <File Id="fil8ADC626354A173CC1A0B5FAB84CCED89" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\synopsys\std_logic_signed.vhd" />
+            </Component>
+            <Component Id="cmp9E7BE56F86398A358C953246F56F2545" Directory="dirE2D351EAA8513843623478126FE81DFC" Guid="{1D907132-3D00-4232-AE4B-41EEC50D3C16}">
+                <File Id="fil35FD29DE47FB14681CD9F0B0982016F9" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\synopsys\std_logic_textio.vhd" />
+            </Component>
+            <Component Id="cmp786C827D450266292455952067D67F4F" Directory="dirE2D351EAA8513843623478126FE81DFC" Guid="{6F66059A-5825-49BB-A2B5-F00C10D3405D}">
+                <File Id="filB4C79DE0EB76C4C2E170C1D03EC59D65" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v87\synopsys\std_logic_unsigned.vhd" />
+            </Component>
+            <Component Id="cmp67BF48CD4D5CACAB19245BD2E6E87754" Directory="dirD3952EEF221B9833842371912FBF845E" Guid="{DF6BF7EA-9E71-420D-AD91-3F9EE76A8948}">
+                <File Id="filCF6A329B19FDD58DF21AA4F2206092FA" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ghdl.htm" />
+            </Component>
+            <Component Id="cmp663C83A8180A794BB9FB02B387FEACCD" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{B005C6A6-D18B-442D-A895-E9A77B050CED}">
+                <File Id="filD77CD59A62AC01C9A4DFEAFDA04C7892" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\arith.vhd" />
+            </Component>
+            <Component Id="cmp4747CB5A32CA7A1A68E316BEB717350D" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{3DF43A00-7EED-45B8-92DB-3B798D002152}">
+                <File Id="fil7E092AE3B0A92FA90F7C00A56FE75E6A" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\ieee-obj93.cf" />
+            </Component>
+            <Component Id="cmpC5808A9AD2BAE5D52A0D1CC599CC66F0" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{5607A464-FFB9-4007-A15F-0E3D234BD3CB}">
+                <File Id="fil60270E5CC5D63396BF0F3D3C7C257C78" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\memory_b.vhd" />
+            </Component>
+            <Component Id="cmpA1B00063C1B59D28759D7E9C0847CE62" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{925BADC3-6DF3-441E-A791-42B3F8BFE148}">
+                <File Id="fil59B1665FDACF2B0EB13CBEA27DB9B82B" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\memory_p.vhd" />
+            </Component>
+            <Component Id="cmpDE1C083B0CD03D6E14B0CB4526A099A3" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{175393CE-D12D-4266-871C-4405AF39B4CA}">
+                <File Id="fil0F2D15719587B2645196B8C1AF688C0F" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\numeric_bit-body.v93" />
+            </Component>
+            <Component Id="cmp86F714D3205499EF6A083417011146E8" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{32B9C584-C958-46B9-9F22-E244EB5D62DD}">
+                <File Id="filFB796EC97534487E1A5C3735D1A378B1" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\numeric_bit.v93" />
+            </Component>
+            <Component Id="cmpE81892F29CC74E0620F8D1F1966E5C33" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{FF89A163-794B-4C58-A04D-613FD1ED908D}">
+                <File Id="filA58CF1658462453BD06583BBF0CB7F7F" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\numeric_std-body.v93" />
+            </Component>
+            <Component Id="cmp442F10BEA0EA8850CB783D7EAEC006B5" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{8A0676AE-FC74-4457-BD67-4E356DED3A37}">
+                <File Id="fil38A04FA3E7C276AA8AB59C3B75CAF16B" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\numeric_std.v93" />
+            </Component>
+            <Component Id="cmp9AF90D9493F105101060BA81D9CBE970" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{5EEF242A-A800-46C2-A426-DDB5E372AD89}">
+                <File Id="filF6217FDFE06DD6CC01A68340033FFE6F" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\prmtvs_b.vhd" />
+            </Component>
+            <Component Id="cmp946E7BE23B21506F1F16404E969DC84B" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{B863EA80-0CCC-4126-9A8F-A97BFDF35AC3}">
+                <File Id="fil3B9B3CC8944309DB95B5D63F5851D04D" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\prmtvs_p.vhd" />
+            </Component>
+            <Component Id="cmpF0AF7A3D449C69135DE44FDE7A6FADB1" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{0EA76C91-21C7-457B-96DD-655777D0C25B}">
+                <File Id="fil358C4AFD423E23DCB52D701D5829CE9B" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\signed.vhd" />
+            </Component>
+            <Component Id="cmpDD3E75168840444BAD53FF934449910F" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{7BCE1B39-EF0E-475B-A0AC-A9EFBC6F3191}">
+                <File Id="filB936960850EB4CE1BD07DDD3D77B18D0" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\std_logic_1164.v93" />
+            </Component>
+            <Component Id="cmp3BD218D2D10C84B9AA1F3C8966780205" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{23628382-1243-4D09-9A53-C4B15DA0C5DE}">
+                <File Id="fil38C291EF46893796E911533B8337BAEF" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\std_logic_1164_body.v93" />
+            </Component>
+            <Component Id="cmp91A36FFD754155E8C79E534A2FBAAA6A" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{C74C5C60-7E90-4F0B-8E39-9CDF43373897}">
+                <File Id="fil839705DECB6A22F47E4530A74C9607C4" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\timing_b.vhd" />
+            </Component>
+            <Component Id="cmp08A2527B31075E1AAEC4792DC8F0B691" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{7A59D35B-B864-48EB-96CF-6E04A1DE059D}">
+                <File Id="fil74B7A361396BA58974C86A2B473EE276" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\timing_p.vhd" />
+            </Component>
+            <Component Id="cmpAA778FE7F27C5331C03B8928CEEA6109" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{2C16AAE7-6E0D-4F7A-8AEF-0285C16E513E}">
+                <File Id="fil883E202F57E499A79316413C2343404A" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\unsigned.vhd" />
+            </Component>
+            <Component Id="cmpB4041DEB9DD2F3D9B365237D5E60318D" Directory="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Guid="{010D2A04-3D5B-4B39-8111-093AEDD549A2}">
+                <File Id="fil9107A3D1D20B0A578062F464B36D898C" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\ieee\work-obj93.cf" />
+            </Component>
+            <Component Id="cmp2ED391BE141AFB5B531C2610AC002BA1" Directory="dirF767920B63C447ABF0AB7C57212C2D54" Guid="{0ADFA903-E747-4F8C-86F6-2D1C2BCD1E41}">
+                <File Id="fil90E781F0B0624C7F6B8D89DB19720DE4" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\std\std-obj93.cf" />
+            </Component>
+            <Component Id="cmpFA33D4FED002829CF6F4819D6F03638F" Directory="dirF767920B63C447ABF0AB7C57212C2D54" Guid="{365403B9-EF01-4B99-B3DF-E585913F6E1F}">
+                <File Id="fil041E75A746823B6FC99DF1540C548B45" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\std\textio.v93" />
+            </Component>
+            <Component Id="cmp87644698E705B1B05E0DCAF8D44CE612" Directory="dirF767920B63C447ABF0AB7C57212C2D54" Guid="{9938BDC1-3CDB-4E26-9881-680E78223973}">
+                <File Id="filB9B19869FABECBFACF49332DE35FF00E" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\std\textio_body.v93" />
+            </Component>
+            <Component Id="cmp11E55A0C60D21653F5E8AE9AE207E4A8" Directory="dir6C1C010E783765AB523E926D90FE8766" Guid="{513C5813-0A4C-44E1-BC76-430274635F9D}">
+                <File Id="filC7C1478DFAE684DF87D049D0EA615C12" KeyPath="yes" Source="$(var.GhdlSrc)\lib\v93\synopsys\ieee-obj93.cf" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirC565FFFAB087015564A97C9DF3585FF3">
+            <Directory Id="dir123681AC585747052095F55329217B92" Name="ieee" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6DE3936C9CD09229BE3BF7CFD528E916">
+            <Directory Id="dir201C9A9D366B80D010506744FE1810A5" Name="lib" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6DE3936C9CD09229BE3BF7CFD528E916">
+            <Directory Id="dir51897B85AC06BCD8D5795A1640EA1AC3" Name="bin" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirC565FFFAB087015564A97C9DF3585FF3">
+            <Directory Id="dir5B669623B283312761C3E400EA5D09C3" Name="std" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirD3952EEF221B9833842371912FBF845E">
+            <Directory Id="dir6C1C010E783765AB523E926D90FE8766" Name="synopsys" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirD3952EEF221B9833842371912FBF845E">
+            <Directory Id="dir7E1A7C9ECFEFE3E6A7D623117A510ADC" Name="ieee" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir201C9A9D366B80D010506744FE1810A5">
+            <Directory Id="dirC565FFFAB087015564A97C9DF3585FF3" Name="v87" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir201C9A9D366B80D010506744FE1810A5">
+            <Directory Id="dirD3952EEF221B9833842371912FBF845E" Name="v93" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirC565FFFAB087015564A97C9DF3585FF3">
+            <Directory Id="dirE2D351EAA8513843623478126FE81DFC" Name="synopsys" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirD3952EEF221B9833842371912FBF845E">
+            <Directory Id="dirF767920B63C447ABF0AB7C57212C2D54" Name="std" />
+        </DirectoryRef>
+    </Fragment>
+</Wix>

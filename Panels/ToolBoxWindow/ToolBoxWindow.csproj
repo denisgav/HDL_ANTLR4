@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F8D1408E-5DE8-4379-AB82-0B25971795BF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ToolBoxWindow</RootNamespace>
+    <AssemblyName>ToolBoxWindow</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Code\ExpanderData.cs" />
+    <Compile Include="Dialogs\ExpanderItemSettings.xaml.cs">
+      <DependentUpon>ExpanderItemSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ToolBoxItemSettings.xaml.cs">
+      <DependentUpon>ToolBoxItemSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox.xaml.cs">
+      <DependentUpon>ToolBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Code\ToolBoxItem.cs" />
+    <Compile Include="Dialogs\ToolBoxSettings.xaml.cs">
+      <DependentUpon>ToolBoxSettings.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Dialogs\ExpanderItemSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\ToolBoxItemSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ToolBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\ToolBoxSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\EntityDrawning\arc.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\asynchronous.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\asynchronous2.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\bezie1.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\bezie2.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\curve.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\ellipse.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\image.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\inverse.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\inverse1.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\inverse2.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\inverse_asynchronous.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\inverse_synchronous.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\line.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\path.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\pie.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\polygon.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\polyline s.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\polyline.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\port1.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\port2.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\port3.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\port4.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\rectangle.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\simple.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\synchronous.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\synchronous2.gif">
+    </Resource>
+    <Resource Include="Icons\EntityDrawning\text.gif">
+    </Resource>
+    <Resource Include="Icons\FSM\const.png">
+    </Resource>
+    <Resource Include="Icons\FSM\constant.png">
+    </Resource>
+    <Resource Include="Icons\FSM\port1.gif">
+    </Resource>
+    <Resource Include="Icons\FSM\port2.gif">
+    </Resource>
+    <Resource Include="Icons\FSM\port3.gif">
+    </Resource>
+    <Resource Include="Icons\FSM\port4.gif">
+    </Resource>
+    <Resource Include="Icons\FSM\reset.png">
+    </Resource>
+    <Resource Include="Icons\FSM\reset1.gif">
+    </Resource>
+    <Resource Include="Icons\FSM\reset1_.gif">
+    </Resource>
+    <Resource Include="Icons\FSM\reset2.gif">
+    </Resource>
+    <Resource Include="Icons\FSM\reset2_.gif">
+    </Resource>
+    <Resource Include="Icons\FSM\signal.png">
+    </Resource>
+    <Resource Include="Icons\FSM\state.png">
+    </Resource>
+    <Resource Include="Icons\FSM\transition.png">
+    </Resource>
+    <Resource Include="Icons\FSM\variable.gif">
+    </Resource>
+    <Resource Include="Icons\Scheme\AddPort.bmp">
+    </Resource>
+    <Resource Include="Icons\Scheme\AddSignal.bmp">
+    </Resource>
+    <Resource Include="Icons\Scheme\Architecture.bmp">
+    </Resource>
+    <Resource Include="Icons\Scheme\Entity.bmp">
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\cursor.png">
+    </Resource>
+    <Resource Include="Icons\FSM\FSM.png">
+    </Resource>
+    <Resource Include="Icons\Toolbox.bmp">
+    </Resource>
+    <Resource Include="Icons\Unknown.bmp">
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ToolBoxData.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\verilog.png" />
+    <Resource Include="Icons\vhdl.png" />
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="ToolBoxDataKernel.xml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Icons\EntityDrawning.jpg" />
+    <Content Include="ToolBoxData.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\log4net\log4net.csproj">
+      <Project>{181FE707-E161-4722-9F38-6AAAB6FAA106}</Project>
+      <Name>log4net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonProperties\CommonProperties.csproj">
+      <Project>{F1DD26BF-235B-497C-8904-EC0F849E4623}</Project>
+      <Name>CommonProperties</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

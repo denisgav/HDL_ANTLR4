@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DataContainer.SignalDump.AbstractSignalDump" Collapsed="true">
+    <Position X="3" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAACAAIAAAAABAAAAACAQAIgAlAAAAAQACAAAAACA=</HashCode>
+      <FileName>SignalDump\AbstractSignalDump.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.SignalDump.SignalScopeDump" Collapsed="true">
+    <Position X="1.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAACAAIAAAAABAAAAACAAAIAAgAAAAAQAAAAEAACA=</HashCode>
+      <FileName>SignalDump\SignalScopeDump.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.SignalDump.SimpleSignalDump" Collapsed="true">
+    <Position X="4" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAACAAIAAAAADAAAAAiAAAIAAgAAAAAAAAAAAAACA=</HashCode>
+      <FileName>SignalDump\SimpleSignalDump.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataContainer.TimeStampInfo" Collapsed="true">
+    <Position X="6.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAAAAAQAQAAABAACAAAAAQAAAAAAAAAQAEAAEAAAAE=</HashCode>
+      <FileName>SignalDump\TimeStampInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataContainer.TimeStampInfoIterator" Collapsed="true">
+    <Position X="8.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACIAACAABAAAAACAAAAAgAAAAAAAIAAEAAAAAAA=</HashCode>
+      <FileName>SignalDump\TimeStampInfoIterator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

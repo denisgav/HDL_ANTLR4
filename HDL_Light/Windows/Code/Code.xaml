@@ -1,0 +1,97 @@
+﻿<src:SchematixBaseWindow x:Class="Schematix.Windows.Code.Code"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:src="clr-namespace:Schematix.Windows"
+       xmlns:lib="clr-namespace:My_Editor;assembly=My_Editor">
+    
+
+<!--<Window x:Class="Schematix.Windows.Code.Code"
+        xmlns:src="clr-namespace:Schematix.Windows"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:lib="clr-namespace:My_Editor;assembly=My_Editor"
+       Title="Code">-->
+    <DockPanel x:Name="DockPanelRoot">
+
+        <ToolBarTray DockPanel.Dock="Top" x:Name="MainToolBarTray">
+            <ToolBarTray.Resources>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+                            <Setter Property="Opacity" Value="0.30" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToolBarTray.Resources>
+            <ToolBarTray.ToolBars>
+                <ToolBar>
+                    <Separator/>
+                    <CheckBox Name ="CheckBoxWordWrap" Checked="CheckBoxWordWrap_Checked" Unchecked="CheckBoxWordWrap_Unchecked">
+                        <Image Source="/HDL_Light;component/Images/WordWrap.png" Width="16" Height="16" Margin="2"/>
+                    </CheckBox>
+                    <CheckBox Name ="CheckBoxShowLineNumbers" Checked="CheckBoxShowLineNumbers_Checked" Unchecked="CheckBoxShowLineNumbers_Unchecked" Width="16" Height="16">
+                        <TextBlock TextAlignment="Center">#</TextBlock>
+                    </CheckBox>
+                    <CheckBox Name ="CheckBoxShowEndOfLine" Checked="CheckBoxShowEndOfLine_Checked" Unchecked="CheckBoxShowEndOfLine_Unchecked" Width="16" Height="16">
+                        <TextBlock TextAlignment="Center">¶</TextBlock>
+                    </CheckBox>
+                </ToolBar>
+
+                <ToolBar>
+                    <Button Click="toolStripButtonCommentLines_Click">
+                        <Image Source="/HDL_Light;component/Images/CommentLines.png" Width="16" Height="16" Margin="2"/>
+                        <!--<TextBlock>CommentLines</TextBlock>-->
+                    </Button>
+                    <Button Click="toolStripButtonUnCommentLines_Click">
+                        <Image Source="/HDL_Light;component/Images/UncommentLines.png" Width="16" Height="16" Margin="2"/>
+                        <!--<TextBlock>UncommentLines</TextBlock>-->
+                    </Button>
+                    <Separator/>
+                    <Button Click="toolStripButtonOutdentHS_Click">
+                        <Image Source="/HDL_Light;component/Images/OutdentHS.png" Width="16" Height="16" Margin="2"/>
+                        <!--<TextBlock>OutdentHS</TextBlock>-->
+                    </Button>
+                    <Button Click="toolStripButtonIndentHS_Click">
+                        <Image Source="/HDL_Light;component/Images/IndentHS.png" Width="16" Height="16" Margin="2"/>
+                        <!--<TextBlock>IndentHS</TextBlock>-->
+                    </Button>
+                </ToolBar>
+            </ToolBarTray.ToolBars>
+        </ToolBarTray>
+
+        <Grid x:Name="GridContent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <lib:TextEditor Name="textEditor" FontFamily="Consolas" FontSize="10pt" SyntaxHighlighting="VHDL" Grid.Column="0" Grid.Row="0" PreviewKeyUp="textEditor_PreviewKeyUp" PreviewMouseDown="textEditor_PreviewMouseDown" Focusable="True" Loaded="textEditor_Loaded">
+            </lib:TextEditor>
+
+            <StatusBar Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" x:Name="StatusBarMain">
+                <StatusBarItem HorizontalContentAlignment="Right">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                        <TextBlock Width="50">Line:</TextBlock>
+                        <TextBlock Width="50" x:Name="textblockLine"/>
+                        <TextBlock Width="50">Column:</TextBlock>
+                        <TextBlock Width="50" x:Name="textblockColumn"/>
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Text="A" FontSize="12"/>
+                            <Slider x:Name="zoomSlider" SmallChange ="0.5" LargeChange="1" Width="100" Minimum="6" Maximum="48" IsSnapToTickEnabled="True" Orientation="Horizontal" TickFrequency ="0.5" TickPlacement="None" Value="18" ValueChanged="zoomSlider_ValueChanged" />
+                            <TextBlock Text="A"  FontSize="18"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+    </DockPanel>
+
+<!--</Window>
+-->
+ 
+
+</src:SchematixBaseWindow>

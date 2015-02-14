@@ -1,0 +1,149 @@
+﻿<src:SchematixBaseWindow x:Class="Schematix.Windows.EntityDrawning.EntityDrawning"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:edr="clr-namespace:Schematix.EntityDrawning;assembly=EntityDrawning"
+        xmlns:local="clr-namespace:Schematix.Windows.EntityDrawning"
+        xmlns:my="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:src="clr-namespace:Schematix.Windows">
+    <DockPanel x:Name="DockPanelRoot">
+        <DockPanel.CommandBindings>
+            <CommandBinding Command="local:EntityDrawningCommands.BringToFront" CanExecute="BringToFront_CanExecute" Executed="BringToFront_Executed"/>
+            <CommandBinding Command="local:EntityDrawningCommands.SendToBack" CanExecute="SendToBack_CanExecute" Executed="SendToBack_Executed"/>
+        </DockPanel.CommandBindings>
+        <ToolBarTray DockPanel.Dock="Top" x:Name="MainToolBarTray">
+            <ToolBarTray.Resources>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+                            <Setter Property="Opacity" Value="0.30" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToolBarTray.Resources>
+            <ToolBarTray.ToolBars>
+                <ToolBar x:Name="ToolBarControl">
+                    <Button x:Name="ButtonOpenVHDLFile" Click="ButtonOpenVHDLFile_Click" ToolTip="Open VHDL File">
+                        <Image Source="/HDL_Light;component/Images/VHDL_Code.gif" Width="16" Height="16" Margin="2"/>
+                    </Button>
+
+                    <Button x:Name="ButtonBringToFront" Command="local:EntityDrawningCommands.BringToFront" ToolTip="Bring To Front">
+                        <Image Source="/HDL_Light;component/Images/up.png" Width="16" Height="16" Margin="2"/>
+                    </Button>
+
+                    <Button x:Name="ButtonSendToBack" Command="local:EntityDrawningCommands.SendToBack" ToolTip="Send To Back">
+                        <Image Source="/HDL_Light;component/Images/down.png" Width="16" Height="16" Margin="2"/>
+                    </Button>
+
+                    <CheckBox x:Name="SceckBoxShowLayers" Checked="SceckBoxShowLayers_Checked" Unchecked="SceckBoxShowLayers_Unchecked" IsChecked="True" ToolTip="Show Layers">
+                        <Image Source="/HDL_Light;component/Images/layer_number.png" Width="16" Height="16" Margin="2"/>
+                    </CheckBox>
+                </ToolBar>
+                
+                <ToolBar x:Name="ToolBarFigures">
+                    <Button x:Name="ButtonArc" Click="ButtonArc_Click" ToolTip="Create Arc">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/arc.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Arc</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonBezier" Click="ButtonBezier_Click" ToolTip="Create Bezier">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/bezie1.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Bezier</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonCurve" Click="ButtonCurve_Click" ToolTip="Create Curve">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/curve.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Curve</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonEllipse" Click="ButtonEllipse_Click" ToolTip="Create Ellipse">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/ellipse.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Ellipse</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonImage" Click="ButtonImage_Click" ToolTip="Create Image">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/image.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Image</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonLine" Click="ButtonLine_Click" ToolTip="Create Line">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/line.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Line</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonPath" Click="ButtonPath_Click" ToolTip="Create Path">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/path.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Path</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonPie" Click="ButtonPie_Click" ToolTip="Create Pie">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/pie.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Pie</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonPolygon" Click="ButtonPolygon_Click" ToolTip="Create Polygon">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/polygon.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Polygon</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonPolyline" Click="ButtonPolyline_Click" ToolTip="Create Polyline">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/polyline.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Polyline</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonRectangle" Click="ButtonRectangle_Click" ToolTip="Create Rectangle">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/rectangle.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Rectangle</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonText" Click="ButtonText_Click" ToolTip="Create Text">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/ToolBoxWindow;component/Icons/EntityDrawning/text.gif" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Text</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                </ToolBar>               
+            </ToolBarTray.ToolBars>
+        </ToolBarTray>
+        
+        <Grid x:Name="GridContent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <my:WindowsFormsHost Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True">
+                <edr:EntityDrawningForm x:Name="entityDrawningForm" MouseMove="entityDrawningForm_MouseMove" Dock="Fill" DragEnter="entityDrawningForm_DragEnter" AllowDrop="True"/>
+            </my:WindowsFormsHost>
+
+            <StatusBar Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" x:Name="StatusBarMain">
+                <StatusBarItem HorizontalContentAlignment="Right">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                        <TextBlock Width="50">Position:</TextBlock>
+                        <TextBlock x:Name="textblockPosition" Margin="4"  Width="100"/>
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Text="Min" Margin="4"/>
+                            <Slider x:Name="zoomSlider" SmallChange ="0.5" LargeChange="1" Width="100" Minimum="10" Maximum="400" IsSnapToTickEnabled="True" Orientation="Horizontal" TickFrequency ="0.5" TickPlacement="None" Value="100" ValueChanged="zoomSlider_ValueChanged" >
+                            </Slider>
+                            <TextBlock Text="Max"  Margin="4"/>
+                            <TextBlock Text="100%" Margin="4" x:Name="textBlockZoom"  Width="50"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+    </DockPanel>
+</src:SchematixBaseWindow>

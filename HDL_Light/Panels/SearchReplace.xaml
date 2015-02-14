@@ -1,0 +1,10 @@
+﻿<src:SchematixPanelBase xmlns:my="clr-namespace:Schematix"  x:Class="Schematix.Panels.SearchReplace"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:src="clr-namespace:Schematix.Panels"
+        Title="Search/Replace Panel"
+      >
+    <Grid>
+        <my:SearchReplaceUserControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="SearchReplaceUserControl1"/>
+    </Grid>
+</src:SchematixPanelBase>

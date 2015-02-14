@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ExpanderList>
+  <ExpanderData>
+    <Caption><![CDATA[Ports]]></Caption>
+    <IconPath>FSM/FSM.png</IconPath>
+    <Description><![CDATA[FSM]]></Description>
+    <TypeOfElements>FSM</TypeOfElements>
+    <ToolBoxItem>
+      <Caption><![CDATA[Bidirectional Port]]></Caption>
+      <IconPath>FSM/port1.gif</IconPath>
+      <Description><![CDATA[Add Bidirectional Port to diagram]]></Description>
+      <Command>CreateBidirectionalPort</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Input Port]]></Caption>
+      <IconPath>FSM/port2.gif</IconPath>
+      <Description><![CDATA[Add Input Port to diagram]]></Description>
+      <Command>CreateInputPort</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Output Port]]></Caption>
+      <IconPath>FSM/port3.gif</IconPath>
+      <Description><![CDATA[Add Output Port to diagram]]></Description>
+      <Command>CreateOutputPort</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Buffer Port]]></Caption>
+      <IconPath>FSM/port4.gif</IconPath>
+      <Description><![CDATA[Add Buffer Port to diagram]]></Description>
+      <Command>CreateBufferPort</Command>
+    </ToolBoxItem>
+  </ExpanderData>
+  
+  
+  <ExpanderData>
+    <Caption><![CDATA[FSM]]></Caption>
+    <IconPath>FSM/FSM.png</IconPath>
+    <Description><![CDATA[FSM]]></Description>
+    <TypeOfElements>FSM</TypeOfElements>
+    <ToolBoxItem>
+      <Caption><![CDATA[Comment]]></Caption>
+      <IconPath>FSM/const.png</IconPath>
+      <Description><![CDATA[Add comment to diagram]]></Description>
+      <Command>CreateComment</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Constant]]></Caption>
+      <IconPath>FSM/const.png</IconPath>
+      <Description><![CDATA[Add constant to diagram]]></Description>
+      <Command>CreateConstant</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Reset]]></Caption>
+      <IconPath>FSM/reset.png</IconPath>
+      <Description><![CDATA[Add reset to diagram]]></Description>
+      <Command>CreateReset</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Signal]]></Caption>
+      <IconPath>FSM/signal.png</IconPath>
+      <Description><![CDATA[Add signal to diagram]]></Description>
+      <Command>CreateSignal</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[State]]></Caption>
+      <IconPath>FSM/state.png</IconPath>
+      <Description><![CDATA[Add state to diagram]]></Description>
+      <Command>CreateState</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Transition]]></Caption>
+      <IconPath>FSM/transition.png</IconPath>
+      <Description><![CDATA[Add Transition to diagram]]></Description>
+      <Command>CreateTransition</Command>
+    </ToolBoxItem>
+  </ExpanderData>
+
+  <ExpanderData>
+    <Caption><![CDATA[Entity Drawning Ports]]></Caption>
+    <IconPath>vhdl.png</IconPath>
+    <Description><![CDATA[Entity Drawing]]></Description>
+    <TypeOfElements>EntityDrawning</TypeOfElements>
+
+    <ToolBoxItem>
+      <Caption><![CDATA[Asynchronous Port]]></Caption>
+      <IconPath>EntityDrawning/asynchronous.gif</IconPath>
+      <Description><![CDATA[Create Asynchronous Port]]></Description>
+      <Command>CreateAsynchronousPort</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Inverse Port]]></Caption>
+      <IconPath>EntityDrawning/inverse.gif</IconPath>
+      <Description><![CDATA[Create Inverse Port]]></Description>
+      <Command>CreateInversePort</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Inverse Asynchronous Port]]></Caption>
+      <IconPath>EntityDrawning/inverse_asynchronous.gif</IconPath>
+      <Description><![CDATA[Create Inverse Asynchronous Port]]></Description>
+      <Command>CreateInverseAsynchronousPort</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Inverse Synchronous Port]]></Caption>
+      <IconPath>EntityDrawning/inverse_synchronous.gif</IconPath>
+      <Description><![CDATA[Create Inverse Synchronous Port]]></Description>
+      <Command>CreateInverseSynchronousPort</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Simple Port]]></Caption>
+      <IconPath>EntityDrawning/simple.gif</IconPath>
+      <Description><![CDATA[Create Simple Port]]></Description>
+      <Command>CreateSimplePort</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Synchronous Port]]></Caption>
+      <IconPath>EntityDrawning/synchronous.gif</IconPath>
+      <Description><![CDATA[Create Synchronous Port]]></Description>
+      <Command>CreateSynchronousPort</Command>
+    </ToolBoxItem>
+  </ExpanderData>
+  
+  <ExpanderData>
+    <Caption><![CDATA[Entity Drawning]]></Caption>
+    <IconPath>vhdl.png</IconPath>
+    <Description><![CDATA[Entity Drawing]]></Description>
+    <TypeOfElements>EntityDrawning</TypeOfElements>
+    <ToolBoxItem>
+      <Caption><![CDATA[Arc]]></Caption>
+      <IconPath>EntityDrawning/arc.gif</IconPath>
+      <Description><![CDATA[Create Arc]]></Description>
+      <Command>CreateArc</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Bezier]]></Caption>
+      <IconPath>EntityDrawning/bezie1.gif</IconPath>
+      <Description><![CDATA[Create Bezier]]></Description>
+      <Command>CreateBezier</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Curve]]></Caption>
+      <IconPath>EntityDrawning/curve.gif</IconPath>
+      <Description><![CDATA[Create Curve]]></Description>
+      <Command>CreateCurve</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Ellipse]]></Caption>
+      <IconPath>EntityDrawning/ellipse.gif</IconPath>
+      <Description><![CDATA[Create Ellipse]]></Description>
+      <Command>CreateEllipse</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Image]]></Caption>
+      <IconPath>EntityDrawning/image.gif</IconPath>
+      <Description><![CDATA[Create Image]]></Description>
+      <Command>CreateImage</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Line]]></Caption>
+      <IconPath>EntityDrawning/line.gif</IconPath>
+      <Description><![CDATA[Create Line]]></Description>
+      <Command>CreateLine</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Path]]></Caption>
+      <IconPath>EntityDrawning/path.gif</IconPath>
+      <Description><![CDATA[Create Path]]></Description>
+      <Command>CreatePath</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Pie]]></Caption>
+      <IconPath>EntityDrawning/pie.gif</IconPath>
+      <Description><![CDATA[Create Pie]]></Description>
+      <Command>CreatePie</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Polygon]]></Caption>
+      <IconPath>EntityDrawning/polygon.gif</IconPath>
+      <Description><![CDATA[Create Polygon]]></Description>
+      <Command>CreatePolygon</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Polyline]]></Caption>
+      <IconPath>EntityDrawning/polyline.gif</IconPath>
+      <Description><![CDATA[Create Polyline]]></Description>
+      <Command>CreatePolyline</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Rectangle]]></Caption>
+      <IconPath>EntityDrawning/rectangle.gif</IconPath>
+      <Description><![CDATA[Create Rectangle]]></Description>
+      <Command>CreateRectangle</Command>
+    </ToolBoxItem>
+    <ToolBoxItem>
+      <Caption><![CDATA[Text]]></Caption>
+      <IconPath>EntityDrawning/text.gif</IconPath>
+      <Description><![CDATA[Create Text]]></Description>
+      <Command>CreateText</Command>
+    </ToolBoxItem>
+  </ExpanderData>
+</ExpanderList>

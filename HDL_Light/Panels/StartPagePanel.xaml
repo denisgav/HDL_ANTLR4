@@ -1,0 +1,10 @@
+﻿<src:SchematixPanelBase x:Class="Schematix.Panels.StartPagePanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:my="clr-namespace:StartPage;assembly=StartPage"
+        xmlns:src="clr-namespace:Schematix.Panels"
+        Title="Start Page">
+    <Grid>
+        <my:StartPageUserControl x:Name="StartPageUserControl"/>
+    </Grid>
+</src:SchematixPanelBase>

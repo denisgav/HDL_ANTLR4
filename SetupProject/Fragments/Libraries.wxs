@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Directory Id="dir20FF26C963FCD8D5721868ED67B27FFF" Name="Libraries" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="LibraryComponents">
+            <Component Id="cmp8B0D1801C894C101B65B31BA667DDC8F" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{45D8ECDB-F2F3-4DBE-B35B-FC48F9007D7A}">
+                <File Id="filFC6C329C9E9AF58F876FD586705CF24A" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\arith.vhd" />
+            </Component>
+            <Component Id="cmpFD7DC64E817CFB4241E2729BB1D9486B" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{5E89510F-6690-4318-A63C-8645F15E3C4A}">
+                <File Id="filAE05E9CF9BA5E9518BA69B7CE10E2448" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\misc.vhd" />
+            </Component>
+            <Component Id="cmpFEAF2126A22D14BA4EFD02BB8FAA52CC" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{126F3EE0-6A11-488C-B1D4-29D697610377}">
+                <File Id="filDB2CE2C0331EA8B73F1B824D93AEE3A9" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\numeric_bit-body.vhd" />
+            </Component>
+            <Component Id="cmp8BFB25AADA46C4C2F8F2A631360FA97E" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{EF0CB908-A0D9-4B5C-8193-5D152EB472C5}">
+                <File Id="filB692797BB90889BCEF62AE633BA9E7B7" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\numeric_bit.vhd" />
+            </Component>
+            <Component Id="cmpBF401F18C1DE7DC6ADFDA43C9BA27B9E" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{4DAD371A-F37D-4206-B583-1A69FF751FF1}">
+                <File Id="fil9B4932131EDB67B2E032E721D8DD90FC" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\numeric_std-body.vhd" />
+            </Component>
+            <Component Id="cmp89F04BEA4124F5A3FE147C9CA48651A6" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{028FDC6C-0EB2-472A-975C-55ABCA8FEE40}">
+                <File Id="fil0370BF000C6BE2E34DFA5854389A22F4" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\numeric_std.vhd" />
+            </Component>
+            <Component Id="cmp0F9B9F0FFBF6FEA3005ECBD3AC3746FB" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{1033971E-B342-42AF-8FCD-A9B8A52951BF}">
+                <File Id="fil647BF97365B7570B976449C5752849B6" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\signed.vhd" />
+            </Component>
+            <Component Id="cmp499C328B579BBB5C5067A4F806165B04" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{264F874D-A551-4023-BFAD-124E4696C53D}">
+                <File Id="fil8EDAABE709BA65B06DB5E78ED2C3FDB4" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\std_logic_1164.vhd" />
+            </Component>
+            <Component Id="cmpF506FF8D11A82597836326F8BA75C011" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{E34C17A4-7218-40BA-B63B-60C30FAD49A5}">
+                <File Id="fil7946C31CC82E92D929567C729CC5C3E3" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\std_logic_1164_body.vhd" />
+            </Component>
+            <Component Id="cmpD76B731903DEF20E6AF51A750EBDA804" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{239E0793-EFBE-48C6-85BD-9CA72C9D52FC}">
+                <File Id="filB78170F10C18D3807D8640E71258F59A" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\textio.vhd" />
+            </Component>
+            <Component Id="cmpE06344F3FA0EE4867B54C27ABF8EEEE2" Directory="dir81ABDD736CDD23D8207A0EE0D82D30DC" Guid="{91A0C1EC-7598-4B29-8152-3D12D0551B78}">
+                <File Id="fil90667407329C3743E15372CAE6493C54" KeyPath="yes" Source="$(var.LibrariesSrc)\ieee\unsigned.vhd" />
+            </Component>
+            <Component Id="cmp08BED54EB29BEB8189F991FE468E9E92" Directory="dirDD800843D1B2FCA2EE52F2E6B52074EA" Guid="{B604CE11-9EFC-4E6D-96A0-61C95C8D9B02}">
+                <File Id="fil95CAE203679CC34A30AEBA7C294AB948" KeyPath="yes" Source="$(var.LibrariesSrc)\std\standard.vhd" />
+            </Component>
+            <Component Id="cmpA134B0F91ED4293AA4DDC96AE9D770FC" Directory="dirDD800843D1B2FCA2EE52F2E6B52074EA" Guid="{5C36B650-9882-46CB-979C-3BD5E4BE7EF9}">
+                <File Id="fil4B63E32980510FF1BD7539F44F8668D1" KeyPath="yes" Source="$(var.LibrariesSrc)\std\textio.vhd" />
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir20FF26C963FCD8D5721868ED67B27FFF">
+            <Directory Id="dir81ABDD736CDD23D8207A0EE0D82D30DC" Name="ieee" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir20FF26C963FCD8D5721868ED67B27FFF">
+            <Directory Id="dirDD800843D1B2FCA2EE52F2E6B52074EA" Name="std" />
+        </DirectoryRef>
+    </Fragment>
+</Wix>

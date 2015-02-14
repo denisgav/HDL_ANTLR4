@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+  <?define LibrariesSrc = "$(var.HDL_Light.TargetDir)\Libraries" ?>
+  <?define GhdlSrc = "$(var.HDL_Light.TargetDir)\Ghdl" ?>
+  <?define LRMSrc = "$(var.HDL_Light.TargetDir)\LRM" ?>
+  <Product Id="*" Name="HDL_Light" Language="1033" Version="1.0.0.0" Manufacturer="DenisGavrysh" UpgradeCode="a583aae4-2d61-4f8f-a8be-2ba021cc2162">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <Media Id="1" Cabinet="Cab1.cab" EmbedCab="yes" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    
+
+    <Feature Id="ProductFeature" Title="Schematix Setup" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="LibraryComponents" />
+      <ComponentGroupRef Id="GHDLComponents" />
+      <ComponentGroupRef Id="LRMComponents" />
+      <ComponentGroupRef Id="AppShortcuts" />
+      <ComponentGroupRef Id="DesktopShortcuts" />
+    </Feature>
+
+    <!-- NET Framevork installation reference -->
+    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <Condition Message="This application requires .NET Framework 4.0. Please install the .NET Framework then run this installer again. Contact support at support@Swiftposter.com if you have further issues.">
+      <![CDATA[Installed OR NETFRAMEWORK40FULL]]>
+    </Condition>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="HDL_Light" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="HDL_Light">
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop">
+      </Directory>
+    </Directory>
+
+    <Property Id='CUSTOMDIR' Value="INSTALLFOLDER"></Property>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" ></Property>
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+    <UIRef Id="MyWixUI_InstallDir" />
+  </Product>  
+</Wix>

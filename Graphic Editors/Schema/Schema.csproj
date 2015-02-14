@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{55456D2F-4CB7-483E-A57B-E36F4F8FD1B2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Schema</RootNamespace>
+    <AssemblyName>Schema</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Add Item\addExternPort.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Add Item\addExternPort.designer.cs">
+      <DependentUpon>addExternPort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Add Item\addSignal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Add Item\addSignal.designer.cs">
+      <DependentUpon>addSignal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Connection manager\cnManager.cs" />
+    <Compile Include="Connection manager\connectForm1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Connection manager\connectForm1.designer.cs">
+      <DependentUpon>connectForm1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Connection manager\connectFormPL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Connection manager\connectFormPL.designer.cs">
+      <DependentUpon>connectFormPL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Connection manager\connectFormPP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Connection manager\connectFormPP.designer.cs">
+      <DependentUpon>connectFormPP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Connection manager\redactorPL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Connection manager\redactorPL.designer.cs">
+      <DependentUpon>redactorPL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Connection manager\redactorPP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Connection manager\redactorPP.designer.cs">
+      <DependentUpon>redactorPP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="File.cs" />
+    <Compile Include="History.cs" />
+    <Compile Include="Import\ImportSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Import\ImportSelect.Designer.cs">
+      <DependentUpon>ImportSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Import\Parser.cs" />
+    <Compile Include="Model\Actions.cs" />
+    <Compile Include="Model\Common.cs" />
+    <Compile Include="Model\Connect.cs" />
+    <Compile Include="Model\Construct.cs" />
+    <Compile Include="Model\Element.cs" />
+    <Compile Include="Model\Events.cs" />
+    <Compile Include="Model\Line.cs" />
+    <Compile Include="Model\Port.cs" />
+    <Compile Include="Model\Scale.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SchemaUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SchemaUserControl.Designer.cs">
+      <DependentUpon>SchemaUserControl.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Add Item\addExternPort.resx">
+      <DependentUpon>addExternPort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Add Item\addSignal.resx">
+      <DependentUpon>addSignal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connection manager\connectForm1.resx">
+      <DependentUpon>connectForm1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connection manager\connectFormPL.resx">
+      <DependentUpon>connectFormPL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connection manager\connectFormPP.resx">
+      <DependentUpon>connectFormPP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connection manager\redactorPL.resx">
+      <DependentUpon>redactorPL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connection manager\redactorPP.resx">
+      <DependentUpon>redactorPP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Import\ImportSelect.resx">
+      <DependentUpon>ImportSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchemaUserControl.resx">
+      <DependentUpon>SchemaUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Schema.cd" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{9581E8F6-EDD9-463E-BFB8-AFA1D8673884}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EntityDrawning\EntityDrawning.csproj">
+      <Project>{2546F94A-D239-46E7-934B-3FED568F98B9}</Project>
+      <Name>EntityDrawning</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icons\AddPort.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icons\AddSignal.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icons\CreateCode.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icons\ImportElements.bmp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

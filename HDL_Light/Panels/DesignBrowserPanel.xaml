@@ -1,0 +1,10 @@
+﻿<src:SchematixPanelBase x:Class="Schematix.Panels.DesignBrowserPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:src="clr-namespace:Schematix.Panels"
+        xmlns:my="clr-namespace:Schematix.DesignBrowser"
+        Title="Design Browser">
+    <Grid>
+        <my:DesignBrowserTree x:Name="designBrowser" />
+    </Grid>
+</src:SchematixPanelBase>

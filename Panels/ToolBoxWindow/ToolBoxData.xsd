@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ToolBoxData"
+    targetNamespace="http://tempuri.org/ToolBoxData.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/ToolBoxData.xsd"
+    xmlns:mstns="http://tempuri.org/ToolBoxData.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+    <xs:element name="ExpanderList">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="ExpanderData">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Caption" type="xs:string" />
+                <xs:element name="IconPath" type="xs:string" />
+                <xs:element name="Description" type="xs:string" />
+                <xs:element name="TypeOfElements" type="xs:string" />
+                <xs:element name="ToolBoxItem">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="Caption" type="xs:string" />
+                      <xs:element name="IconPath" type="xs:string" />
+                      <xs:element name="Command" type="xs:string" />
+                      <xs:element name="Description" type="xs:string" />
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>

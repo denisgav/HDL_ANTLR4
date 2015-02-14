@@ -1,0 +1,96 @@
+﻿<src:SchematixBaseWindow x:Class="Schematix.Windows.Schema.Schema"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:schema="clr-namespace:Schematix_all;assembly=Schema"
+        xmlns:src="clr-namespace:Schematix.Windows">
+    <Grid x:Name="layoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ToolBarTray Grid.Row="0" x:Name="MainToolBarTray">
+            <ToolBarTray.Resources>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+                            <Setter Property="Opacity" Value="0.30" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+
+                <ControlTemplate x:Key="MyToggleButtonTemplate" TargetType="{x:Type ToggleButton}">
+                    <Border x:Name="MainBorder" BorderBrush="#707070" BorderThickness="1" CornerRadius="2" Background="#F5F5F5" TextBlock.Foreground="#909090" Margin="1 1 1 1">
+                        <ContentPresenter RecognizesAccessKey="True"></ContentPresenter>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="MainBorder" Property="Background" Value="#E0E0E0"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="MainBorder" Property="Background" Value="#A0A0A0"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MainBorder" Property="BorderBrush" Value="#252525"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ToolBarTray.Resources>
+            <ToolBarTray.ToolBars>
+                <ToolBar x:Name="ToolBarGenerateCode">
+                    <Button x:Name ="ButtonGenerateCode" Click="ButtonGenerateCode_Click" >
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/HDL_Light;component/Images/Scheme/CreateCode.bmp" Width="16" Height="16" Margin="2"/>
+                            <TextBlock TextWrapping="WrapWithOverflow" Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Generate Code</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                </ToolBar>                
+
+                <ToolBar x:Name="ToolBarComponents">
+                    <Button x:Name="ButtonAddSignal" Click="ButtonAddSignal_Click" ToolTip="Add signal">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/HDL_Light;component/Images/Scheme/AddSignal.bmp" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Add signal</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonAddPort" Click="ButtonAddPort_Click" ToolTip="Add Port">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/HDL_Light;component/Images/Scheme/AddPort.bmp" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Add Port</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                    <Button x:Name="ButtonImportElements" Click="ButtonImportElements_Click" ToolTip="Import Elements">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="/HDL_Light;component/Images/Scheme/ImportElements.bmp" Width="16" Height="16" Margin="2"/>
+                            <TextBlock Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center">Import Elements</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                </ToolBar>
+            </ToolBarTray.ToolBars>
+        </ToolBarTray>
+
+        <WindowsFormsHost  Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True">
+            <schema:SchemaUserControl x:Name="schemaUserControl" AllowDrop="True" MouseMove="schemaUserControl_MouseMove"/>
+        </WindowsFormsHost>
+
+        <StatusBar Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="2" x:Name="StatusBarMain">
+            <StatusBarItem HorizontalContentAlignment="Right">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                    <TextBlock Width="50" HorizontalAlignment="Center" VerticalAlignment="Center">Position:</TextBlock>
+                    <TextBlock x:Name="textblockPosition" Margin="4" Width="100"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="Min" Margin="4"/>
+                        <Slider x:Name="zoomSlider" SmallChange ="0.5" LargeChange="1" Width="100" Minimum="10" Maximum="400" IsSnapToTickEnabled="True" Orientation="Horizontal" TickFrequency ="0.5" TickPlacement="None" Value="100" ValueChanged="zoomSlider_ValueChanged" >
+                        </Slider>
+                        <TextBlock Text="Max"  Margin="4"/>
+                        <TextBlock Text="100%" Margin="4" x:Name="textBlockZoom" Width="50"/>
+                    </StackPanel>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</src:SchematixBaseWindow>

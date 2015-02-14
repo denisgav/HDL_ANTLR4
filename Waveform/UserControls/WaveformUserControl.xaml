@@ -1,0 +1,278 @@
+<UserControl x:Class="Schematix.Waveform.WaveformUserControl"
+             xmlns:my="clr-namespace:Schematix.Waveform.UserControls"
+             xmlns:dump="clr-namespace:Schematix.Waveform.Value_Dump"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrl="clr-namespace:Schematix.Waveform.ListViewLayout"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="352"
+             d:DesignWidth="446"
+             Background="White"
+             Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\ListView.xaml" />
+                <ResourceDictionary Source="CommonUserControls\TreeListView\TreeListView.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <UserControl.CommandBindings>
+        <!-- Zoom -->
+        <CommandBinding Command="my:WaveformCommands.ZoomIn" CanExecute="ZoomIn_CanExecute" Executed="ZoomIn_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.ZoomOut" CanExecute="ZoomOut_CanExecute" Executed="ZoomOut_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.ZoomToFit" CanExecute="ZoomToFit_CanExecute" Executed="ZoomToFit_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.ZoomToSelection" CanExecute="ZoomToSelection_CanExecute" Executed="ZoomToSelection_Executed"/>
+        <!-- ############# -->
+        <!-- Generator -->
+        <CommandBinding Command="my:WaveformCommands.SetOneGenerator" CanExecute="SetOneGenerator_CanExecute" Executed="SetOneGenerator_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.SetZeroGenerator" CanExecute="SetZeroGenerator_CanExecute" Executed="SetZeroGenerator_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.SetConstantGenerator" CanExecute="SetConstantGenerator_CanExecute" Executed="SetConstantGenerator_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.SetClockGenerator" CanExecute="SetClockGenerator_CanExecute" Executed="SetClockGenerator_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.SetRandomGenerator" CanExecute="SetRandomGenerator_CanExecute" Executed="SetRandomGenerator_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.SetCounterGenerator" CanExecute="SetCounterGenerator_CanExecute" Executed="SetCounterGenerator_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.SetGenerator" CanExecute="SetGenerator_CanExecute" Executed="SetGenerator_Executed"/>
+        <!-- ############# -->
+        <!-- options -->
+        <CommandBinding Command="my:WaveformCommands.CorrectSelectionInterval" CanExecute="CorrectSelectionInterval_CanExecute" Executed="CorrectSelectionInterval_Executed"/>
+        <CommandBinding Command="my:WaveformCommands.StartSimulation" CanExecute="StartSimulation_CanExecute" Executed="StartSimulation_Executed"/>
+        <!-- ############# -->
+    </UserControl.CommandBindings>
+
+    <Grid x:Name="layoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <ToolBarTray x:Name="ToolBarTrayEdit" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="White">
+            <ToolBarTray.Resources>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ButtonBase}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+                            <Setter Property="Opacity" Value="0.30" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToolBarTray.Resources>
+            <ToolBar Background="White">
+                <Button x:Name="ButtonRun" Command="my:WaveformCommands.StartSimulation" ToolTip="Start Simulation">
+                    <Image Width="24" Height="24" Source="/Waveform;component/icons/Play.png" IsEnabledChanged="Image_IsEnabledChanged" />
+                </Button>
+                <Button x:Name ="ButtonTableView" ToolTip="Table View" Click="ButtonTableView_Click">
+                    <Image Width="24" Height="24" Source="/Waveform;component/icons/Table.png"/>
+                </Button>
+                <Button x:Name="ButtonSetGenerator" Command="my:WaveformCommands.SetGenerator" ToolTip="Set Generator" >
+                    <Image Width="24" Height="24" Source="/Waveform;component/icons/SetGenerator.jpg" IsEnabledChanged="Image_IsEnabledChanged" />
+                </Button>
+                <Button x:Name="ButtonCorrectSelectedTime" Command="my:WaveformCommands.CorrectSelectionInterval" ToolTip="Correct Selected Time">
+                    <Image Width="24" Height="24" Source="/Waveform;component/icons/CorrectTime.jpg" IsEnabledChanged="Image_IsEnabledChanged" />
+                </Button>
+                <Button x:Name="ButtonResizeDiagramm" Click="ButtonResizeDiagramm_Click" ToolTip="Resize Diagramm">
+                    <Image Width="24" Height="24" Source="/Waveform;component/icons/Resize.jpg" />
+                </Button>
+            </ToolBar>
+
+            <ToolBar Background="White" x:Name="ToolBarZoomr" IsEnabled="True">
+                <Button Name ="ButtonZoomIn" ToolTip="Zoom In" Command="my:WaveformCommands.ZoomIn" >
+                    <Image Width="24" Height="24" Source="/Waveform;component/icons/ZoomIn.png"/>
+                </Button>
+                <Button Name ="ButtonZoomOut" ToolTip="Zoom Out" Command="my:WaveformCommands.ZoomOut">
+                    <Image Width="24" Height="24" Source="/Waveform;component/icons/ZoomOut.png"/>
+                </Button>
+                <Button Name ="ButtonZoomToFit" ToolTip="Zoom To Fit" Command="my:WaveformCommands.ZoomToFit">
+                    <Image Width="24" Height="24" Source="/Waveform;component/icons/Zoom.png"/>
+                </Button>
+                <Button Name ="ButtonZoomToSelection" ToolTip="Zoom To Selection" Command="my:WaveformCommands.ZoomToSelection">
+                    <Image Width="24" Height="24" Source="/Waveform;component/icons/Zoom.png"/>
+                </Button>
+            </ToolBar>
+
+            <ToolBar Background="White" x:Name="ToolBarSimpleGenerator" IsEnabled="True">
+                <Button x:Name="ButtonSetZero" Command="my:WaveformCommands.SetZeroGenerator" ToolTip="Set Zero">
+                    <Image Source="/Waveform;component/icons/set0.bmp" IsEnabledChanged="Image_IsEnabledChanged" />
+                </Button>
+                <Button x:Name="BurronSetOne" Command="my:WaveformCommands.SetOneGenerator" ToolTip="Set One">
+                    <Image Source="/Waveform;component/icons/set1.bmp" IsEnabledChanged="Image_IsEnabledChanged" />
+                </Button>
+                <Button x:Name="ButtonSetClock" Command="my:WaveformCommands.SetClockGenerator" ToolTip="Set Clock">
+                    <Image Source="/Waveform;component/icons/set_clk.bmp" IsEnabledChanged="Image_IsEnabledChanged" />
+                </Button>
+            </ToolBar>
+
+            <ToolBar Background="White" x:Name="ToolBarBusGenerator" IsEnabled="True">
+                <Button x:Name="ButtonSetCounter" Command="my:WaveformCommands.SetCounterGenerator" ToolTip="Set Counter">
+                    <Image Source="/Waveform;component/icons/set_c.bmp" IsEnabledChanged="Image_IsEnabledChanged" />
+                </Button>
+                <Button x:Name="ButtonSetRandom" Command="my:WaveformCommands.SetRandomGenerator" ToolTip="Set Random">
+                    <Image Source="/Waveform;component/icons/set_rnd.bmp" IsEnabledChanged="Image_IsEnabledChanged"  />
+                </Button>
+            </ToolBar>
+
+            <ToolBar  Background="White" x:Name="ToolBarMode">
+                <ToggleButton x:Name="ToggleButtonCursor" ToolTip="Cursor" IsChecked="True" Checked="ToggleButtonCursor_Checked">
+                    <Image Width="16" Height="16" Source="/Waveform;component/icons/Cursor.png" />
+                </ToggleButton>
+                <ToggleButton x:Name="ToggleButtonHand" ToolTip="Hand" IsChecked="False" Checked="ToggleButtonHand_Checked">
+                    <Image Width="16" Height="16" Source="/Waveform;component/icons/Hand.png" />
+                </ToggleButton>
+                <ToggleButton x:Name="ToggleButtonMeasureTime" ToolTip="Measure Time" IsChecked="False" Checked="ToggleButtonMeasureTime_Checked">
+                    <Image Width="16" Height="16" Source="/Waveform;component/icons/measure.gif" />
+                </ToggleButton>
+            </ToolBar>
+        </ToolBarTray>
+
+        <Grid x:Name="LeftPanel" Grid.Column="0" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <GroupBox Grid.Row="0" Header="Architecture" Margin="4">
+                <TreeView x:Name="TreeViewScopes" TreeViewItem.Expanded="TreeViewScopes_Expanded" Margin="4" IsTextSearchEnabled="True">
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="MenuItemAddSignal" Header="Add signal" Click="MenuItemAddSignal_Click">
+                                <MenuItem.Icon>
+                                    <Image Source="/Waveform;component/icons/Add.jpg" Width="16" Height="16" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                </TreeView>
+            </GroupBox>
+            <GridSplitter Grid.Row="1" Height="6" VerticalAlignment="Center" HorizontalAlignment="Stretch"></GridSplitter>
+            <GroupBox Grid.Row="2" Header="Summary Info" Margin="4" Width="200">
+                <TextBlock x:Name="TextBlockInfo" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap"></TextBlock>
+            </GroupBox>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" Grid.Row="1" Width="6" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+
+        <Grid Grid.Column="2" Grid.Row="2" x:Name="GridMain">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <my:TreeListView x:Name="ListViewMain" TreeViewItem.Expanded ="ListViewMain_Expanded"  AllowsColumnReorder="False" ctrl:ListViewLayoutManager.Enabled="True" Grid.Row="0" SelectedItemChanged="ListViewMain_SelectedItemChanged" ScrollBar.Scroll="ListViewMain_Scroll" KeyUp="ListViewMain_KeyUp" KeyDown="ListViewMain_KeyDown">
+                <my:TreeListView.Columns>
+                    <GridViewColumnCollection>
+                        <GridViewColumn x:Name="GridViewColumnName" Header="Signal Name" ctrl:RangeColumn.MinWidth="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <!--<RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>-->
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!--The Expander Button (can be used in any column (typically the first one))-->
+                                        <my:TreeListViewExpander Grid.Row="0" Grid.Column="0"/>
+                                        <!--Display the name of the DataElement-->
+
+                                        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0">
+                                            <my:EditableTextBlock Grid.Row="0" Grid.Column="1" FontWeight="Bold" Text="{Binding Path=Name, Mode=TwoWay}" PreviewMouseDoubleClick="EditableTextBlock_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown" Margin="0"></my:EditableTextBlock>
+                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Variable.VariableType}" Visibility="{Binding Path=Variable.ShowTypeName}" TextWrapping="Wrap" PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown" Margin="0"></TextBlock>
+                                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Variable.VariableSize}" Visibility="{Binding Path=Variable.ShowSize}" TextWrapping="Wrap" PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown" Margin="0"></TextBlock>
+                                        </StackPanel>
+                                        <Grid.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem x:Name="MenuIteddeleteSignal" Header="Delete" Click="MenuIteddeleteSignal_Click">
+                                                    <MenuItem.Icon>
+                                                        <Image Source="/Waveform;component/icons/Delete.jpg" Width="16" Height="16" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem x:Name="MenuItemProperties" Header="Propperties" Click="MenuItemProperties_Click">
+                                                    <MenuItem.Icon>
+                                                        <Image Source="/Waveform;component/icons/Properties.jpg" Width="16" Height="16" />
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn x:Name="GridViewColumnValue" Header="Value" ctrl:RangeColumn.MinWidth="100" ctrl:RangeColumn.MaxWidth="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Variable.CursorValue}" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn x:Name="GridViewColumnTimescale" ctrl:RangeColumn.MinWidth="100" ctrl:RangeColumn.IsFillColumn="true">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader x:Name="GridViewColumnHeaderTimescale" SizeChanged="GridViewColumnHeaderTimescale_SizeChanged" IsHitTestVisible="True" HorizontalAlignment="Left" Margin="0 0 0 0">
+                                    <Rectangle x:Name="TimeScaleRepresentation" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="8 0 0 0" Height="30" SnapsToDevicePixels="True">
+                                        <Rectangle.Fill>
+                                            <VisualBrush x:Name="TimeScaleRepresentationBrush" AlignmentX="Left" AlignmentY="Center" AutoLayoutContent="False" Stretch="None" TileMode="None"></VisualBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </GridViewColumnHeader>
+                            </GridViewColumn.Header>
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <my:ValueRepresenter 
+                                        x:Name="valueRepresenter"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Core="{Binding Core}"
+                                        ScaleManager="{Binding ScaleManager}"
+                                        Variable="{Binding Variable}"
+                                        CursorViewer="{Binding CursorViewer}"
+                                        Height="{Binding Path=Variable.DataRepresentation.Height}"
+                                        Margin="0 0 0 0"
+                                        MouseLeftButtonDown="valueRepresenter_MouseLeftButtonDown"
+                                        MouseLeftButtonUp="valueRepresenter_MouseLeftButtonUp"
+                                        MouseMove="valueRepresenter_MouseMove"
+                                        MouseDoubleClick="valueRepresenter_MouseDoubleClick"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                    </GridViewColumnCollection>
+                </my:TreeListView.Columns>
+            </my:TreeListView>
+
+            <Line x:Name="LineCursor" StrokeThickness="1"  Stroke="Red" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False"/>
+            <Line x:Name="LineMarker1" StrokeThickness="1"  Stroke="Green" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False"/>
+            <Line x:Name="LineMarker2" StrokeThickness="1"  Stroke="Green" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False"/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Image Source="/Schematix.Waveform;component/icons/TimeScale.jpg" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4" Width="50" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"/>
+                <my:TimeMeasureDataView x:Name="TimeMeasureDataView1" Grid.Row="0" Grid.Column="1" Visibility="Visible"/>
+                <my:TimeScaleViewer Width="100" x:Name="timeScaleViewer" Grid.Column="1" Grid.Row="2"></my:TimeScaleViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</UserControl>

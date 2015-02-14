@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FAF224DC-A63D-47C3-B793-BA353D0EF61B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataContainer</RootNamespace>
+    <AssemblyName>DataContainer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Objects\IValueProviderContainer.cs" />
+    <Compile Include="DataRepresentation.cs" />
+    <Compile Include="Generators\BaseGenerator.cs" />
+    <Compile Include="Generators\Clock.cs" />
+    <Compile Include="Generators\Constant.cs" />
+    <Compile Include="Generators\Counters\BinaryCounter.cs" />
+    <Compile Include="Generators\Counters\Circular0.cs" />
+    <Compile Include="Generators\Counters\Circular1.cs" />
+    <Compile Include="Generators\Counters\Counter.cs" />
+    <Compile Include="Generators\Counters\GrayCounter.cs" />
+    <Compile Include="Generators\Counters\JohnsonCounter.cs" />
+    <Compile Include="Generators\GeneratorSettings.cs" />
+    <Compile Include="Generators\IGeneratorDataFill.cs" />
+    <Compile Include="Generators\Random\Continuous\Chisquare.cs" />
+    <Compile Include="Generators\Random\Continuous\Erlang.cs" />
+    <Compile Include="Generators\Random\Continuous\Exponential.cs" />
+    <Compile Include="Generators\Random\Continuous\Lognormal.cs" />
+    <Compile Include="Generators\Random\Continuous\My_Random_Continuous_Base.cs" />
+    <Compile Include="Generators\Random\Continuous\Normal.cs" />
+    <Compile Include="Generators\Random\Continuous\SimpleContinuous.cs" />
+    <Compile Include="Generators\Random\Continuous\Student.cs" />
+    <Compile Include="Generators\Random\Discrete\Bernoulli.cs" />
+    <Compile Include="Generators\Random\Discrete\Binomial.cs" />
+    <Compile Include="Generators\Random\Discrete\Equilikely.cs" />
+    <Compile Include="Generators\Random\Discrete\Geometric.cs" />
+    <Compile Include="Generators\Random\Discrete\My_Random_Discrete_Base.cs" />
+    <Compile Include="Generators\Random\Discrete\Pascal.cs" />
+    <Compile Include="Generators\Random\Discrete\Poisson.cs" />
+    <Compile Include="Generators\Random\Discrete\SimpleDiscrete.cs" />
+    <Compile Include="Generators\Random\My_Random_Base.cs" />
+    <Compile Include="IStartable.cs" />
+    <Compile Include="ModellingType\ModellingType.cs" />
+    <Compile Include="ModellingType\TypeCreator.cs" />
+    <Compile Include="NewSortedDictionary\Iterators\IValueIterator.cs" />
+    <Compile Include="NewSortedDictionary\Iterators\NewSortedDictionaryScopeIterator.cs" />
+    <Compile Include="NewSortedDictionary\NewSortedDictionary.cs" />
+    <Compile Include="NewSortedDictionary\NewSortedDictionaryEnumerator.cs" />
+    <Compile Include="NewSortedDictionary\Iterators\NewSortedDictionaryIterator.cs" />
+    <Compile Include="Objects\Constant.cs" />
+    <Compile Include="Objects\IValueProvider.cs" />
+    <Compile Include="Objects\Signal.cs" />
+    <Compile Include="Objects\Variable.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResolvedDiscreteRange.cs" />
+    <Compile Include="Runnable\ConcurrentStatementRunner.cs" />
+    <Compile Include="Runnable\ExpressionEvaluator.cs" />
+    <Compile Include="Runnable\FunctionAnalyser.cs" />
+    <Compile Include="Runnable\ModelingSystemCore.cs" />
+    <Compile Include="Runnable\SensitivityListResolver.cs" />
+    <Compile Include="Runnable\Sheduler\AbstractScheduler.cs" />
+    <Compile Include="Runnable\Sheduler\Scheduler.cs" />
+    <Compile Include="SignalDump\AbstractSignalDump.cs" />
+    <Compile Include="SignalDump\AbstractSimpleSignalDump.cs" />
+    <Compile Include="SignalDump\AbstractTimeStampInfo.cs" />
+    <Compile Include="SignalDump\SignalScopeDump.cs" />
+    <Compile Include="SignalDump\TimeStampInfoIterator.cs" />
+    <Compile Include="SimulationScope.cs" />
+    <Compile Include="SignalDump\SimpleSignalDump.cs" />
+    <Compile Include="Time.cs" />
+    <Compile Include="SignalDump\TimeStampInfo.cs" />
+    <Compile Include="TypeConstraint\AbstractConstraint.cs" />
+    <Compile Include="TypeConstraint\IndexTypeConstraint.cs" />
+    <Compile Include="TypeConstraint\RangeTypeConstraint.cs" />
+    <Compile Include="TypeConstraint\ResolvedTypeConstraint.cs" />
+    <Compile Include="ValueDump\DataConvertorUtils.cs" />
+    <Compile Include="ValueDump\ValueDumpReader.cs" />
+    <Compile Include="ValueDump\ValueDumpWriter.cs" />
+    <Compile Include="ValueDump\VCD\VCDConvertor.cs" />
+    <Compile Include="ValueDump\VCD\VCDReader.cs" />
+    <Compile Include="ValueDump\VCD\VCDScope.cs" />
+    <Compile Include="ValueDump\VCD\VCDWriter.cs" />
+    <Compile Include="ValueDump\VCD\VCD_Variable.cs" />
+    <Compile Include="ValueDump\VHDLTestBenchGeneratorConvertorsion.cs" />
+    <Compile Include="Value\AbstractValue.cs" />
+    <Compile Include="Value\AbstractValueConvertor.cs" />
+    <Compile Include="Value\BuiltIn\BIT_VALUE.cs" />
+    <Compile Include="Value\BuiltIn\BIT_VECTOR_VALUE.cs" />
+    <Compile Include="Value\BuiltIn\BOOLEAN_VALUE.cs" />
+    <Compile Include="Value\BuiltIn\CHARACTER_VALUE.cs" />
+    <Compile Include="Value\BuiltIn\STD_LOGIC_VALUE.cs" />
+    <Compile Include="Value\BuiltIn\STD_LOGIC_VECTOR_VALUE.cs" />
+    <Compile Include="Value\BuiltIn\STD_ULOGIC_VALUE.cs" />
+    <Compile Include="Value\BuiltIn\STD_ULOGIC_VECTOR_VALUE.cs" />
+    <Compile Include="Value\BuiltIn\TIME_VALUE.cs" />
+    <Compile Include="Value\Composite\ArrayValue.cs" />
+    <Compile Include="Value\Composite\CompositeValue.cs" />
+    <Compile Include="Value\Composite\RecordValue.cs" />
+    <Compile Include="Value\Scalar\EnumerationValue.cs" />
+    <Compile Include="Value\Scalar\IntegerValue.cs" />
+    <Compile Include="Value\Scalar\PhysicalValue.cs" />
+    <Compile Include="Value\Scalar\RealValue.cs" />
+    <Compile Include="Value\Scalar\ScalarValue.cs" />
+    <Compile Include="Value\ValueCreator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Panels\ProgressWindow\ProgressWindow.csproj">
+      <Project>{E60C682A-86E4-4DE8-B1F7-33055B08E8EF}</Project>
+      <Name>ProgressWindow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VHDL\VHDL.csproj">
+      <Project>{BC4213CF-B989-47AA-A3F9-39269FB2CE01}</Project>
+      <Name>VHDL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VHDL_ANTLR4\VHDL_ANTLR4.csproj">
+      <Project>{6D59ABA1-C75B-4B44-BAAC-0FA6B2F05B5F}</Project>
+      <Name>VHDL_ANTLR4</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Generators\Generators.cd" />
+    <None Include="Objects\Objects.cd" />
+    <None Include="SignalDump\SignalDump.cd" />
+    <None Include="TypeConstraint\TypeConstraint.cd" />
+    <None Include="Value\Values.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

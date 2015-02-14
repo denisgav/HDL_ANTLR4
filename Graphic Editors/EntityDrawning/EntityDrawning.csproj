@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2546F94A-D239-46E7-934B-3FED568F98B9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EntityDrawning</RootNamespace>
+    <AssemblyName>EntityDrawning</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Code\Drawning Class\Brushes\My_Brush.cs" />
+    <Compile Include="Code\Drawning Class\Brushes\My_HatchBrush.cs" />
+    <Compile Include="Code\Drawning Class\Brushes\My_LinearGradientBrush.cs" />
+    <Compile Include="Code\Drawning Class\Brushes\My_PathGradientBrush.cs" />
+    <Compile Include="Code\Drawning Class\Brushes\My_SolidBrush.cs" />
+    <Compile Include="Code\Drawning Class\Brushes\My_TextureBrush.cs" />
+    <Compile Include="Code\Drawning Class\Pen\My_ArrowCap.cs" />
+    <Compile Include="Code\Drawning Class\Pen\My_Pen.cs" />
+    <Compile Include="Code\EntityDrawningCore.cs" />
+    <Compile Include="Code\EntityDrawningInfo.cs" />
+    <Compile Include="Code\Export\Shell32.cs" />
+    <Compile Include="Code\Export\User32.cs" />
+    <Compile Include="Code\Figures\EllipsePart\My_Arc.cs" />
+    <Compile Include="Code\Figures\EllipsePart\My_EllipsePart.cs" />
+    <Compile Include="Code\Figures\EllipsePart\My_Pie.cs" />
+    <Compile Include="Code\Figures\MultypointFigure\My_Curve.cs" />
+    <Compile Include="Code\Figures\MultypointFigure\My_MultypointFigure.cs" />
+    <Compile Include="Code\Figures\MultypointFigure\My_Polygon.cs" />
+    <Compile Include="Code\Figures\MultypointFigure\My_Polyline.cs" />
+    <Compile Include="Code\Figures\MultypointFigure\My_SplineBezier.cs" />
+    <Compile Include="Code\Figures\My_Figure.cs" />
+    <Compile Include="Code\Figures\My_Line.cs" />
+    <Compile Include="Code\Figures\My_Path.cs" />
+    <Compile Include="Code\Figures\My_Port.cs" />
+    <Compile Include="Code\Figures\My_Text.cs" />
+    <Compile Include="Code\Figures\RectangleFigure\My_Ellipse.cs" />
+    <Compile Include="Code\Figures\RectangleFigure\My_Image.cs" />
+    <Compile Include="Code\Figures\RectangleFigure\My_Rectangle.cs" />
+    <Compile Include="Code\Figures\RectangleFigure\My_RectangleFigure.cs" />
+    <Compile Include="Code\GroupSelector.cs" />
+    <Compile Include="Code\My_FileAnalyzer.cs" />
+    <Compile Include="Code\My_History.cs" />
+    <Compile Include="Code\My_Paper.cs" />
+    <Compile Include="Code\My_Picture.cs" />
+    <Compile Include="Code\ObjectCopier.cs" />
+    <Compile Include="Code\Parser.cs" />
+    <Compile Include="Controls\Entity Select.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Entity Select.Designer.cs">
+      <DependentUpon>Entity Select.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EntityDrawningForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EntityDrawningForm.Designer.cs">
+      <DependentUpon>EntityDrawningForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Properties\BrushProperies.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Properties\BrushProperies.Designer.cs">
+      <DependentUpon>BrushProperies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Properties\PaperProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Properties\PaperProperties.Designer.cs">
+      <DependentUpon>PaperProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Properties\PenProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Properties\PenProperties.Designer.cs">
+      <DependentUpon>PenProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Properties\PortProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Properties\PortProperties.Designer.cs">
+      <DependentUpon>PortProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Properties\TextProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Properties\TextProperties.Designer.cs">
+      <DependentUpon>TextProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Management\AddElem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Management\AddElem.Designer.cs">
+      <DependentUpon>AddElem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Management\EntityDrawningInformationList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\Entity Select.resx">
+      <DependentUpon>Entity Select.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EntityDrawningForm.resx">
+      <DependentUpon>EntityDrawningForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Properties\BrushProperies.resx">
+      <DependentUpon>BrushProperies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Properties\PaperProperties.resx">
+      <DependentUpon>PaperProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Properties\PenProperties.resx">
+      <DependentUpon>PenProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Properties\PortProperties.resx">
+      <DependentUpon>PortProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Properties\TextProperties.resx">
+      <DependentUpon>TextProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Management\AddElem.resx">
+      <DependentUpon>AddElem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{9581E8F6-EDD9-463E-BFB8-AFA1D8673884}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\log4net\log4net.csproj">
+      <Project>{181FE707-E161-4722-9F38-6AAAB6FAA106}</Project>
+      <Name>log4net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Panels\CommonProperties\CommonProperties.csproj">
+      <Project>{F1DD26BF-235B-497C-8904-EC0F849E4623}</Project>
+      <Name>CommonProperties</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon3.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon6.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon4.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon5.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Schematix.Core.Compiler.AbstractCompiler" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAEAACADgAARAgAAAQDQAAACACABAIAAgQEYGIA=</HashCode>
+      <FileName>Compiler\AbstractCompiler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Schematix.Core.Compiler.GHDLCompiler">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAQBAEAAAAAAAAZAAAAAABBAAACACAAAYQgAAQACAA=</HashCode>
+      <FileName>Compiler\GHDL\GHDLCompiler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Core.Compiler.GHDLErrorStringParser">
+    <Position X="7.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAIAAAAAAAAAAAAAAAAQAACBEAAAgAAAAA=</HashCode>
+      <FileName>Compiler\GHDL\GHDLErrorStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Core.Compiler.GHDLCompiledFile">
+    <Position X="5.5" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAIAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compiler\GHDL\LibraryParser\GHDLCompiledFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Core.Compiler.GHDLLibraryParser">
+    <Position X="6.75" Y="5.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIQAAAIAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Compiler\GHDL\LibraryParser\GHDLLibraryParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schematix.Core.Compiler.VHDLCompiler">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAwAAEAQAAAAEAYAAABAEBQAACCAGAAhYAAQhAACAI=</HashCode>
+      <FileName>Compiler\VHDL\VHDLCompiler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Schematix.Core.Compiler.DiagnosticMessage">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAEAAAgAAAAIAAAAACAAAAAAAAAIAAAACA=</HashCode>
+      <FileName>Compiler\DiagnosticMessage.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Schematix.Core.Compiler.SourcePosition">
+    <Position X="10.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAADAAAAAAAAEAAAABABAA=</HashCode>
+      <FileName>Compiler\DiagnosticMessage.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Schematix.Core.Compiler.GHDLParsedArchitecture">
+    <Position X="10.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Compiler\GHDL\LibraryParser\GHDLParsedArchitecture.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Schematix.Core.Compiler.GHDLParsedHead">
+    <Position X="12.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Compiler\GHDL\LibraryParser\GHDLParsedHead.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

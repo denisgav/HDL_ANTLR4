@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VHDL_ANTLR4", "VHDL_ANTLR4\VHDL_ANTLR4.csproj", "{6D59ABA1-C75B-4B44-BAAC-0FA6B2F05B5F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verilog_ANTLR4", "Verilog_ANTLR4\Verilog_ANTLR4.csproj", "{B9810DF6-0706-4ADE-A714-F22D13ED6934}"
