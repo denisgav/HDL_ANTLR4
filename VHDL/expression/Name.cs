@@ -107,17 +107,6 @@ namespace VHDL.expression
         }
 
         /// <summary>
-        /// Returns a record element of this object.
-        /// </summary>
-        /// <param name="element">the identifier of the record element</param>
-        /// <returns>record element</returns>
-        public virtual SelectedName getRecordElement(string element)
-        {
-            //safe if T extends VhdlObject<T>			
-            return new SelectedName(this, element);
-        }
-
-        /// <summary>
         /// Returns a attribute expression of this object.
         /// </summary>
         /// <param name="attribute">the attribute</param>
