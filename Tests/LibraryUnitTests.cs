@@ -1,30 +1,10 @@
-﻿using System;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VHDL;
-using VHDL.parser;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
 {
     [TestClass]
-    public class LibraryUnitTests
+    public class LibraryUnitTests : BaseTestFixture
     {
-        private static StreamWriter writer;
-        private static Logger logger;
-        private static VHDL_Library_Manager libraryManager;
-
-        static LibraryUnitTests()
-        {
-            writer = new StreamWriter(new MemoryStream());
-            logger = new VHDL.parser.Logger(writer.BaseStream);
-            libraryManager = new VHDL_Library_Manager("", @"Libraries\LibraryRepository.xml", logger);
-        }
-
-        private VhdlFile parseCode(string code)
-        {
-            return VhdlParserWrapper.parseString(code, libraryManager);
-        }
-
         [TestMethod]
         public void SingleEntityNoDecls()
         {
