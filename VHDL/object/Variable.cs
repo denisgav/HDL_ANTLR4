@@ -26,7 +26,7 @@ namespace VHDL.Object
     /// Variable.
     /// </summary>
     [Serializable]
-	public class Variable : DefaultVhdlObject, IVariableAssignmentTarget
+	public class Variable : DefaultVhdlObject
 	{
 		private Expression defaultValue;
 		private bool shared;

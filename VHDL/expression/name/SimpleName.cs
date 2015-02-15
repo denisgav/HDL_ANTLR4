@@ -8,7 +8,7 @@ namespace VHDL.expression.name
     /// its declaration or another identifier associated with the entity by an alias declaration.
     /// </summary>
     [Serializable]
-    public class SimpleName : Name, ISignalAssignmentTarget
+    public class SimpleName : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
     {
         private INamedEntity referenced;
 
