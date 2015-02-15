@@ -13,35 +13,27 @@ namespace VHDL.expression.name
 	public class SelectedName : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
 	{
         private readonly Name prefix;
-		private readonly string element;
+		private readonly Name suffix;
 
-//    *
-//     * Creates a record element.
-//     * @param prefix the prefix of this record element
-//     * @param element the identifier of the element
-//     
-        public SelectedName(Name prefix, string element)
+        public SelectedName(Name prefix, Name suffix)
 		{
 			this.prefix = prefix;
-			this.element = element;
+			this.suffix = suffix;
 		}
 
-//    *
-//     * Returns the prefix of this record element.
-//     * @return the preifx
-//     
         public virtual Name getPrefix()
 		{
 			return prefix;
 		}
 
-//    *
-//     * Returns the identifier of the record element.
-//     * @return the identifier
-//     
-		public virtual string getElement()
+        public virtual Name getSuffix()
+        {
+            return suffix;
+        }
+
+        public virtual string getElement()
 		{
-			return element;
+			return suffix.Referenced.Identifier;
 		}
 
 		public override ISubtypeIndication Type
@@ -55,8 +47,7 @@ namespace VHDL.expression.name
 
         public override INamedEntity Referenced
         {
-            // TODO: should be the element
-            get { return prefix.Referenced; }
+            get { return suffix.Referenced; }
         }
 
         public override void accept(INameVisitor visitor)
