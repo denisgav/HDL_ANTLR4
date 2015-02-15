@@ -17,6 +17,8 @@
 
 using System.Collections.Generic;
 using System;
+using VHDL.expression;
+using VHDL.expression.name;
 
 namespace VHDL.parser.antlr
 {
@@ -135,16 +137,24 @@ namespace VHDL.parser.antlr
             }
         }
 
-        public virtual VHDL.expression.Name GetName()
+        public virtual Name GetName()
         {
-            //VHDL.expression.Name name = resolve<VHDL.expression.Name>(currentScore);
-            VhdlElement element = resolve<VhdlElement>(currentScore);
-            if (element is VHDL.expression.Name)
-                return element as VHDL.expression.Name;
-            else if (element is VHDL.type.ISubtypeIndication)
-                return new VHDL.expression.name.SimpleName(element as VHDL.INamedEntity);
-            else if (element is VHDL.declaration.Alias)
-                return (element as VHDL.declaration.Alias).Aliased;
+            if (parts.Count == 1)
+            {
+                var obj = ObjectSearcher.SearchIdentifier<INamedEntity>(currentScore, (parts[0] as Part.SelectedPart).Suffix, x => true);
+                return new SimpleName(obj);
+            }
+            else if (parts.Count > 1)
+            {
+                var objs = ObjectSearcher.SearchComponents<INamedEntity>(currentScore, parts);
+                Name suffix = new SimpleName(objs[objs.Count - 1]);
+                for (int i = objs.Count - 2; i >= 0; --i)
+                {
+                    Name prefix = new SimpleName(objs[i]);
+                    suffix = new SelectedName(prefix, suffix);
+                }
+                return suffix;
+            }
 
             throw new VHDL.ParseError.vhdlUnknownIdentifierException(context, visitor.FileName, Identifier);
         }

@@ -23,9 +23,37 @@ using Antlr4.Runtime.Misc;
 
 namespace VHDL
 {
+    // TODO: refactor, generalize similar methods
     public static class ObjectSearcher
     {
-        public static Out Search<Out>([NotNull]List<IDeclarativeRegion> scopes, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
+        public static List<Out> SearchComponents<Out>([NotNull]IDeclarativeRegion scope, List<Part> parts) where Out : class
+        {
+            if (parts.Count == 0)
+                throw new Exception("Amount of suffixes is 0");
+
+            var result = new List<Out>();
+
+            IDeclarativeRegion currentScope = scope;
+            for (int i = 0; i < parts.Count; i++)
+            {
+                Part part = parts[i];
+                if (part.Type == Part.TypeEnum.SELECTED)
+                {
+                    string id = (part as Part.SelectedPart).Suffix;
+                    List<object> objects = currentScope.Scope.resolveAllLocal(id);
+                    if ((objects == null) || (objects.Count == 0))
+                        return null;
+                    result.Add(objects[0] as Out);
+                    if (objects[0] is IDeclarativeRegion)
+                        currentScope = objects[0] as IDeclarativeRegion;
+                }
+            }
+            if (parts.Count != result.Count)
+                throw new Exception("Not all parts have been resolved");
+            return result;
+        }
+
+        private static Out Search<Out>([NotNull]List<IDeclarativeRegion> scopes, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
         {
             foreach (IDeclarativeRegion current_scope in scopes)
             {
@@ -41,12 +69,12 @@ namespace VHDL
             return Search<Out>(scope, parts, o => true);
         }
 
-        public static Out Search<Out>([NotNull]List<IDeclarativeRegion> scopes, List<Part> parts) where Out : class
+        private static Out Search<Out>([NotNull]List<IDeclarativeRegion> scopes, List<Part> parts) where Out : class
         {
             return Search<Out>(scopes, parts, o => true);
         }
 
-        public static Out Search<Out>([NotNull]IDeclarativeRegion scope, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
+        private static Out Search<Out>([NotNull]IDeclarativeRegion scope, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
         {
             if (parts.Count == 0)
                 throw new Exception("Amount of suffixes is 0");
@@ -60,18 +88,18 @@ namespace VHDL
             }
         }
 
-        public static Out SearchSelected<Out>([NotNull]IDeclarativeRegion scope, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
+        private static Out SearchSelected<Out>([NotNull]IDeclarativeRegion scope, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
         {
             if (parts.Count == 0)
                 throw new Exception("Amount of suffixes is 0");
 
-            IDeclarativeRegion current_scope = scope;
+            IDeclarativeRegion currentScope = scope;
             for (int p = 0; p < parts.Count; p++)
             {
                 Part part = parts[p];
                 if (part.Type == Part.TypeEnum.SELECTED)
                 {
-                    List<object> objects = scope.Scope.resolveAllLocal((part as Part.SelectedPart).Suffix);
+                    List<object> objects = currentScope.Scope.resolveAllLocal((part as Part.SelectedPart).Suffix);
                     if ((objects == null) || (objects.Count == 0))
                         return null;
 
@@ -87,13 +115,9 @@ namespace VHDL
                     else
                     {
                         if (objects[0] is IDeclarativeRegion)
-                        {
-                            current_scope = objects[0] as IDeclarativeRegion;
-                        }
+                            currentScope = objects[0] as IDeclarativeRegion;
                         else
-                        {
                             return null;
-                        }
                     }
                 }
                 else
@@ -103,7 +127,7 @@ namespace VHDL
             return null;
         }
 
-        public static Out SearchIdentifier<Out>(IDeclarativeRegion scope, string identifier, Predicate<Out> pred) where Out:class
+        public static Out SearchIdentifier<Out>(IDeclarativeRegion scope, string identifier, Predicate<Out> pred) where Out : class
         {            
             List<object> objects = scope.Scope.resolveAll(identifier);
             if ((objects == null) || (objects.Count == 0))
@@ -122,7 +146,7 @@ namespace VHDL
         //-------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------
 
-        public static List<Out> SearchAll<Out>([NotNull]List<IDeclarativeRegion> scopes, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
+        private static List<Out> SearchAll<Out>([NotNull]List<IDeclarativeRegion> scopes, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
         {
             List<Out> res = new List<Out>();
             foreach (IDeclarativeRegion current_scope in scopes)
@@ -138,12 +162,12 @@ namespace VHDL
             return SearchAll<Out>(scope, parts, o => true);
         }
 
-        public static List<Out> SearchAll<Out>([NotNull]List<IDeclarativeRegion> scopes, List<Part> parts) where Out : class
+        private static List<Out> SearchAll<Out>([NotNull]List<IDeclarativeRegion> scopes, List<Part> parts) where Out : class
         {
             return SearchAll<Out>(scopes, parts, o => true);
         }
 
-        public static List<Out> SearchAll<Out>([NotNull]IDeclarativeRegion scope, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
+        private static List<Out> SearchAll<Out>([NotNull]IDeclarativeRegion scope, List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
         {
             if (parts.Count == 0)
                 throw new Exception("Amount of suffixes is 0");
@@ -157,7 +181,7 @@ namespace VHDL
             }
         }
 
-        public static List<Out> SearchAllIdentifier<Out>(IDeclarativeRegion scope, string identifier, Predicate<Out> pred) where Out : class
+        private static List<Out> SearchAllIdentifier<Out>(IDeclarativeRegion scope, string identifier, Predicate<Out> pred) where Out : class
         {
             List<Out> res = new List<Out>();
 
@@ -175,7 +199,7 @@ namespace VHDL
             return res;
         }
 
-        public static List<Out> SearchAllSelected<Out>([NotNull]IDeclarativeRegion scope, [NotNull]List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
+        private static List<Out> SearchAllSelected<Out>([NotNull]IDeclarativeRegion scope, [NotNull]List<Part> parts, [NotNull]Predicate<Out> pred) where Out : class
         {
             if (parts.Count == 0)
                 throw new Exception("Amount of suffixes is 0");

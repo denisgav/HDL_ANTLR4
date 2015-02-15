@@ -1497,7 +1497,7 @@ namespace VHDL_ANTLR4
             for (int i = 1; i < parts.Count; i++)
             {
                 VHDL.parser.antlr.Part p = parts[i];
-                res = new SelectedName(res, (p as VHDL.parser.antlr.Part.SelectedPart).Suffix);
+                //res = new SelectedName(res, (p as VHDL.parser.antlr.Part.SelectedPart).Suffix);
             }
 
             if (name_part_in.name_function_call_or_indexed_part() != null)
@@ -1510,22 +1510,14 @@ namespace VHDL_ANTLR4
             return res;
         }
 
-        private Name TemporaryVisitAttributeNamePart(vhdlParser.Name_partContext name_part_in, Name previousName)
+        private Name TemporaryVisitAttributeNamePart(vhdlParser.Name_partContext name_part_in, Name prefix)
         {
-            List<VHDL.parser.antlr.Part> parts = TemporaryNameSelectedPart(name_part_in);
-
-            Name res = previousName;
-            foreach (VHDL.parser.antlr.Part p in parts)
-            {
-                res = new SelectedName(res, (p as VHDL.parser.antlr.Part.SelectedPart).Suffix);
-            }
-
             string attributeName = name_part_in.name_attribute_part().attribute_designator().GetText();
             Attribute standard_attribute = Attribute.GetStandardAttribute(attributeName);
             Attribute attribute = (standard_attribute == null) ? resolve<Attribute>(attributeName) : standard_attribute;
 
             List<Expression> expressions = ParseExtention.ParseList<vhdlParser.ExpressionContext, Expression>(name_part_in.name_attribute_part().expression(), VisitExpression);
-            res = new AttributeName(res, attribute, expressions);
+            Name res = new AttributeName(prefix, attribute, expressions);
             VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = res;
             return res;
         }
