@@ -87,6 +87,8 @@ namespace VHDL.expression.name
             get
             {
                 //TODO: implement corrently
+                if (attribute.Identifier.EqualsIgnoreCase("LAST_VALUE"))
+                    return prefix.Type;
                 return attribute.Type;
             }
 		}
