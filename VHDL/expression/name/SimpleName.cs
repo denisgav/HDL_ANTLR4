@@ -22,9 +22,17 @@ namespace VHDL.expression.name
             get { return referenced; }
         }
 
+        // TODO: generalize types
         public override type.ISubtypeIndication Type
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                if (referenced is VhdlObject)
+                    return (referenced as VhdlObject).Type;
+                else if (referenced is declaration.Alias)
+                    return (referenced as declaration.Alias).Aliased.Type;
+                return null;
+            }
         }
 
         public override void accept(INameVisitor visitor)
