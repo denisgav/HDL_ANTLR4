@@ -63,27 +63,27 @@ namespace VHDL.parser.typeinfer
 
         public void visit(BasedLiteral literal)
         {
-            throw new System.NotImplementedException();
+            baseInfer.AnalyzeType(literal.Type);
         }
 
         public void visit(Literals.NullLiteral literal)
         {
-            throw new System.NotImplementedException();
+            baseInfer.AnalyzeType(literal.Type);
         }
 
         public void visit(PhysicalLiteral literal)
         {
-            throw new System.NotImplementedException();
+            baseInfer.AnalyzeType(literal.Type);
         }
 
         public void visit(RealLiteral literal)
         {
-            throw new System.NotImplementedException();
+            baseInfer.AnalyzeType(literal.Type);
         }
 
         public void visit(EnumerationLiteral literal)
         {
-            throw new System.NotImplementedException();
+            baseInfer.AnalyzeType(literal.Type);
         }
     }
 }

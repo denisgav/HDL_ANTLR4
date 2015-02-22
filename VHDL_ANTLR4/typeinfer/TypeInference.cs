@@ -21,11 +21,11 @@ namespace VHDL.parser.typeinfer
             this.ExpectedType = type;
         }
 
-        public static ProcedureDeclaration ResolveOverloadProcedure(IDeclarativeRegion scope, List<ProcedureDeclaration> overloads,
+        public static IProcedure ResolveOverloadProcedure(IDeclarativeRegion scope, List<IProcedure> overloads,
             List<AssociationElement> arguments)
         {
             string id = "";
-            List<ProcedureDeclaration> candidates = new List<ProcedureDeclaration>(overloads);
+            var candidates = new List<IProcedure>(overloads);
             switch (candidates.Count)
             {
                 case 0:
@@ -56,17 +56,26 @@ namespace VHDL.parser.typeinfer
                             throw new vhdlNoMatchSubprogramException(id, "procedure");
                         case 1:
                             return candidates[0];
+                        case 2:
+                            {
+                                // TODO: link body with declaration
+                                bool firstIsBody = candidates[0] is SubprogramBody;
+                                bool secndIsBody = candidates[1] is SubprogramBody;
+                                if (firstIsBody ^ secndIsBody)
+                                    return candidates[0];
+                            }
+                            throw new vhdlAmbiguousCallException(id, "procedure");
                         default:
                             throw new vhdlAmbiguousCallException(id, "procedure");
                     }
             }
         }
 
-        public static FunctionDeclaration ResolveOverloadFunction(IDeclarativeRegion scope, List<FunctionDeclaration> overloads,
+        public static IFunction ResolveOverloadFunction(IDeclarativeRegion scope, List<IFunction> overloads,
             List<AssociationElement> arguments, ISubtypeIndication returnType)
         {
             string id = "";
-            List<FunctionDeclaration> candidates = new List<FunctionDeclaration>(overloads);
+            var candidates = new List<IFunction>(overloads);
             switch (candidates.Count)
             {
                 case 0:
@@ -112,6 +121,15 @@ namespace VHDL.parser.typeinfer
                             throw new vhdlNoMatchSubprogramException(id, "function");
                         case 1:
                             return candidates[0];
+                        case 2:
+                            {
+                                // TODO: link body with declaration
+                                bool firstIsBody = candidates[0] is SubprogramBody;
+                                bool secndIsBody = candidates[1] is SubprogramBody;
+                                if (firstIsBody ^ secndIsBody)
+                                    return candidates[0];
+                            }
+                            throw new vhdlAmbiguousCallException(id, "function");
                         default:
                             throw new vhdlAmbiguousCallException(id, "function");
                     }
@@ -153,6 +171,15 @@ namespace VHDL.parser.typeinfer
                     return false;
             }
             return true;
+        }
+
+        public bool AnalyzeType(ISubtypeIndication type, bool strict = true)
+        {
+            bool success = strict ? AreTypesEqual(type, ExpectedType)
+                : AreTypesCompatible(type, ExpectedType);
+            if (success)
+                ResultType = type;
+            return success;
         }
     }
 }

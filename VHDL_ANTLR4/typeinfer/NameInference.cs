@@ -18,20 +18,17 @@ namespace VHDL.parser.typeinfer
 
         public override void visit(SelectedName name)
         {
-            if (TypeInference.AreTypesEqual(inferer.ExpectedType, name.Type))
-                inferer.ResultType = name.Type;
+            inferer.AnalyzeType(name.Type);
         }
 
         public override void visit(AttributeName name)
         {
-            if (TypeInference.AreTypesEqual(inferer.ExpectedType, name.Type))
-                inferer.ResultType = name.Type;
+            inferer.AnalyzeType(name.Type);
         }
 
         public override void visit(SimpleName name)
         {
-            if (TypeInference.AreTypesCompatible(inferer.ExpectedType, name.Type))
-                inferer.ResultType = name.Type;
+            inferer.AnalyzeType(name.Type);
         }
     }
 }

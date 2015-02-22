@@ -1,11 +1,26 @@
 ﻿using VHDL.type;
 using VHDL.declaration;
+using VHDL.Object;
+using VHDL.expression;
 
 namespace VHDL.parser.typeinfer
 {
     class TypeHelper : ISubtypeIndicationVisitor
     {
         private ISubtypeIndication baseType;
+
+        // FIXME
+        public static ISubtypeIndication GetType(object elem)
+        {
+            ISubtypeIndication type;
+            if (elem is VhdlObject)
+                type = ((VhdlObject)elem).Type;
+            else if (elem is Name)
+                type = ((Name)elem).Type;
+            else //if (dst is ISubtypeIndication)
+                type = ((ISubtypeIndication)elem);
+            return type;
+        }
 
         public static ISubtypeIndication GetBaseType(ISubtypeIndication type)
         {

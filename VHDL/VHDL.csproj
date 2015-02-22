@@ -133,6 +133,7 @@
     <Compile Include="declaration\FunctionDeclaration.cs" />
     <Compile Include="declaration\Group.cs" />
     <Compile Include="declaration\GroupTemplate.cs" />
+    <Compile Include="declaration\IProcedure.cs" />
     <Compile Include="declaration\ObjectDeclaration.cs" />
     <Compile Include="declaration\IPackageBodyDeclarativeItem.cs" />
     <Compile Include="declaration\IPackageDeclarativeItem.cs" />

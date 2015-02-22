@@ -34,5 +34,10 @@ namespace VHDL.parser.typeinfer
             var nameInfer = new NameInference(scope, baseInfer);
             name.accept(nameInfer);
         }
+
+        protected override void visitFunctionCall(FunctionCall expression)
+        {
+            baseInfer.AnalyzeType(expression.Function.ReturnType);
+        }
     }
 }

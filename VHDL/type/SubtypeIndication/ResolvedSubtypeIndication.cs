@@ -24,7 +24,7 @@ namespace VHDL.type
     [Serializable]
     public class ResolvedSubtypeIndication : VhdlElement, ISubtypeIndication
     {
-
+        // TODO: resolve reference correctly
         //TODO: don't use string for resolution function
         private string resolutionFunction;
         private ISubtypeIndication baseType;

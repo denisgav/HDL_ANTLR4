@@ -31,7 +31,7 @@ namespace VHDL.parser.antlr
         private IDeclarativeRegion currentScore;
         private VHDL_ANTLR4.vhdlVisitor visitor;
         private Antlr4.Runtime.ParserRuleContext context;
-        public static VHDL.expression.Name CurrentAssignTarget;
+        public static Stack<object> ExprContext = new Stack<object>();
         public static VHDL.expression.Name CurrentName;
 
         public TemporaryName(List<Part> parts, VHDL_ANTLR4.vhdlVisitor visitor, Antlr4.Runtime.ParserRuleContext context)
@@ -172,16 +172,16 @@ namespace VHDL.parser.antlr
             }
         }
 
-        public virtual VHDL.expression.FunctionCall ResolveFunctionCall(List<AssociationElement> arguments, VHDL.type.ISubtypeIndication currentAssignTarget, List<VHDL.declaration.FunctionDeclaration> candidates)
+        public virtual VHDL.expression.FunctionCall ResolveFunctionCall(List<AssociationElement> arguments, VHDL.type.ISubtypeIndication currentAssignTarget, List<VHDL.declaration.IFunction> candidates)
         {
-            VHDL.declaration.FunctionDeclaration declaration = VHDL.parser.typeinfer.TypeInference.ResolveOverloadFunction(currentScore, candidates, arguments, currentAssignTarget);
+            VHDL.declaration.IFunction declaration = VHDL.parser.typeinfer.TypeInference.ResolveOverloadFunction(currentScore, candidates, arguments, currentAssignTarget);
             VHDL.expression.FunctionCall call = new VHDL.expression.FunctionCall(declaration, arguments);
             return call;
         }
 
-        public virtual VHDL.statement.ProcedureCall ResolveProcedureCall(List<AssociationElement> arguments, List<VHDL.declaration.ProcedureDeclaration> candidates)
+        public virtual VHDL.statement.ProcedureCall ResolveProcedureCall(List<AssociationElement> arguments, List<VHDL.declaration.IProcedure> candidates)
         {
-            VHDL.declaration.ProcedureDeclaration declaration = VHDL.parser.typeinfer.TypeInference.ResolveOverloadProcedure(currentScore, candidates, arguments);
+            var declaration = VHDL.parser.typeinfer.TypeInference.ResolveOverloadProcedure(currentScore, candidates, arguments);
             VHDL.statement.ProcedureCall call = new VHDL.statement.ProcedureCall(declaration, arguments);
             return call;
         }
@@ -195,20 +195,20 @@ namespace VHDL.parser.antlr
 
         public virtual VHDL.statement.ProcedureCall GetProcedureCall(List<AssociationElement> arguments)
         {
-            List<VHDL.declaration.ProcedureDeclaration> procedure_candidates = resolveAll<VHDL.declaration.ProcedureDeclaration>(currentScore);
+            var procedure_candidates = resolveAll<VHDL.declaration.IProcedure>(currentScore);
             return ResolveProcedureCall(arguments, procedure_candidates);
         }
 
         public virtual VHDL.declaration.IFunction GetFunction()
         {
             VHDL.declaration.IFunction function = resolve<VHDL.declaration.IFunction>(currentScore);
-            return function;            
+            return function;
         }
 
         public virtual VHDL.expression.FunctionCall GetFunctionCall(List<AssociationElement> arguments, VHDL.type.ISubtypeIndication currentAssignTarget)
         {
-            List<VHDL.declaration.FunctionDeclaration> function_candidates = resolveAll<VHDL.declaration.FunctionDeclaration>(currentScore);
+            var function_candidates = resolveAll<VHDL.declaration.IFunction>(currentScore);
             return ResolveFunctionCall(arguments, currentAssignTarget, function_candidates);
-        }        
+        }
     }
 }

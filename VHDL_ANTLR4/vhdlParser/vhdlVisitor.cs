@@ -323,12 +323,15 @@ namespace VHDL_ANTLR4
             if (resolution_function_in != null)
             {
                 string resolution_function_name = resolution_function_in.GetText();
+                res = resolve<VHDL.type.ISubtypeIndication>(resolution_function_name);
                 res = new VHDL.type.ResolvedSubtypeIndication(resolution_function_name, res);
             }
             else
             {
                 res = resolve<VHDL.type.ISubtypeIndication>(string_name);
             }
+
+            VHDL.parser.antlr.TemporaryName.ExprContext.Push(res);
 
             if (constraint_in != null)
             {
@@ -351,6 +354,8 @@ namespace VHDL_ANTLR4
                     throw new System.NotSupportedException(string.Format("Could not analyse item {0}", constraint_in.ToStringTree()));
                 }
             }
+
+            VHDL.parser.antlr.TemporaryName.ExprContext.Pop();
 
             VhdlElement return_value = res as VhdlElement;
 
@@ -561,9 +566,12 @@ namespace VHDL_ANTLR4
 
             VHDL.declaration.SubprogramDeclaration declaration = ParseExtention.Parse<vhdlParser.Subprogram_specificationContext, VHDL.declaration.SubprogramDeclaration>(subprogram_specification_in, VisitSubprogram_specification);
             VHDL.declaration.SubprogramBody body = null;
+            bool isFunction = false;
             if (declaration is VHDL.declaration.FunctionDeclaration)
             {
+                isFunction = true;
                 body = new VHDL.declaration.FunctionBody(declaration as VHDL.declaration.FunctionDeclaration);
+                VHDL.parser.antlr.TemporaryName.ExprContext.Push((declaration as VHDL.declaration.FunctionDeclaration).ReturnType);
             }
             else
             {
@@ -593,6 +601,8 @@ namespace VHDL_ANTLR4
             //-------------------------------------------
             currentScope = oldScope;
             AddAnnotations(body, context);
+            if (isFunction)
+                VHDL.parser.antlr.TemporaryName.ExprContext.Pop();
             //-------------------------------------------
 
             //-------------------------------------------
@@ -1019,15 +1029,17 @@ namespace VHDL_ANTLR4
             var subtype_indication_in = context.subtype_indication();
             var expression_in = context.expression();
 
-            Expression def = (expression_in != null) ? ParseExtention.Parse<vhdlParser.ExpressionContext, Expression>(expression_in, VisitExpression) : null;
             VHDL.type.ISubtypeIndication type = (subtype_indication_in != null) ? ParseExtention.Parse<vhdlParser.Subtype_indicationContext, VHDL.type.ISubtypeIndication>(subtype_indication_in, VisitSubtype_indication) : null;
+            VHDL.parser.antlr.TemporaryName.ExprContext.Push(type);
+            Expression initVal = (expression_in != null) ? ParseExtention.Parse<vhdlParser.ExpressionContext, Expression>(expression_in, VisitExpression) : null;
+            VHDL.parser.antlr.TemporaryName.ExprContext.Pop();
 
             ConstantDeclaration res = new ConstantDeclaration();
 
             foreach (var identifier in identifier_list_in.identifier())
             {
                 string constant_name = identifier.GetText();
-                Constant c = new Constant(constant_name, type, def);
+                Constant c = new Constant(constant_name, type, initVal);
 
                 res.Objects.Add(c);
             }
@@ -1134,12 +1146,16 @@ namespace VHDL_ANTLR4
         {
             var shift_expressions_in = context.shift_expression();
             var relational_operator_in = context.relational_operator();
+            VhdlElement result = null;
+
+            if (relational_operator_in != null)
+                VHDL.parser.antlr.TemporaryName.ExprContext.Push(null); // relation context is ambigous
 
             Expression parsed_shift_expression_1 = ParseExtention.Parse<vhdlParser.Shift_expressionContext, Expression>(shift_expressions_in[0], VisitShift_expression);
 
             if (relational_operator_in == null)
             {
-                return parsed_shift_expression_1;
+                result = parsed_shift_expression_1;
             }
             else
             {
@@ -1147,38 +1163,44 @@ namespace VHDL_ANTLR4
 
                 if (relational_operator_in.EQ() != null)
                 {
-                    return new VHDL.expression.Equals(parsed_shift_expression_1, parsed_shift_expression_2);
+                    result = new VHDL.expression.Equals(parsed_shift_expression_1, parsed_shift_expression_2);
                 }
 
                 if (relational_operator_in.GE() != null)
                 {
-                    return new VHDL.expression.GreaterEquals(parsed_shift_expression_1, parsed_shift_expression_2);
+                    result = new VHDL.expression.GreaterEquals(parsed_shift_expression_1, parsed_shift_expression_2);
                 }
 
                 if (relational_operator_in.GREATERTHAN() != null)
                 {
-                    return new VHDL.expression.GreaterThan(parsed_shift_expression_1, parsed_shift_expression_2);
+                    result = new VHDL.expression.GreaterThan(parsed_shift_expression_1, parsed_shift_expression_2);
                 }
 
                 if (relational_operator_in.LE() != null)
                 {
-                    return new VHDL.expression.LessEquals(parsed_shift_expression_1, parsed_shift_expression_2);
+                    result = new VHDL.expression.LessEquals(parsed_shift_expression_1, parsed_shift_expression_2);
                 }
 
                 if (relational_operator_in.LOWERTHAN() != null)
                 {
-                    return new VHDL.expression.LessThan(parsed_shift_expression_1, parsed_shift_expression_2);
+                    result = new VHDL.expression.LessThan(parsed_shift_expression_1, parsed_shift_expression_2);
                 }
 
                 if (relational_operator_in.NEQ() != null)
                 {
-                    return new VHDL.expression.NotEquals(parsed_shift_expression_1, parsed_shift_expression_2);
+                    result = new VHDL.expression.NotEquals(parsed_shift_expression_1, parsed_shift_expression_2);
                 }
 
-                throw new System.NotSupportedException(string.Format("Could not analyse item {0}", relational_operator_in.ToStringTree()));
+                VHDL.parser.antlr.TemporaryName.ExprContext.Pop();
+
+                if (result == null)
+                    throw new System.NotSupportedException(string.Format("Could not analyse item {0}", relational_operator_in.ToStringTree()));
             }
 
-            throw new System.NotSupportedException(string.Format("Could not analyse item {0}", context.ToStringTree()));
+            if (result == null)
+                throw new System.NotSupportedException(string.Format("Could not analyse item {0}", context.ToStringTree()));
+
+            return result;
         }
 
         /// <summary>
@@ -1518,7 +1540,6 @@ namespace VHDL_ANTLR4
 
             List<Expression> expressions = ParseExtention.ParseList<vhdlParser.ExpressionContext, Expression>(name_part_in.name_attribute_part().expression(), VisitExpression);
             Name res = new AttributeName(prefix, attribute, expressions);
-            VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = res;
             return res;
         }
 
@@ -1530,11 +1551,23 @@ namespace VHDL_ANTLR4
             IFunction functionDecl = tm.GetFunction();
             if (functionDecl != null)
             {
-                List<AssociationElement> arguments = ParseExtention.ParseList<vhdlParser.Association_elementContext, AssociationElement>(name_part_in.name_function_call_or_indexed_part().actual_parameter_part().association_list().association_element(), VisitAssociation_element);
+                var objs = new List<VhdlObject>();
+                foreach (var decl in functionDecl.Parameters)
+                    foreach (var obj in decl.VhdlObjects)
+                        objs.Add(obj);
 
-                FunctionCall functionCall = tm.GetFunctionCall(arguments, VHDL.parser.antlr.TemporaryName.CurrentAssignTarget.Type);
-                //FunctionCall functionCall = new FunctionCall(FD, arguments);
-                VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = functionCall;
+                int i = 0;
+                List<AssociationElement> arguments = ParseExtention.ParseList<vhdlParser.Association_elementContext, AssociationElement>(
+                    name_part_in.name_function_call_or_indexed_part().actual_parameter_part().association_list().association_element(),
+                    x =>
+                    {
+                        VHDL.parser.antlr.TemporaryName.ExprContext.Push(objs[i++]);
+                        var e = VisitAssociation_element(x);
+                        VHDL.parser.antlr.TemporaryName.ExprContext.Pop();
+                        return e;
+                    });
+                var top = VHDL.parser.antlr.TemporaryName.ExprContext.Peek();
+                FunctionCall functionCall = tm.GetFunctionCall(arguments, VHDL.parser.typeinfer.TypeHelper.GetType(top));
                 Name res = functionCall;
                 return res;
             }
@@ -1543,7 +1576,6 @@ namespace VHDL_ANTLR4
                 List<Expression> expressions = TemporaryIndiciesNamePartExpressions(name_part_in.name_function_call_or_indexed_part().actual_parameter_part());
                 Name base_name = tm.GetName();
                 IndexedName ae = new IndexedName(base_name, expressions);
-                VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = ae;
                 Name res = ae;
                 return res;
             }
@@ -1554,7 +1586,6 @@ namespace VHDL_ANTLR4
             Name res = previousName;
             List<Expression> expressions = TemporaryIndiciesNamePartExpressions(name_part_in.name_function_call_or_indexed_part().actual_parameter_part());
             res = new IndexedName(res, expressions);
-            VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = res;
             return res;
         }
 
@@ -1564,7 +1595,6 @@ namespace VHDL_ANTLR4
             List<DiscreteRange> ranges = new List<DiscreteRange>();
             ranges.AddRange(ParseExtention.ParseList<vhdlParser.Explicit_rangeContext, Range>(name_part_in.name_slice_part().explicit_range(), VisitExplicit_range));
             res = new Slice(res, ranges);
-            VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = res;
             return res;
         }
 
@@ -2372,7 +2402,7 @@ namespace VHDL_ANTLR4
             if (name_in != null)
             {
                 Name name = ParseExtention.Parse<vhdlParser.NameContext, Name>(name_in, VisitName);
-                if (name.Referenced is Type)
+                if (name.Referenced is ISubtypeIndication)
                 {
                     res = new RangeAttributeName(name, RangeAttributeName.RangeAttributeNameType.RANGE);
                 }
@@ -2439,9 +2469,10 @@ namespace VHDL_ANTLR4
             var expression_in = context.expression();
 
             string label = (label_colon_in != null) ? label_colon_in.identifier().GetText() : string.Empty;
-            Expression expresion = ParseExtention.Parse<vhdlParser.ExpressionContext, Expression>(expression_in, VisitExpression);
             IVariableAssignmentTarget target = ParseExtention.Parse<vhdlParser.TargetContext, IVariableAssignmentTarget>(target_in, VisitTarget);
-            VHDL.parser.antlr.TemporaryName.CurrentAssignTarget = target as Name;
+            VHDL.parser.antlr.TemporaryName.ExprContext.Push(target as Name);
+            Expression expresion = ParseExtention.Parse<vhdlParser.ExpressionContext, Expression>(expression_in, VisitExpression);
+            VHDL.parser.antlr.TemporaryName.ExprContext.Pop();
 
             VariableAssignment va = new VariableAssignment(target, expresion);
             va.Label = label;

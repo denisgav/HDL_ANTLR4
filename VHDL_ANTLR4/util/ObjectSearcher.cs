@@ -192,7 +192,7 @@ namespace VHDL
             foreach (object o in objects)
             {
                 Out candidate = o as Out;
-                if (pred(candidate) == true)
+                if (candidate != null && pred(candidate))
                     res.Add(candidate);
             }
 
