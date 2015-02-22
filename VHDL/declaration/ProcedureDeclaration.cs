@@ -26,7 +26,7 @@ namespace VHDL.declaration
     /// Procedure declaration.
     /// </summary>
     [Serializable]
-	public class ProcedureDeclaration : SubprogramDeclaration
+    public class ProcedureDeclaration : SubprogramDeclaration, IProcedure
 	{
         /// <summary>
         /// Creates a procedure declaration.

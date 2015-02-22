@@ -41,5 +41,6 @@ namespace VHDL.declaration
         /// Returns the parameters of this subprogram.
         /// </summary>
         IResolvableList<VhdlObjectProvider> Parameters { get; }
+        // TODO: possibility to get objects directly by idx
     }
 }

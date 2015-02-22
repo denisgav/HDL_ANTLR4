@@ -26,7 +26,7 @@ namespace VHDL.declaration
     /// Procedure body.
     /// </summary>
     [Serializable]
-    public class ProcedureBody : SubprogramBody
+    public class ProcedureBody : SubprogramBody, IProcedure
     {
         /// <summary>
         /// Creates a procedure body.
