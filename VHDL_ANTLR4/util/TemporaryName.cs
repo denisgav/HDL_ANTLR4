@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using VHDL.expression;
 using VHDL.expression.name;
 
@@ -53,7 +54,7 @@ namespace VHDL.parser.antlr
 
         private List<T> resolveAll<T>(IDeclarativeRegion scope) where T : class
         {
-            return ObjectSearcher.SearchAll<T>(scope, parts);
+            return ObjectSearcher.SearchAll<T>(scope, parts).Distinct().ToList();
         }
 
         //used only for error reporting
