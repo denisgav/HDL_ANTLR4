@@ -111,6 +111,7 @@ namespace VHDL
             public abstract List<object> resolveAllLocal(string identifier);
             public List<object> resolveAll(string identifier)
             {
+                // TODO: use HashSet instead of list
                 List<object> res = new List<object>();
                 res.AddRange(resolveAllLocal(identifier));
                 IScope parent = getParentScope();

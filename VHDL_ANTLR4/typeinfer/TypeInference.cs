@@ -131,7 +131,7 @@ namespace VHDL.parser.typeinfer
                             }
                             throw new vhdlAmbiguousCallException(id, "function");
                         default:
-                            throw new vhdlAmbiguousCallException(id, "function");
+                            throw new vhdlAmbiguousCallException(id, "function"); // TODO: add location to exception
                     }
             }
         }
