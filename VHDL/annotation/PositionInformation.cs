@@ -28,16 +28,16 @@ namespace VHDL.annotation
 		private readonly SourcePosition begin;
 		private readonly SourcePosition end;
 
-        private string fileName;
-        public string FileName
+        private string filePath;
+        public string FilePath
         {
-            get { return fileName; }
+            get { return filePath; }
          }
-        
 
-		public PositionInformation(string fileName, SourcePosition begin, SourcePosition end)
+
+        public PositionInformation(string filePath, SourcePosition begin, SourcePosition end)
 		{
-            this.fileName = fileName;
+            this.filePath = filePath;
 			this.begin = begin;
 			this.end = end;
 		}
@@ -51,6 +51,11 @@ namespace VHDL.annotation
 		{
             get { return end; }
 		}
+
+        public string FileName
+        {
+            get { return filePath.Substring(filePath.LastIndexOf('\\')+1); }
+        }
 	}
 
 }

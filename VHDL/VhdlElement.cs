@@ -17,7 +17,9 @@
 
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 using VHDL.Object;
+using VHDL.annotation;
 
 namespace VHDL
 {
@@ -25,6 +27,7 @@ namespace VHDL
     /// An element inside a VHDL file.
     /// </summary>
     [Serializable]
+    [DebuggerDisplay("{DebuggerDisplay}")]
     public abstract class VhdlElement
     {
         private Dictionary<object, List<object>> annotationList;
@@ -48,6 +51,30 @@ namespace VHDL
             get { return parent; }
             set { parent = value; }
         }
+
+        #region Debug information
+
+        private string SourcePointString
+        {
+            get
+            {
+                PositionInformation pos = Annotations.getAnnotation<PositionInformation>(this);
+                if (pos != null)
+                    return string.Format("{0} ({1}:{2})", pos.FileName, pos.Begin.Line, pos.Begin.Column);
+                return "";
+            }
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                string sps = SourcePointString;
+                return sps.Length == 0 ? ToString() : ToString() + " @ " + sps;
+            }
+        }
+
+        #endregion
     }
 
 }
