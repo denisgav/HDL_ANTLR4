@@ -97,8 +97,10 @@ namespace VHDLModelingSystem
         /// </summary>
         private void StartConditionalSignalAsignment()
         {
+            throw new NotSupportedException();
+            /*
             VHDL.concurrent.ConditionalSignalAssignment assignment = statement as VHDL.concurrent.ConditionalSignalAssignment;
-            DataContainer.Objects.Signal target = valueProviderContainer.GetValueProvider((assignment.Target as VHDL.Object.RecordElement).getPrefix() as VHDL.Object.Signal) as DataContainer.Objects.Signal;
+            DataContainer.Objects.Signal target = null;// valueProviderContainer.GetValueProvider((assignment.Target as VHDL.Object.RecordElement).getPrefix() as VHDL.Object.Signal) as DataContainer.Objects.Signal;
 
             foreach (VHDL.concurrent.ConditionalSignalAssignment.ConditionalWaveformElement conditionalWaveformElement in assignment.ConditionalWaveforms)
             {
@@ -157,7 +159,7 @@ namespace VHDLModelingSystem
                     }
                     return;
                 }
-            }
+            }*/
         }
     }
 }

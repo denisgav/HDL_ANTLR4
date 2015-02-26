@@ -281,13 +281,14 @@ namespace DataContainer
         public  AbstractValue Evaluate(GreaterEquals expr)
         { throw new NotImplementedException(); }
 
+        /*
         public  AbstractValue Evaluate(RecordElement expr)
         {
             //throw new NotImplementedException();
             IValueProvider value = valueProvider.GetValueProvider(expr.getPrefix() as VHDL.Object.VhdlObject);
             return value.CurrentValue;
         }
-
+        */
         public AbstractValue Evaluate(IntegerLiteral expr)
         {
             return new IntegerValue(VHDL.builtin.Standard.INTEGER, (int)expr.IntegerValue);
@@ -383,8 +384,8 @@ namespace DataContainer
                 return Evaluate(expr as NotEquals);
             if (expr is GreaterEquals)
                 return Evaluate(expr as GreaterEquals);
-            if (expr is RecordElement)
-                return Evaluate(expr as RecordElement);
+            /*if (expr is RecordElement)
+                return Evaluate(expr as RecordElement);*/
             if (expr is IntegerLiteral)
                 return Evaluate(expr as IntegerLiteral);
             if (expr is CharacterLiteral)

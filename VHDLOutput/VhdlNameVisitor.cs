@@ -67,9 +67,9 @@ namespace VHDL.output
 
         public void visit(SelectedName name)
         {
-            output.writeExpression(name.getPrefix());
+            output.writeExpression(name.Prefix);
             writer.Append('.');
-            writer.Append(name.getElement());
+            writer.Append(name.Element);
         }
 
         public void visit(Slice name)

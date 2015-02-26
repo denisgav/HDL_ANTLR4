@@ -268,7 +268,7 @@ namespace Schematix.Core.Compiler
             if (arch == null)
                 return false;
 
-            if (arch.Entity.Identifier.VHDLCheckBeginEndIdentifierForEquals(EntityName) == false)
+            if (arch.Entity.Identifier.EqualsIdentifier(EntityName) == false)
                 return false;
             /*
             VHDLModelingSystem.ModelingSystemCore model = new VHDLModelingSystem.ModelingSystemCore(arch, currentLibrary, rootScope);
@@ -306,7 +306,7 @@ namespace Schematix.Core.Compiler
             {
                 if (unit is Architecture)
                 {
-                    if ((unit as Architecture).Identifier.VHDLCheckBeginEndIdentifierForEquals(ArchitectureName))
+                    if ((unit as Architecture).Identifier.EqualsIdentifier(ArchitectureName))
                     {
                         arch = (unit as Architecture);
                         break;
@@ -316,7 +316,7 @@ namespace Schematix.Core.Compiler
             if (arch == null)
                 return false;
 
-            if (arch.Entity.Identifier.VHDLCheckBeginEndIdentifierForEquals(EntityName) == false)
+            if (arch.Entity.Identifier.EqualsIdentifier(EntityName) == false)
                 return false;
             /*
             VHDLModelingSystem.ModelingSystemCore model = new VHDLModelingSystem.ModelingSystemCore(arch, currentLibrary, rootScope, core.Dump);

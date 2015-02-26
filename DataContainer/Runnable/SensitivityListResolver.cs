@@ -45,12 +45,12 @@ namespace VHDLModelingSystem
         {
             return GetSensitivityList(expr.Operand);
         }
-
+        /*
         public static List<Signal> GetSensitivityList(RecordElement expr)
         {
             return new List<Signal>() { expr.getPrefix() as Signal };
         }
-
+        */
         public static List<Signal> GetSensitivityList(Parentheses expr)
         {
             return GetSensitivityList(expr.Expression);
@@ -78,8 +78,8 @@ namespace VHDLModelingSystem
                 return GetSensitivityList(expr as FunctionCall);
             if (expr is QualifiedExpression)
                 return GetSensitivityList(expr as QualifiedExpression);
-            if (expr is RecordElement)
-                return GetSensitivityList(expr as RecordElement);
+            /*if (expr is SelectedName)
+                return GetSensitivityList(expr as SelectedName);*/
             if (expr is Parentheses)
                 return GetSensitivityList(expr as Parentheses);
             if (expr is Aggregate)

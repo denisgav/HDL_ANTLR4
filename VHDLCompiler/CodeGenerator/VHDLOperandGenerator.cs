@@ -209,13 +209,13 @@ namespace VHDLCompiler.CodeGenerator
 
         public static string GetRecordOperand(SelectedName expression, VHDLCompilerInterface compiler, bool GenerateGetOperandFunction = true)
         {
-            Name prefix = expression.getPrefix();
+            Name prefix = expression.Prefix;
             if (prefix.Referenced is VHDL.Object.VhdlObject)
             {
                 string valueProviderName = compiler.ObjectDictionary[prefix.Referenced as VHDL.Object.VhdlObject];
                 if (string.IsNullOrEmpty(valueProviderName))
                 {
-                    return expression.getElement();
+                    return expression.Element;
                 }
                 else
                 {

@@ -10,40 +10,40 @@ namespace VHDL.expression.name
     /// within the declaration of another named entity or within a design library.
     /// </summary>
     [Serializable]
-	public class SelectedName : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
-	{
+    public class SelectedName : Name, ISignalAssignmentTarget, IVariableAssignmentTarget
+    {
         private readonly Name prefix;
-		private readonly Name suffix;
+        private readonly Name suffix;
 
         public SelectedName(Name prefix, Name suffix)
-		{
-			this.prefix = prefix;
-			this.suffix = suffix;
-		}
-
-        public virtual Name getPrefix()
-		{
-			return prefix;
-		}
-
-        public virtual Name getSuffix()
         {
-            return suffix;
+            this.prefix = prefix;
+            this.suffix = suffix;
         }
 
-        public virtual string getElement()
-		{
-			return suffix.Referenced.Identifier;
-		}
+        public virtual Name Prefix
+        {
+            get { return prefix; }
+        }
 
-		public override ISubtypeIndication Type
-		{
+        public virtual Name Suffix
+        {
+            get { return suffix; }
+        }
+
+        public virtual string Element
+        {
+            get { return suffix.Referenced.Identifier; }
+        }
+
+        public override ISubtypeIndication Type
+        {
             get
             {
                 //TODO: implement correctly
                 return prefix.Type;
             }
-		}
+        }
 
         public override INamedEntity Referenced
         {
@@ -54,6 +54,6 @@ namespace VHDL.expression.name
         {
             visitor.visit(this);
         }
-	}
+    }
 
 }
