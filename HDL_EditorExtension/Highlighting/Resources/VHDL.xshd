@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<SyntaxDefinition name="VHDL" extensions=".vhd" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <!-- The named colors 'Comment' and 'String' are used in SharpDevelop to detect if a line is inside a multiline string/comment -->
+  <Color name="Comment" foreground="Green"/>
+  <Color name="String" foreground="Blue"/>
+  <Color name="Char" foreground="Magenta"/>
+
+    <!-- This is the main ruleset. -->
+    <RuleSet  ignoreCase="true">
+
+      <Span color="Comment">
+        <Begin>--</Begin>
+      </Span>
+
+      <Span color="String">
+        <Begin>"</Begin>
+        <End>"</End>
+        <RuleSet>
+          <!-- span for escape sequences -->
+          <Span begin="\\" end="."/>
+        </RuleSet>
+      </Span>
+
+      <Keywords foreground = "DarkGreen">
+        <Word>*</Word>
+        <Word>/</Word>
+        <Word>+</Word>
+        <Word>-</Word>
+        <Word>=</Word>
+        <Word>:=</Word>
+        <Word>/=</Word>
+        <Word>&lt;</Word>
+        <Word>&lt;=</Word>
+        <Word>&gt;</Word>
+        <Word>&lt;</Word>
+        <Word>=&gt;</Word>
+      </Keywords>
+
+      <Keywords fontWeight="bold" foreground="Black">
+        <Word>impure</Word>
+        <Word>pure</Word>
+        <Word>shared</Word>
+        <Word>postponed</Word>
+        <Word>guarded</Word>
+        <Word>unaffected</Word>
+        <Word>severity</Word>
+        <Word>access</Word>
+      </Keywords>
+
+      <Keywords fontWeight="bold" foreground="Orange">
+        <Word>when</Word>
+        <Word>with</Word>
+        <Word>wait</Word>
+        <Word>transport</Word>
+        <Word>inertial</Word>
+        <Word>after</Word>
+        <Word>others</Word>
+      </Keywords>
+
+      <Keywords fontWeight="bold"  foreground="DarkCyan">
+        <Word>abs</Word>
+        <Word>not</Word>
+        <Word>mod</Word>
+        <Word>rem</Word>
+        <Word>sll</Word>
+        <Word>srl</Word>
+        <Word>sla</Word>
+        <Word>sra</Word>
+        <Word>rol</Word>
+        <Word>ror</Word>
+        <Word>and</Word>
+        <Word>or</Word>
+        <Word>nand</Word>
+        <Word>nor</Word>
+        <Word>xor</Word>
+        <Word>xnor</Word>
+      </Keywords>
+
+      <Keywords fontWeight="bold"  foreground="Blue">
+        <Word>if</Word>
+        <Word>then</Word>
+        <Word>elsif</Word>
+        <Word>of</Word>
+        <Word>is</Word>
+        <Word>else</Word>
+        <Word>case</Word>
+        <Word>default</Word>
+        <Word>select</Word>
+      </Keywords>
+
+      <Keywords fontWeight="bold"  foreground="Blue">
+        <Word>while</Word>
+        <Word>for</Word>
+        <Word>loop</Word>
+        <Word>next</Word>
+        <Word>exit</Word>
+        <Word>until</Word>
+      </Keywords>
+
+      <Keywords fontWeight="bold"  foreground="Blue">
+        <Word>in</Word>
+        <Word>inout</Word>
+        <Word>buffer</Word>
+        <Word>out</Word>
+        <Word>linkage</Word>
+      </Keywords>
+
+      <Keywords foreground="Red">
+        <Word>architecture</Word>
+        <Word>entity</Word>
+        <Word>package</Word>
+        <Word>library</Word>
+        <Word>use</Word>
+        <Word>all</Word>
+        <Word>configuration</Word>
+        <Word>units</Word>
+      </Keywords>
+
+      <Keywords foreground="Navy">
+        <Word>generic</Word>
+        <Word>port</Word>
+        <Word>component</Word>
+        <Word>generate</Word>
+        <Word>body</Word>
+        <Word>begin</Word>
+        <Word>end</Word>
+        <Word>map</Word>
+        <Word>to</Word>
+        <Word>downto</Word>
+      </Keywords>
+
+      <Keywords foreground="Magenta">
+        <Word>procedure</Word>
+        <Word>process</Word>
+        <Word>function</Word>
+        <Word>return</Word>
+        <Word>group</Word>
+        <Word>block</Word>
+      </Keywords>
+
+      <Keywords foreground="DarkCyan">
+        <Word>alias</Word>
+        <Word>array</Word>
+        <Word>type</Word>
+        <Word>variable</Word>
+        <Word>constant</Word>
+        <Word>subtype</Word>
+        <Word>signal</Word>
+        <Word>file</Word>
+        <Word>null</Word>
+        <Word>attribute</Word>
+        <Word>bus</Word>
+        <Word>new</Word>
+        <Word>literal</Word>
+        <Word>label</Word>
+        <Word>record</Word>
+      </Keywords>
+
+      <Keywords  foreground="DarkCyan">
+        <Word>disconnect</Word>
+        <Word>open</Word>
+        <Word>assert</Word>
+        <Word>reject</Word>
+        <Word>register</Word>
+        <Word>report</Word>
+      </Keywords>
+    </RuleSet>
+</SyntaxDefinition>

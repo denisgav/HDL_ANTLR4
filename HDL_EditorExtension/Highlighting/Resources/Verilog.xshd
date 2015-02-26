@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<SyntaxDefinition name="Verilog" extensions=".v" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <!-- The named colors 'Comment' and 'String' are used in SharpDevelop to detect if a line is inside a multiline string/comment -->
+  <Color name="Comment" foreground="Green"/>
+  <Color name="String" foreground="Blue"/>
+  <Color name="Char" foreground="Magenta"/>
+
+    <!-- This is the main ruleset. -->
+    <RuleSet  ignoreCase="true">
+
+      <Span color="Comment">
+        <Begin>//</Begin>
+      </Span>
+
+      <Span color="Comment" multiline="true">
+        <Begin>/\*</Begin>
+        <End>\*/</End>
+      </Span>
+
+      <Span color="String">
+        <Begin>"</Begin>
+        <End>"</End>
+        <RuleSet>
+          <!-- span for escape sequences -->
+          <Span begin="\\" end="."/>
+        </RuleSet>
+      </Span>
+
+      <Keywords foreground = "DarkGreen">
+        <!--Operators-->
+        <Word>+</Word>
+        <Word>-</Word>
+        <Word>*</Word>
+        <Word>/</Word>
+        
+        <!--Relational Operators-->
+        <Word>&lt;</Word>
+        <Word>&lt;=</Word>
+        <Word>&gt;</Word>
+        <Word>&gt;=</Word>
+        <Word>==</Word>
+        <Word>!=</Word>
+        
+        <!--Bit-wise Operators-->
+        <Word>~</Word>
+        <Word>&amp;</Word>
+        <Word>|</Word>
+        <Word>^</Word>
+        <Word>~^</Word>
+        <Word>^~</Word>
+        
+        <!--Logical Operators-->
+        <Word>!</Word>
+        <Word>&amp;&amp;</Word>
+        <Word>||</Word>
+        
+        <!--Reduction Operators-->
+        <Word>&amp;</Word>
+        <Word>|</Word>
+        <Word>~&amp;</Word>
+        <Word>~|</Word>
+        <Word>~^</Word>
+        <Word>^~</Word>
+        
+        <!--Shift Operators-->
+        <Word>&lt;&lt;</Word>
+        <Word>&gt;&gt;</Word>
+        
+        <!--Conditional Operator: “?”-->
+        <Word>?</Word>
+      </Keywords>
+
+      <Keywords fontWeight="bold"  foreground="Blue">
+        <Word>always</Word>
+        <Word>assign</Word>
+        <Word>automatic</Word>
+        <Word>begin</Word>
+        <Word>case</Word>
+        <Word>casex</Word>
+        <Word>casez</Word>
+        <Word>cell</Word>
+        <Word>config</Word>
+        <Word>deassign</Word>
+        <Word>default</Word>
+        <Word>defparam</Word>
+        <Word>design</Word>
+        <Word>disable</Word>
+        <Word>edge</Word>
+        <Word>else</Word>
+        <Word>end</Word>
+        <Word>endcase</Word>
+        <Word>endconfig</Word>
+        <Word>endfunction</Word>
+        <Word>endgenerate</Word>
+        <Word>endmodule</Word>
+        <Word>endprimitive</Word>
+        <Word>endspecify</Word>
+        <Word>endtable</Word>
+        <Word>endtask</Word>
+        <Word>event</Word>
+        <Word>for</Word>
+        <Word>force</Word>
+        <Word>forever</Word>
+        <Word>fork</Word>
+        <Word>function</Word>
+        <Word>generate</Word>
+        <Word>genvar</Word>
+        <Word>if</Word>
+        <Word>ifnone</Word>
+        <Word>incdir</Word>
+        <Word>include</Word>
+        <Word>initial</Word>
+        <Word>inout</Word>
+        <Word>input</Word>
+        <Word>instance</Word>
+        <Word>join</Word>
+        <Word>liblist</Word>
+        <Word>library</Word>
+        <Word>localparam</Word>
+        <Word>macromodule</Word>
+        <Word>module</Word>
+        <Word>negedge</Word>
+        <Word>noshowcancelled</Word>
+        <Word>output</Word>
+        <Word>parameter</Word>
+        <Word>posedge</Word>
+        <Word>primitive</Word>
+        <Word>pulsestyle_ondetect</Word>
+        <Word>pulsestyle_onevent</Word>
+        <Word>reg</Word>
+        <Word>release</Word>
+        <Word>repeat</Word>
+        <Word>scalared</Word>
+        <Word>showcancelled</Word>
+        <Word>signed</Word>
+        <Word>specify</Word>
+        <Word>specparam</Word>
+        <Word>strength</Word>
+        <Word>table</Word>
+        <Word>task</Word>
+        <Word>tri</Word>
+        <Word>tri0</Word>
+        <Word>tri1</Word>
+        <Word>triand</Word>
+        <Word>wand</Word>
+        <Word>trior</Word>
+        <Word>wor</Word>
+        <Word>trireg</Word>
+        <Word>unsigned</Word>
+        <Word>use</Word>
+        <Word>vectored</Word>
+        <Word>wait</Word>
+        <Word>while</Word>
+        <Word>wire</Word>
+      </Keywords>
+    </RuleSet>
+</SyntaxDefinition>
