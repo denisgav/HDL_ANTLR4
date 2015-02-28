@@ -1,7 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-# SharpDevelop 5.0
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VHDL_ANTLR4", "VHDL_ANTLR4\VHDL_ANTLR4.csproj", "{6D59ABA1-C75B-4B44-BAAC-0FA6B2F05B5F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Verilog_ANTLR4", "Verilog_ANTLR4\Verilog_ANTLR4.csproj", "{B9810DF6-0706-4ADE-A714-F22D13ED6934}"
@@ -61,8 +60,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "Parser\Parser.csproj", "{C63CD4E0-3E9E-4F6D-B21D-B4F514015FB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDL_Light", "HDL_Light\HDL_Light.csproj", "{4F56A3C6-693C-4D4E-BD27-1A732070972F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My_Editor", "My_Editor\My_Editor.csproj", "{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.AvalonEdit", "Avalon\ICSharpCode.AvalonEdit\ICSharpCode.AvalonEdit.csproj", "{35FAEC6A-5BAC-4A6D-9B27-D7AAAE1FFC1F}"
 EndProject
@@ -564,22 +561,6 @@ Global
 		{4F56A3C6-693C-4D4E-BD27-1A732070972F}.Release|WithNRefactory.ActiveCfg = Release|x86
 		{4F56A3C6-693C-4D4E-BD27-1A732070972F}.Release|x86.ActiveCfg = Release|x86
 		{4F56A3C6-693C-4D4E-BD27-1A732070972F}.Release|x86.Build.0 = Release|x86
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Debug|Net35.ActiveCfg = Debug|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Debug|Net40.ActiveCfg = Debug|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Debug|WithNRefactory.ActiveCfg = Debug|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Release|Net35.ActiveCfg = Release|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Release|Net40.ActiveCfg = Release|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Release|WithNRefactory.ActiveCfg = Release|Any CPU
-		{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}.Release|x86.ActiveCfg = Release|Any CPU
 		{35FAEC6A-5BAC-4A6D-9B27-D7AAAE1FFC1F}.Debug|Any CPU.ActiveCfg = Debug|WithNRefactory
 		{35FAEC6A-5BAC-4A6D-9B27-D7AAAE1FFC1F}.Debug|Mixed Platforms.ActiveCfg = Debug|WithNRefactory
 		{35FAEC6A-5BAC-4A6D-9B27-D7AAAE1FFC1F}.Debug|Mixed Platforms.Build.0 = Debug|WithNRefactory

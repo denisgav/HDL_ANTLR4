@@ -54,11 +54,11 @@ namespace Schematix
                 {
                     if (window.textEditor.IsLoaded == false)
                     {
-                        window.textEditor.Loaded += new RoutedEventHandler(delegate { window.textEditor.Select(curSearchResult.Segment.Offset, curSearchResult.Segment.Length); });
+                        window.textEditor.Loaded += new RoutedEventHandler(delegate { window.textEditor.Select(curSearchResult.Segment.StartOffset, curSearchResult.Segment.Length); });
                     }
                     else
                     {
-                        window.textEditor.Select(curSearchResult.Segment.Offset, curSearchResult.Segment.Length);
+                        window.textEditor.Select(curSearchResult.Segment.StartOffset, curSearchResult.Segment.Length);
                     }
                     textSearcher.Searcher.Text = window.textEditor.Text;
                     textSearcher.Searcher.StartOffset += curSearchResult.Segment.Length;
@@ -84,11 +84,11 @@ namespace Schematix
                 {
                     if (window.textEditor.IsLoaded == false)
                     {
-                        window.textEditor.Loaded += new RoutedEventHandler(delegate { window.textEditor.Select(curSearchResult.Segment.Offset, curSearchResult.Segment.Length); });
+                        window.textEditor.Loaded += new RoutedEventHandler(delegate { window.textEditor.Select(curSearchResult.Segment.StartOffset, curSearchResult.Segment.Length); });
                     }
                     else
                     {
-                        window.textEditor.Select(curSearchResult.Segment.Offset, curSearchResult.Segment.Length);
+                        window.textEditor.Select(curSearchResult.Segment.StartOffset, curSearchResult.Segment.Length);
                     }
                     textSearcher.Searcher.Text = window.textEditor.Text;
                     textSearcher.Searcher.StartOffset += curSearchResult.Segment.Length;
@@ -111,7 +111,7 @@ namespace Schematix
                 {
                     Schematix.Windows.Code.Code window = core.MainWindow.CurrentActiveWindow as Schematix.Windows.Code.Code;
                     StringBuilder res = new StringBuilder();
-                    res.Append(window.textEditor.Text.Substring(0, curSearchResult.Segment.Offset));
+                    res.Append(window.textEditor.Text.Substring(0, curSearchResult.Segment.StartOffset));
                     res.Append(ComboboxQuickReplace.Text);
                     res.Append(window.textEditor.Text.Substring(curSearchResult.Segment.EndOffset));
                     window.textEditor.Text = res.ToString();
@@ -139,7 +139,7 @@ namespace Schematix
                         {
                             window.textEditor.Loaded += new RoutedEventHandler(delegate {
                                 StringBuilder res = new StringBuilder();
-                                res.Append(window.textEditor.Text.Substring(0, curSearchResult.Segment.Offset));
+                                res.Append(window.textEditor.Text.Substring(0, curSearchResult.Segment.StartOffset));
                                 res.Append(ComboboxQuickReplace.Text);
                                 res.Append(window.textEditor.Text.Substring(curSearchResult.Segment.EndOffset));
                                 window.textEditor.Text = res.ToString();
@@ -150,7 +150,7 @@ namespace Schematix
                         else
                         {
                             StringBuilder res = new StringBuilder();
-                            res.Append(window.textEditor.Text.Substring(0, curSearchResult.Segment.Offset));
+                            res.Append(window.textEditor.Text.Substring(0, curSearchResult.Segment.StartOffset));
                             res.Append(ComboboxQuickReplace.Text);
                             res.Append(window.textEditor.Text.Substring(curSearchResult.Segment.EndOffset));
                             window.textEditor.Text = res.ToString();

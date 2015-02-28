@@ -622,14 +622,14 @@ namespace Schematix
                     {
                         window.textEditor.Loaded += new RoutedEventHandler(delegate
                             {
-                                window.textEditor.Select(curSearchResult.Segment.Offset, curSearchResult.Segment.Length);
+                                window.textEditor.Select(curSearchResult.Segment.StartOffset, curSearchResult.Segment.Length);
                                 window.IsActive = false;
                                 SearchBox.Focus();
                             });
                     }
                     else
                     {
-                        window.textEditor.Select(curSearchResult.Segment.Offset, curSearchResult.Segment.Length);
+                        window.textEditor.Select(curSearchResult.Segment.StartOffset, curSearchResult.Segment.Length);
                         window.IsActive = false;
                         SearchBox.Focus();
                     }

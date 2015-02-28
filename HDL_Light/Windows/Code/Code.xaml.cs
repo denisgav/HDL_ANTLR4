@@ -10,9 +10,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using My_Editor.Folding;
 using System.ComponentModel;
-using My_Editor.Highlighting;
+using ICSharpCode.AvalonEdit.Folding;
+using HDL_EditorExtension.Folding;
+using ICSharpCode.AvalonEdit.Highlighting;
 
 namespace Schematix.Windows.Code
 {
@@ -387,7 +388,7 @@ namespace Schematix.Windows.Code
         public void SetPosition(int line, int position)
         {
             textEditor.Select(line, position);
-            My_Editor.Document.DocumentLine doc_line = textEditor.TextArea.Document.GetLineByNumber(line);
+            ICSharpCode.AvalonEdit.Document.DocumentLine doc_line = textEditor.TextArea.Document.GetLineByNumber(line);
             textEditor.CaretOffset = doc_line.Offset + position;
             textEditor.ScrollTo(line, position);
         }

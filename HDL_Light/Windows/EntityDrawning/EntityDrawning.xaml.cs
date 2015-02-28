@@ -10,9 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using My_Editor.Folding;
 using System.ComponentModel;
-using My_Editor.Highlighting;
 using Schematix.EntityDrawning;
 using Microsoft.Win32;
 

@@ -14,9 +14,9 @@ namespace Schematix
         public bool MatchCase { get; set; }
         public bool SearchUp { get; set; }
 
-        public virtual My_Editor.Document.ISegment FindNext()
+        public virtual ICSharpCode.AvalonEdit.Document.TextSegment FindNext()
         {
-            return new My_Editor.Document.TextSegment();
+            return new ICSharpCode.AvalonEdit.Document.TextSegment();
         }
         protected virtual Regex CreateRegularExpression()
         {

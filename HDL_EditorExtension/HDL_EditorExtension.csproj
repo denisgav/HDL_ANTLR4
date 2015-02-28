@@ -89,6 +89,7 @@
     <Compile Include="Lexter\Exception_Information.cs" />
     <Compile Include="Lexter\VHDL\VHDL_Lexter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextEditorExtention.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Avalon\ICSharpCode.AvalonEdit\ICSharpCode.AvalonEdit.csproj">

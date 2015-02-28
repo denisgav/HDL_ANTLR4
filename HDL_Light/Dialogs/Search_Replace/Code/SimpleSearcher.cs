@@ -13,7 +13,7 @@ namespace Schematix
         {
         }
 
-        public override My_Editor.Document.ISegment FindNext()
+        public override ICSharpCode.AvalonEdit.Document.TextSegment FindNext()
         {
             if (base.SearchUp == false)
                 return Next();
@@ -21,9 +21,9 @@ namespace Schematix
                 return Previous();
         }
 
-        private My_Editor.Document.ISegment Next()
+        private ICSharpCode.AvalonEdit.Document.TextSegment Next()
         {
-            My_Editor.Document.TextSegment res = new My_Editor.Document.TextSegment();
+            ICSharpCode.AvalonEdit.Document.TextSegment res = new ICSharpCode.AvalonEdit.Document.TextSegment();
             Regex pattern = CreateRegularExpression();
             foreach (Match m in pattern.Matches(Text))
                 if ((m.Success) && (StartOffset <= m.Index))
@@ -36,9 +36,9 @@ namespace Schematix
             return res;
         }
 
-        private My_Editor.Document.ISegment Previous()
+        private ICSharpCode.AvalonEdit.Document.TextSegment Previous()
         {
-            My_Editor.Document.TextSegment res = new My_Editor.Document.TextSegment();
+            ICSharpCode.AvalonEdit.Document.TextSegment res = new ICSharpCode.AvalonEdit.Document.TextSegment();
             Regex pattern = CreateRegularExpression();
             foreach (Match m in pattern.Matches(Text))
                 if ((m.Success) && (StartOffset >= (m.Index + m.Length)))

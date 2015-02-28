@@ -148,7 +148,7 @@ namespace Schematix.Dialogs.Search_Replace.Code
 
         private IEnumerable<SearchResult> FoundedSequence(SearchType searchType)
         {
-            My_Editor.Document.ISegment segment;
+            ICSharpCode.AvalonEdit.Document.TextSegment segment;
             List<SearchSource> files = FileEnumerator(searchType).ToList();
             foreach (SearchSource file in files)
             {
@@ -215,7 +215,7 @@ namespace Schematix.Dialogs.Search_Replace.Code
             }
             else
             {
-                My_Editor.Document.ISegment segment = searcher.FindNext();
+                ICSharpCode.AvalonEdit.Document.TextSegment segment = searcher.FindNext();
                 searcher.StartOffset += segment.Length;
                 while (segment.Length == 0)
                 {
@@ -256,13 +256,13 @@ namespace Schematix.Dialogs.Search_Replace.Code
             get { return code;}
         }
 
-        private My_Editor.Document.ISegment segment;
-        public My_Editor.Document.ISegment Segment
+        private ICSharpCode.AvalonEdit.Document.TextSegment segment;
+        public ICSharpCode.AvalonEdit.Document.TextSegment Segment
         {
             get {return segment;}
         }
 
-        public SearchResult(SearchSource code, My_Editor.Document.ISegment segment)
+        public SearchResult(SearchSource code, ICSharpCode.AvalonEdit.Document.TextSegment segment)
         {
             this.code = code;
             this.segment = segment;
