@@ -21,6 +21,7 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Indentation;
 using ICSharpCode.AvalonEdit.Indentation.CSharp;
 using HDL_EditorExtension.Editing;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 
 
 namespace HDL_EditorExtension
@@ -42,6 +43,7 @@ namespace HDL_EditorExtension
             FilePath = filePath;
 		}
 
+
         /// <summary>
         /// Creates a new TextEditor instance.
         /// </summary>
@@ -56,8 +58,11 @@ namespace HDL_EditorExtension
         protected TextEditorExtention(TextArea textArea)
             : base(textArea)
 		{
+            this.PreviewKeyDown += new KeyEventHandler(TextEditorExtention_PreviewKeyDown);
 		}
 		#endregion
+
+        CompletionWindow completionWindow;
 
         /// <summary>
         /// Компилятор, используемый для текущего документа
@@ -242,6 +247,19 @@ namespace HDL_EditorExtension
             }
             
         }
+
+        void TextEditorExtention_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if((e.Key == Key.Space) && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+            {
+                if ((Lexter != null) && (Lexter.CodeCompletionList != null))
+                {
+                    Lexter.CodeCompletionList.Show();
+                    e.Handled = true;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Путь к текущему файлу

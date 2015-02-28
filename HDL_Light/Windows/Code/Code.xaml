@@ -70,6 +70,17 @@
             </Grid.RowDefinitions>
 
             <lib:TextEditorExtention Name="textEditor" FontFamily="Consolas" FontSize="10pt" SyntaxHighlighting="VHDL" Grid.Column="0" Grid.Row="0" PreviewKeyUp="textEditor_PreviewKeyUp" PreviewMouseDown="textEditor_PreviewMouseDown" Focusable="True" Loaded="textEditor_Loaded">
+                <lib:TextEditorExtention.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Cut" Command="Cut"></MenuItem>
+                        <MenuItem Header="Copy" Command="Copy"></MenuItem>
+                        <MenuItem Header="Paste" Command="Paste"></MenuItem>
+                        <Separator></Separator>
+                        <MenuItem Header="Undo" Command="Undo"></MenuItem>
+                        <MenuItem Header="ReDo" Command="Redo"></MenuItem>
+                        <Separator></Separator>
+                    </ContextMenu>
+                </lib:TextEditorExtention.ContextMenu>
             </lib:TextEditorExtention>
 
             <StatusBar Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" x:Name="StatusBarMain">
