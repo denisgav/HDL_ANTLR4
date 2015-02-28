@@ -4,14 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
+
 using Schematix.Core.Compiler;
 using Schematix.Core.Model;
+
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
-using HDL_EditorExtension.Folding;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Indentation;
-using My_Editor.CodeCompletion;
+
+using HDL_EditorExtension.CodeCompletion;
+using HDL_EditorExtension.Folding;
 
 namespace HDL_EditorExtension.Lexter
 {

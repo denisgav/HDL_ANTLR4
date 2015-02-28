@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using VHDL;
-using Antlr4.Runtime;
 using System;
 using System.Windows;
-using My_Editor.CodeCompletion;
-using HDL_EditorExtension.Lexter;
+
+using VHDL;
+using Antlr4.Runtime;
+
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.CodeCompletion;
+
+using HDL_EditorExtension.CodeCompletion;
+using HDL_EditorExtension.Lexter;
+
 
 namespace HDL_EditorExtension.CodeCompletion
 {

@@ -75,6 +75,8 @@
     <Compile Include="CodeCompletion\CodeCompletionList\VHDLCodeCompletionList.cs" />
     <Compile Include="CodeCompletion\CompletionListItem.cs" />
     <Compile Include="CodeCompletion\MyCompletionData.cs" />
+    <Compile Include="Editing\Clorizer\VHDL_ErrorColorizer.cs" />
+    <Compile Include="Editing\Clorizer\VHDL_WarningColorizer.cs.cs" />
     <Compile Include="Folding\FoldingStrategy\AbstractFoldingStrategy.cs" />
     <Compile Include="Folding\FoldingStrategy\BraceFoldingStrategy.cs" />
     <Compile Include="Folding\FoldingStrategy\VerilogFoldingStrategy.cs" />

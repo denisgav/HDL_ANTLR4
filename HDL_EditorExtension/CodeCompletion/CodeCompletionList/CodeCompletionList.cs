@@ -6,7 +6,7 @@ using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Editing;
 using HDL_EditorExtension.CodeCompletion;
 
-namespace My_Editor.CodeCompletion
+namespace HDL_EditorExtension.CodeCompletion
 {
     /// <summary>
     /// test

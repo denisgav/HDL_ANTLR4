@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Threading;
+
 using ICSharpCode.AvalonEdit;
-using HDL_EditorExtension.Folding;
 using ICSharpCode.AvalonEdit.Indentation;
 using ICSharpCode.AvalonEdit.CodeCompletion;
-using My_Editor.CodeCompletion;
+
+using HDL_EditorExtension.CodeCompletion;
+using HDL_EditorExtension.Folding;
 
 namespace HDL_EditorExtension.Lexter
 {

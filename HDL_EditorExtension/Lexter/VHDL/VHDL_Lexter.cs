@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+
+using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Indentation;
+using ICSharpCode.AvalonEdit.CodeCompletion;
+using ICSharpCode.AvalonEdit.Document;
+
+using HDL_EditorExtension.Folding;
+using HDL_EditorExtension.CodeCompletion;
+using HDL_EditorExtension.CodeCompletion;
+
 using VHDL;
 using VHDL.parser;
 using VHDL.parser.util;
 using VHDL.statement;
-using Schematix.Core.Compiler;
-using Schematix.Core.Model;
 using VHDL.annotation;
+
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using ICSharpCode.AvalonEdit;
-using ICSharpCode.AvalonEdit.Indentation;
-using HDL_EditorExtension.Folding;
-using HDL_EditorExtension.CodeCompletion;
-using ICSharpCode.AvalonEdit.CodeCompletion;
-using ICSharpCode.AvalonEdit.Document;
-using My_Editor.CodeCompletion;
+
+using Schematix.Core.Compiler;
+using Schematix.Core.Model;
+
 
 namespace HDL_EditorExtension.Lexter
 {
@@ -92,10 +98,13 @@ namespace HDL_EditorExtension.Lexter
             get { return codeFile; }
         }
 
-        public VHDL_Lexter(TextEditor textEditor)
+        private TextEditorExtention extendedTextEditor;
+
+        public VHDL_Lexter(TextEditorExtention textEditor)
             : base(textEditor)
         {
             UpdateCompiler();
+            this.extendedTextEditor = textEditor;
         }
 
         protected override void UpdateCompiler()
@@ -113,16 +122,15 @@ namespace HDL_EditorExtension.Lexter
 
         public override void Update(string text)
         {
-            /*
             if ((Compiler != null) && (Compiler is VHDLCompiler))
             {
                 VHDLCompiler compiler = Compiler as VHDLCompiler;
                 ErrorList.Clear();
 
-                codeFile = compiler.GetFileByPath(textEditor.FilePath) as VHDL_CodeFile;
+                codeFile = compiler.GetFileByPath(extendedTextEditor.FilePath) as VHDL_CodeFile;
                 if (codeFile == null)
                 {
-                    codeFile = compiler.AddCodeFile(textEditor.FilePath) as VHDL_CodeFile;
+                    codeFile = compiler.AddCodeFile(extendedTextEditor.FilePath) as VHDL_CodeFile;
                 }
                 if (codeFile != null)
                 {
@@ -133,31 +141,29 @@ namespace HDL_EditorExtension.Lexter
                     tokenStream = codeFile.TokenStream;
                     tree = codeFile.Tree;
 
-                    if (codeFile.SyntaxErrors != null)
+                    if (codeFile.ParseSyntaxException != null)
                     {
-                        foreach (RecognitionException err in codeFile.SyntaxErrors.Errors)
-                        {
-                            int offset = err.Token.StartIndex;
-                            int length = err.Token.StopIndex - offset + 1;
-                            Exception_Information inf = new Exception_Information(offset, length, VhdlParser.errorToMessage(err));
+                        //foreach (RecognitionException err in codeFile.SyntaxErrors.Errors)
+                        //{
+                            int offset = codeFile.ParseSyntaxException.OffendingSymbol.StartIndex;
+                            int length = codeFile.ParseSyntaxException.OffendingSymbol.StopIndex - offset + 1;
+                            Exception_Information inf = new Exception_Information(offset, length, codeFile.ParseSyntaxException.Message);
                             ErrorList.Add(inf);
-                        }
+                        //}
                     }
-                    if (codeFile.SemanticErrors != null)
+                    if (codeFile.ParseSemanticException != null)
                     {
-                        foreach (ParseError err in codeFile.SemanticErrors.Errors)
-                        {
-                            PositionInformation pos = err.getPosition();
-                            int offset = pos.getBegin().getIndex();
-                            int length = pos.getEnd().getIndex() - offset + 1;
-                            Exception_Information inf = new Exception_Information(offset, length, VhdlParser.errorToMessage(err));
+                        //foreach (ParseError err in codeFile.SemanticErrors.Errors)
+                        //{
+                            int offset = codeFile.ParseSemanticException.Context.Start.StartIndex;
+                            int length = codeFile.ParseSemanticException.Context.Start.StopIndex - offset + 1;
+                            Exception_Information inf = new Exception_Information(offset, length, codeFile.ParseSemanticException.Message);
                             ErrorList.Add(inf);
-                        }
+                        //}
                     }
                     
                 }
             }
-            */
         }
 
         public override UIElement GetDefinitionForWord(int Offset, string text)
@@ -182,7 +188,7 @@ namespace HDL_EditorExtension.Lexter
             {
                 return indentationStrategy;
             }
-            set
+            set 
             {
                 indentationStrategy = value;
             }

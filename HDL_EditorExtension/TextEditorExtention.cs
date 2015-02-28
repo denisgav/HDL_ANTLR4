@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
+using System.Windows;
+
+using Schematix.Core.Compiler;
+
+using HDL_EditorExtension.Lexter;
+using HDL_EditorExtension.Folding;
+using HDL_EditorExtension.Indentation.Verilog;
+using HDL_EditorExtension.Highlighting;
+using HDL_EditorExtension.CodeCompletion;
+
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Editing;
-using Schematix.Core.Compiler;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.NRefactory;
 using ICSharpCode.AvalonEdit.Highlighting;
-using HDL_EditorExtension.Lexter;
-using System.Windows.Input;
-using System.Windows;
-using HDL_EditorExtension.Folding;
 using ICSharpCode.AvalonEdit.Indentation;
-using My_Editor.CodeCompletion;
 using ICSharpCode.AvalonEdit.Indentation.CSharp;
-using HDL_EditorExtension.Indentation.Verilog;
-using HDL_EditorExtension.Highlighting;
+using HDL_EditorExtension.Editing;
+
 
 namespace HDL_EditorExtension
 {
@@ -221,6 +226,8 @@ namespace HDL_EditorExtension
                     if (Lexter != null)
                         Lexter.Dispose();
                     Lexter = new VHDL_Lexter(this);
+                    TextArea.TextView.LineTransformers.Add(new VHDL_ErrorColorizer(Lexter as VHDL_Lexter));
+                    TextArea.TextView.LineTransformers.Add(new VHDL_WarningColorizer(Lexter as VHDL_Lexter));
                     break;
                 case "Verilog":
                     if (Lexter != null)
