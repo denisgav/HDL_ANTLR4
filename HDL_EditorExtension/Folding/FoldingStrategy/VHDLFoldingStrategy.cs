@@ -32,48 +32,51 @@ namespace HDL_EditorExtension.Folding
         /// </summary>
         public IEnumerable<NewFolding> CreateNewFoldings(TextDocument document)
         {
-            //throw new NotSupportedException();
-            /*
-            if ((lexter.Tree != null) && (lexter.TokenStream != null))
+            if (lexter.Tree != null)
             {
-                List<NewFolding> newFoldings = new List<NewFolding>();
-                CommonTreeNodeStream nodes = new CommonTreeNodeStream(lexter.Tree.Tree);
-                nodes.TokenStream = lexter.TokenStream;
+                List<NewFolding> newFoldings = new List<NewFolding>(){ };
 
-                object o = null;
-                nodes.Reset();
-                do
-                {
-                    o = nodes.NextElement();
-                    if (o is CommonTree)
-                    {
-                        CommonTree elem = o as CommonTree;
-                        if (IsTreeElementToFolding(elem) && (elem.Token != null))
-                        {
-                            IToken tokenStart = lexter.TokenStream.Get(elem.TokenStartIndex);
-                            IToken tokenEnd = lexter.TokenStream.Get(elem.TokenStopIndex);
-                            if ((tokenStart != null) && (tokenEnd != null) && (tokenStart != tokenEnd) && (tokenEnd.StopIndex > tokenStart.StartIndex))
-                            {
-                                NewFolding folding = new NewFolding(tokenStart.StartIndex, tokenEnd.StopIndex);
-                                folding.Name = elem.Text;
-                                newFoldings.Add(folding);
-                            }
-                        }
-                    }
-                }
-                while(nodes.IsEndOfFile(o) == false);
+                newFoldings.AddRange(CreateNewFoldings(lexter.Tree));
 
                 newFoldings.Sort((f1, f2) => f1.StartOffset.CompareTo(f2.StartOffset));
                 return newFoldings;
             }
-            */
             return new List<NewFolding>();
         }
 
-        private bool IsTreeElementToFolding(ITree t)
+        
+        public IEnumerable<NewFolding> CreateNewFoldings(IParseTree tree)
         {
+            List<NewFolding> res = new List<NewFolding>();
+            ParserRuleContext rc = tree as ParserRuleContext;
+            if(rc == null)
+                return res;
+
+            if (IsTreeElementToFolding(tree))
+            {
+                IToken tokenStart = rc.Start;
+                IToken tokenEnd = rc.Stop;
+                if ((tokenStart != null) && (tokenEnd != null) && (tokenStart != tokenEnd) && (tokenEnd.StopIndex > tokenStart.StartIndex))
+                {
+                    NewFolding folding = new NewFolding(tokenStart.StartIndex, tokenEnd.StopIndex);
+                    folding.Name = tree.GetText();
+                    res.Add(folding);
+                }
+            }
+
+            for (int i = 0; i < rc.ChildCount; i++)
+            {
+                res.AddRange(CreateNewFoldings(rc.GetChild(i)));
+            }
+
+            return res;
+        }
+
+        private bool IsTreeElementToFolding(IParseTree t)
+        {
+            string text = t.GetText().ToLower();
             foreach(string s in Tree_Type_To_Folding)
-                if(s.Equals(t.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                if(text.Contains(s))
                     return true;
             return false;
         }
