@@ -11,7 +11,16 @@ namespace HDL_EditorExtension.Highlighting
 {
     public sealed class ExtendedHighlightingManager : HighlightingManager
     {
-        public new static readonly ExtendedHighlightingManager Instance = new ExtendedHighlightingManager();
+        private static ExtendedHighlightingManager instance;
+        public static ExtendedHighlightingManager Instance
+        {
+            get 
+            {
+                if (instance == null)
+                    instance = new ExtendedHighlightingManager();
+                return instance;
+            }
+        }
 
         public ExtendedHighlightingManager()
         {

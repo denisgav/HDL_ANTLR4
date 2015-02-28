@@ -81,7 +81,7 @@
     <Compile Include="Folding\FoldingStrategy\VHDLFoldingStrategy.cs" />
     <Compile Include="Folding\FoldingStrategy\XmlFoldingStrategy.cs" />
     <Compile Include="Highlighting\ExtendedHighlightingManager.cs" />
-    <Compile Include="Highlighting\Resources\ExtentionResources.cs" />
+    <Compile Include="Highlighting\ExtentionResources\ExtentionResources.cs" />
     <Compile Include="Indentation\Verilog\VerilogIndentionStrategy.cs" />
     <Compile Include="Indentation\VHDL\VHDLIndentationStrategy.cs" />
     <Compile Include="Lexter\AbstractLexter.cs" />
@@ -110,10 +110,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Highlighting\Resources\Verilog.xshd" />
+    <EmbeddedResource Include="Highlighting\ExtentionResources\Verilog.xshd" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Highlighting\Resources\VHDL.xshd" />
+    <EmbeddedResource Include="Highlighting\ExtentionResources\VHDL.xshd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

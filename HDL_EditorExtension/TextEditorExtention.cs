@@ -8,6 +8,15 @@ using Schematix.Core.Compiler;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.NRefactory;
 using ICSharpCode.AvalonEdit.Highlighting;
+using HDL_EditorExtension.Lexter;
+using System.Windows.Input;
+using System.Windows;
+using HDL_EditorExtension.Folding;
+using ICSharpCode.AvalonEdit.Indentation;
+using My_Editor.CodeCompletion;
+using ICSharpCode.AvalonEdit.Indentation.CSharp;
+using HDL_EditorExtension.Indentation.Verilog;
+using HDL_EditorExtension.Highlighting;
 
 namespace HDL_EditorExtension
 {
@@ -16,6 +25,7 @@ namespace HDL_EditorExtension
         #region Constructors
 		static TextEditorExtention()
 		{
+            ExtentionResources.RegisterBuiltInHighlightings(ExtendedHighlightingManager.Instance);
 		}
 		
 		/// <summary>
@@ -51,15 +61,15 @@ namespace HDL_EditorExtension
         {
             get 
             {
-                throw new NotSupportedException();
-                //return TextArea.Lexter.Compiler; 
+                return Lexter.Compiler; 
             }
             set 
             {
-                throw new NotSupportedException();
-                //TextArea.Lexter.Compiler = value; 
+                Lexter.Compiler = value; 
             }
         }
+
+        public AbstractLexter Lexter { get; set; }
 
         private string CommentString
         {
@@ -184,45 +194,46 @@ namespace HDL_EditorExtension
             SyntaxHighlighting = HighlightingManager.Instance.GetDefinition(highlitingName);
             if (SyntaxHighlighting == null)
             {
-                //if (TextArea.Lexter != null)
-                //    TextArea.Lexter.FoldingStrategy = null;
-            }
-            else
-            {
-                /*
-                switch (highlitingName)
+                SyntaxHighlighting = ExtendedHighlightingManager.Instance.GetDefinition(highlitingName);
+                if (SyntaxHighlighting == null)
                 {
-                    case "XML":
-                        if (TextArea.Lexter != null)
-                            TextArea.Lexter.Dispose();
-                        TextArea.Lexter = new CustomLexter(this, new XmlFoldingStrategy(), new DefaultIndentationStrategy(), new CodeCompletionList(textArea));
-                        break;
-                    case "C#":
-                    case "C++":
-                    case "PHP":
-                    case "Java":
-                        if (TextArea.Lexter != null)
-                            TextArea.Lexter.Dispose();
-                        TextArea.Lexter = new CustomLexter(this, new BraceFoldingStrategy(), new CSharpIndentationStrategy(Options), new CodeCompletionList(textArea));
-                        break;
-                    case "VHDL":
-                        if (TextArea.Lexter != null)
-                            TextArea.Lexter.Dispose();
-                        TextArea.Lexter = new VHDL_Lexter(this);
-                        break;
-                    case "Verilog":
-                        if (TextArea.Lexter != null)
-                            TextArea.Lexter.Dispose();
-                        TextArea.Lexter = new CustomLexter(this, new VerilogFoldingStrategy(), new VerilogIndentionStrategy(), new CodeCompletionList(textArea));
-                        break;
-                    default:
-                        if (TextArea.Lexter != null)
-                            TextArea.Lexter.Dispose();
-                        TextArea.Lexter = new My_Editor.Lexter.CustomLexter(this, null, new DefaultIndentationStrategy(), new CodeCompletionList(textArea));
-                        break;
-                } 
-                */
+                    if (Lexter != null)
+                        Lexter.FoldingStrategy = null;
+                }
             }
+            
+            switch (highlitingName)
+            {
+                case "XML":
+                    if (Lexter != null)
+                        Lexter.Dispose();
+                    Lexter = new CustomLexter(this, new XmlFoldingStrategy(), new DefaultIndentationStrategy(), new CodeCompletionList(TextArea));
+                    break;
+                case "C#":
+                case "C++":
+                case "PHP":
+                case "Java":
+                    if (Lexter != null)
+                        Lexter.Dispose();
+                    Lexter = new CustomLexter(this, new BraceFoldingStrategy(), new CSharpIndentationStrategy(Options), new CodeCompletionList(TextArea));
+                    break;
+                case "VHDL":
+                    if (Lexter != null)
+                        Lexter.Dispose();
+                    Lexter = new VHDL_Lexter(this);
+                    break;
+                case "Verilog":
+                    if (Lexter != null)
+                        Lexter.Dispose();
+                    Lexter = new CustomLexter(this, new VerilogFoldingStrategy(), new VerilogIndentionStrategy(), new CodeCompletionList(TextArea));
+                    break;
+                default:
+                    if (Lexter != null)
+                        Lexter.Dispose();
+                    Lexter = new CustomLexter(this, null, new DefaultIndentationStrategy(), new CodeCompletionList(TextArea));
+                    break;
+            }
+            
         }
 
         /// <summary>
@@ -235,8 +246,8 @@ namespace HDL_EditorExtension
         /// </summary>
         public void DisposeLexter()
         {
-            //if (textArea.Lexter != null)
-            //    textArea.Lexter.Dispose();
+            if (Lexter != null)
+                Lexter.Dispose();
         }
     }
 }
