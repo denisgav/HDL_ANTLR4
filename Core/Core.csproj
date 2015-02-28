@@ -63,15 +63,15 @@
     <Compile Include="Compiler\GHDL\LibraryParser\GHDLParsedArchitecture.cs" />
     <Compile Include="Compiler\GHDL\LibraryParser\GHDLParsedHead.cs" />
     <Compile Include="Compiler\VHDL\VHDLCompiler.cs" />
-    <Compile Include="csx\generic.cs" />
+    <Compile Include="schema\generic.cs" />
     <Compile Include="ModelingLanguage.cs" />
     <Compile Include="Model\CodeFile.cs" />
     <Compile Include="Model\VHDL_CodeFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Modules\Verilog_Module.cs" />
-    <Compile Include="csx\vhdEntity.cs" />
+    <Compile Include="schema\vhdEntity.cs" />
     <Compile Include="Modules\VHDL_Module.cs" />
-    <Compile Include="csx\vhdPort.cs" />
+    <Compile Include="schema\vhdPort.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\log4net\log4net.csproj">
