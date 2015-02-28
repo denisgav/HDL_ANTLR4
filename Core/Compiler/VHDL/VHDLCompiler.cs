@@ -16,13 +16,35 @@ using Schematix.Core.UserControls;
 using Schematix.Core.Model;
 using Schematix.Waveform;
 using VHDL.ParseError;
+using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
+using VHDL_ANTLR4;
 
 namespace Schematix.Core.Compiler
 {
     public class VHDLCompiler : AbstractCompiler
     {
         #region Parsing settings
-        Exception exception = null;
+        private vhdlParseException parseSyntaxException;
+        public vhdlParseException ParseSyntaxException
+        {
+            get { return parseSyntaxException; }
+            set { parseSyntaxException = value; }
+        }
+        private vhdlSemanticException parseSemanticException;
+        public vhdlSemanticException ParseSemanticException
+        {
+            get { return parseSemanticException; }
+            set { parseSemanticException = value; }
+        }        
+        private Exception parseException;
+        public Exception ParseException
+        {
+            get { return parseException; }
+            set { parseException = value; }
+        }
+        
+        
 
         private VhdlParserSettings settings;
         public VhdlParserSettings Settings
@@ -68,20 +90,6 @@ namespace Schematix.Core.Compiler
             return newCode;
         }
 
-        /// <summary>
-        /// Определить обьект класса LibraryDeclarativeRegion по пути к файлу
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        private LibraryDeclarativeRegion GetLibraryForFile(string filePath)
-        {
-            DirectoryInfo dir = Directory.GetParent(filePath);
-            string libraryName = dir.Name;
-            if (dir.FullName.Contains(SourceDirectory))
-                return currentLibrary;
-            else
-                return this.libraryManager.GetLibrary(libraryName);
-        }
 
         /// <summary>
         /// Удаление файла с кодом с проекта
@@ -389,8 +397,27 @@ namespace Schematix.Core.Compiler
         }
 
 
-        /*
+        
         #region Parsing methods
+
+        private void ShowErrorMessages()
+        {
+            if (parseSyntaxException != null)
+            {
+                Console.WriteLine(parseSyntaxException.Message);
+                messages.Add(new DiagnosticMessage(parseSyntaxException.Message, new SourcePosition(parseSyntaxException.FilePath, parseSyntaxException.Line, parseSyntaxException.CharPositionInLine), MessageWindow.MessageType.Error));
+            }
+            if (parseSemanticException != null)
+            {
+                Console.WriteLine(parseSemanticException.Message);
+                messages.Add(new DiagnosticMessage(parseSemanticException.Message, new SourcePosition(parseSemanticException.FileName, parseSemanticException.Context.Start.Line, parseSemanticException.Context.Start.Column), MessageWindow.MessageType.Error));
+            }
+            if (parseException != null)
+            {
+                messages.Add(new DiagnosticMessage(parseException.Message, false));
+            }
+        }
+
         /// <summary>
         /// Распарсить входной поток
         /// </summary>
@@ -399,88 +426,49 @@ namespace Schematix.Core.Compiler
         /// <param name="tokenStream"></param>
         /// <param name="tree"></param>
         /// <returns></returns>
-        private VhdlFile Parse(ICharStream stream, LibraryDeclarativeRegion libraryScope, out CommonTokenStream tokenStream, out AstParserRuleReturnScope<CommonTree, IToken> tree)
+        private VhdlFile Parse(ICharStream stream, LibraryDeclarativeRegion libraryScope, out CommonTokenStream tokenStream, out IParseTree tree)
         {
+            VhdlFile res = null;
+            file = null;
+            tree = null;
+            tokenStream = null;
             lock (this)
             {
-                file = null;
-                tree = null;
-                tokenStream = null;
-                syntaxErrors = null;
-                semanticErrors = null;
-                exception = null;
-
                 try
-                {
-                    //Процесс обработки текста
-                    VhdlAntlrLexer lexer = new VhdlAntlrLexer(stream);
-                    CommonTokenStream ts = new CommonTokenStream(lexer);
+                {                    
+                    vhdlLexer lexer = new vhdlLexer(stream);
 
-                    VhdlAntlrParser parser = new VhdlAntlrParser(ts);
-                    parser.TreeAdaptor = new VHDL.parser.VhdlParser.TreeAdaptorWithoutErrorNodes();
+                    tokenStream = new CommonTokenStream(lexer);
+                    vhdlParser parser = new vhdlParser(tokenStream);
 
-                    AstParserRuleReturnScope<CommonTree, IToken> result;
-                    try
-                    {
-                        result = parser.design_file();
-                        tree = result;
-                        tokenStream = ts;
-                    }
-                    catch (RecognitionException ex)
-                    {
-                        throw new VhdlParserException(ex.Message);
-                    }
+                    //--------------------------------------------
+                    //Optional - add listener
+                    //vhdlListener listener = new vhdlListener();
+                    //parser.AddParseListener(listener);
+                    //--------------------------------------------
+                    vhdlSemanticErrorListener vhdlSemanticErrorListener = new vhdlSemanticErrorListener(stream.SourceName);
+                    parser.AddErrorListener(vhdlSemanticErrorListener);
 
-                    if (parser.Errors.Count != 0)
-                    {
-                        syntaxErrors = new SyntaxExceptionScope("Parsing failed", parser.Errors);
-                    }
-
-                    CommonTreeNodeStream nodes = new CommonTreeNodeStream(result.Tree);
-                    nodes.TokenStream = ts;
-
-                    MetaClassCreator mcc = new MetaClassCreator(nodes, settings, rootScope, libraryScope) { FileName = stream.SourceName };
-                    if (stream is CaseInsensitiveStringStream)
-                    {
-                        mcc.FileName = (stream as CaseInsensitiveStringStream).FileName;
-                    }
-
-                    try
-                    {
-                        file = mcc.design_file();
-                    }
-                    catch (RecognitionException ex)
-                    {
-                        throw new VhdlParserException(ex.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        exception = ex;
-                    }
-
-                    if (mcc.getErrors().Count != 0)
-                    {
-                        List<ParseError> errors = mcc.getErrors();
-                        semanticErrors = new SemanticExceptionScope("Parsing Failed", errors);
-                    }
-
-                    return file;
+                    tree = parser.design_file();
+                    //Console.WriteLine(tree.ToStringTree(parser));
+                    vhdlVisitor visitor = new vhdlVisitor(settings, rootScope, libraryScope, libraryManager) { FileName = stream.SourceName };
+                    res = visitor.Visit(tree) as VhdlFile;
                 }
-                catch (SyntaxExceptionScope ex)
+                catch (vhdlSemanticException ex)
                 {
-                    syntaxErrors.Errors.AddRange(ex.Errors);
+                    parseSemanticException = ex;
                 }
-                catch (SemanticExceptionScope ex)
+                catch (vhdlParseException ex)
                 {
-                    semanticErrors.Errors.AddRange(ex.Errors);
+                    parseSyntaxException = ex;
                 }
                 catch (Exception ex)
                 {
-                    exception = ex;
+                    parseException = ex;
                 }
-
-                return file;
             }
+            ShowErrorMessages();
+            return res;
         }
 
         /// <summary>
@@ -490,13 +478,14 @@ namespace Schematix.Core.Compiler
         /// <param name="tokenStream"></param>
         /// <param name="tree"></param>
         /// <returns></returns>
-        public VhdlFile ParseFile(string filePath, out CommonTokenStream tokenStream, out AstParserRuleReturnScope<CommonTree, IToken> tree)
+        public VhdlFile ParseFile(string filePath, out CommonTokenStream tokenStream, out IParseTree tree)
         {
+            VhdlFile file = null;
             lock (this)
             {
                 if (File.Exists(filePath) == false)
                 {
-                    exception = new Exception(string.Format("File {0} not found", filePath));
+                    parseException = new Exception(string.Format("File {0} not found", filePath));
                     tree = null;
                     tokenStream = null;
                     return null;
@@ -505,31 +494,9 @@ namespace Schematix.Core.Compiler
                 LibraryDeclarativeRegion libraryScope = GetLibraryForFile(filePath);
                 // Start process
                 ICharStream stream = new CaseInsensitiveFileStream(filePath);
-                VhdlFile file = Parse(stream, libraryScope, out tokenStream, out tree);
-
-                if (syntaxErrors != null)
-                {
-                    Console.WriteLine(syntaxErrors.Message);
-                    messages.Add(new DiagnosticMessage(syntaxErrors.Message));
-                    foreach (RecognitionException err in syntaxErrors.Errors)
-                    {
-                        messages.Add(new DiagnosticMessage(VhdlParser.errorToMessage(err), new SourcePosition(filePath, err.Line, err.CharPositionInLine), MessageWindow.MessageType.Error));
-                    }
-                }
-                if (semanticErrors != null)
-                {
-                    Console.WriteLine(semanticErrors.Message);
-                    foreach (ParseError err in semanticErrors.Errors)
-                    {
-                        messages.Add(new DiagnosticMessage(VhdlParser.errorToMessage(err), new SourcePosition(filePath, err.getPosition().getBegin().getLine(), err.getPosition().getBegin().getColumn()), MessageWindow.MessageType.Error));
-                    }
-                }
-                if (exception != null)
-                {
-                    messages.Add(new DiagnosticMessage(exception.Message, false));
-                }
-                return file;
+                file = Parse(stream, libraryScope, out tokenStream, out tree);
             }
+            return file;
         }
 
         /// <summary>
@@ -540,37 +507,16 @@ namespace Schematix.Core.Compiler
         /// <param name="tokenStream"></param>
         /// <param name="tree"></param>
         /// <returns></returns>
-        public VhdlFile ParseText(string text, string filePath, out CommonTokenStream tokenStream, out AstParserRuleReturnScope<CommonTree, IToken> tree)
+        public VhdlFile ParseText(string text, string filePath, out CommonTokenStream tokenStream, out IParseTree tree)
         {
+            VhdlFile file = null;
             lock (this)
             {
                 // Start process
                 ICharStream stream = new CaseInsensitiveStringStream(text, filePath);
-                VhdlFile file = Parse(stream, currentLibrary, out tokenStream, out tree);
-
-                if (syntaxErrors != null)
-                {
-                    Console.WriteLine(syntaxErrors.Message);
-                    messages.Add(new DiagnosticMessage(syntaxErrors.Message));
-                    foreach (RecognitionException err in syntaxErrors.Errors)
-                    {
-                        messages.Add(new DiagnosticMessage(VhdlParser.errorToMessage(err), new SourcePosition(filePath, err.Line, err.CharPositionInLine), MessageWindow.MessageType.Error));
-                    }
-                }
-                if (semanticErrors != null)
-                {
-                    Console.WriteLine(semanticErrors.Message);
-                    foreach (ParseError err in semanticErrors.Errors)
-                    {
-                        messages.Add(new DiagnosticMessage(VhdlParser.errorToMessage(err), new SourcePosition(filePath, err.getPosition().getBegin().getLine(), err.getPosition().getBegin().getColumn()), MessageWindow.MessageType.Error));
-                    }
-                }
-                if (exception != null)
-                {
-                    messages.Add(new DiagnosticMessage(exception.Message, false));
-                }
-                return file;
+                file = Parse(stream, currentLibrary, out tokenStream, out tree);
             }
+            return file;
         }
 
         /// <summary>
@@ -591,12 +537,12 @@ namespace Schematix.Core.Compiler
                     {
                         VHDL_CodeFile vhdlCode = (file as VHDL_CodeFile);
 
-                        vhdlCode.SyntaxErrors = null;
-                        vhdlCode.SemanticErrors = null;
-                        vhdlCode.Exception = null;
+                        vhdlCode.ParseException = null;
+                        vhdlCode.ParseSyntaxException = null;
+                        vhdlCode.ParseSemanticException = null;
 
                         VhdlFile oldFile = null;
-                        foreach (VhdlFile f in currentLibrary.getFiles())
+                        foreach (VhdlFile f in currentLibrary.Files)
                         {
                             if (f.FilePath == file.FilePath)
                             {
@@ -605,9 +551,9 @@ namespace Schematix.Core.Compiler
                             }
                         }
                         if (oldFile != null)
-                            currentLibrary.getFiles().Remove(oldFile);
+                            currentLibrary.Files.Remove(oldFile);
 
-                        AstParserRuleReturnScope<CommonTree, IToken> tree;
+                        IParseTree tree;
                         CommonTokenStream tokenStream;
                         ICharStream stream = new CaseInsensitiveStringStream(file.Text, file.FilePath);
                         VhdlFile ParsedFile = Parse(stream, currentLibrary, out tokenStream, out tree);
@@ -617,9 +563,9 @@ namespace Schematix.Core.Compiler
                         }
 
                         vhdlCode.File = ParsedFile;
-                        vhdlCode.SemanticErrors = semanticErrors;
-                        vhdlCode.SyntaxErrors = syntaxErrors;
-                        vhdlCode.Exception = exception;
+                        vhdlCode.ParseSemanticException = parseSemanticException;
+                        vhdlCode.ParseSyntaxException = parseSyntaxException;
+                        vhdlCode.ParseException = parseException;
                         vhdlCode.TokenStream = tokenStream;
                         vhdlCode.Tree = tree;
 
@@ -654,7 +600,7 @@ namespace Schematix.Core.Compiler
             if (dir.FullName.Contains(SourceDirectory))
                 return currentLibrary;
             else
-                return VHDL_Library_Manager.GetLibrary(libraryName);
+                return this.libraryManager.GetLibrary(libraryName);
         }
 
         /// <summary>
@@ -731,6 +677,6 @@ namespace Schematix.Core.Compiler
             }
             return compileQueue;
         }
-        */
+        
     }
 }

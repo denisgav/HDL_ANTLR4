@@ -5,11 +5,34 @@ using System.Text;
 using VHDL.parser;
 using VHDL;
 using Schematix.Core.Compiler;
+using VHDL.ParseError;
+using Antlr4.Runtime.Tree;
+using Antlr4.Runtime;
 
 namespace Schematix.Core.Model
 {
     public class VHDL_CodeFile: CodeFile
     {
+        #region exceptions
+        private vhdlParseException parseSyntaxException;
+        public vhdlParseException ParseSyntaxException
+        {
+            get { return parseSyntaxException; }
+            set { parseSyntaxException = value; }
+        }
+        private vhdlSemanticException parseSemanticException;
+        public vhdlSemanticException ParseSemanticException
+        {
+            get { return parseSemanticException; }
+            set { parseSemanticException = value; }
+        }
+        private Exception parseException;
+        public Exception ParseException
+        {
+            get { return parseException; }
+            set { parseException = value; }
+        }
+        #endregion
         /// <summary>
         /// Служебная информация о файле
         /// </summary>
@@ -45,6 +68,19 @@ namespace Schematix.Core.Model
             }
         }
 
+        private IParseTree tree;
+        public IParseTree Tree
+        {
+            get { return tree; }
+            set { tree = value; }
+        }
+
+        private CommonTokenStream tokenStream;
+        public CommonTokenStream TokenStream
+        {
+            get { return tokenStream; }
+            set { tokenStream = value; }
+        }
 
         /// <summary>
         /// Используемый компилятор
@@ -62,6 +98,21 @@ namespace Schematix.Core.Model
         public override List<DiagnosticMessage> GetMessages()
         {
             List<DiagnosticMessage> messages = new List<DiagnosticMessage>();
+
+            if (parseSyntaxException != null)
+            {
+                Console.WriteLine(parseSyntaxException.Message);
+                messages.Add(new DiagnosticMessage(parseSyntaxException.Message, new SourcePosition(parseSyntaxException.FilePath, parseSyntaxException.Line, parseSyntaxException.CharPositionInLine), MessageWindow.MessageType.Error));
+            }
+            if (parseSemanticException != null)
+            {
+                Console.WriteLine(parseSemanticException.Message);
+                messages.Add(new DiagnosticMessage(parseSemanticException.Message, new SourcePosition(parseSemanticException.FileName, parseSemanticException.Context.Start.Line, parseSemanticException.Context.Start.Column), MessageWindow.MessageType.Error));
+            }
+            if (parseException != null)
+            {
+                messages.Add(new DiagnosticMessage(parseException.Message, false));
+            }
 
             return messages;
         }
